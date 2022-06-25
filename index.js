@@ -1,3 +1,16 @@
+var Manager = /** @class */ (function () {
+    function Manager() {
+    }
+    Manager.displayError = function (conditions) {
+        var message = "ConditionalError: You must follow the following rules:";
+        for (var _i = 0, conditions_1 = conditions; _i < conditions_1.length; _i++) {
+            var condition = conditions_1[_i];
+            message += "\n\t".concat(condition);
+        }
+        throw message;
+    };
+    return Manager;
+}());
 var Point = /** @class */ (function () {
     function Point(x, y) {
         this.x = x;
@@ -28,6 +41,12 @@ var Triangle = /** @class */ (function () {
     Triangle.prototype.getBarycenter = function () {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
     };
+    Triangle.prototype.getAroundLength = function () {
+        var p1 = new Line(this.p1, this.p2);
+        var p2 = new Line(this.p2, this.p3);
+        var p3 = new Line(this.p3, this.p1);
+        return p1.getLength() + p2.getLength() + p3.getLength();
+    };
     Triangle.prototype.getArea = function () {
         return ((1 / 2) *
             Math.abs((this.p1.x - this.p3.x) * (this.p2.y - this.p3.y) -
@@ -47,18 +66,48 @@ var Rectangle = /** @class */ (function () {
         var triangle2 = new Triangle(this.p2, this.p3, this.p4);
         return triangle1.getArea() + triangle2.getArea();
     };
+    Rectangle.prototype.getAroundLength = function () {
+        var l1 = new Line(this.p1, this.p2);
+        var l2 = new Line(this.p2, this.p3);
+        var l3 = new Line(this.p3, this.p4);
+        var l4 = new Line(this.p4, this.p1);
+        return l1.getLength() + l2.getLength() + l3.getLength() + l4.getLength();
+    };
     return Rectangle;
 }());
 var Line = /** @class */ (function () {
-    function Line(startX, startY, endX, endY) {
-        this.startPoint = new Point(startX, startY);
-        this.endPoint = new Point(endX, endY);
+    function Line(startPoint, endPoint) {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
     }
     Line.prototype.getMidpoint = function () {
         return Point.getMidpoint(this.startPoint, this.endPoint);
     };
+    Line.prototype.getInteriorPoint = function (m, n) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        }
+        else {
+            return new Point((this.startPoint.x * n + this.endPoint.x * m) / (m + n), (this.startPoint.y * n + this.endPoint.y * m) / (m + n));
+        }
+    };
+    Line.prototype.getExteriorPoint = function (m, n) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        }
+        else {
+            return new Point((-this.startPoint.x * n + this.endPoint.x * m) / (m - n), (-this.startPoint.y * n + this.endPoint.y * m) / (m - n));
+        }
+    };
     Line.prototype.getLength = function () {
         return Point.dist(this.startPoint, this.endPoint);
+    };
+    Line.prototype.getDistBetweenPoint = function (p) {
+        var a = (this.endPoint.y - this.startPoint.y) /
+            (this.endPoint.x - this.startPoint.x);
+        var b = -1;
+        var c = this.startPoint.y + a * this.startPoint.x;
+        return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     };
     return Line;
 }());
