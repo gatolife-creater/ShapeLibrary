@@ -34,6 +34,10 @@ class Point {
     static getBarycenter(p1: Point, p2: Point, p3: Point) {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     }
+
+    static O() {
+        return new Point(0, 0);
+    }
 }
 
 class Line {
@@ -175,13 +179,22 @@ class QuadraticFunction {
         this.standardForm;
     }
 
-    judgeForm(formula: string) {
-        return "vertex";
+    static judgeForm(formula: string) {
+        if (formula.match(/x\^2/g) &&
+            formula.match(/x/g)) {
+            return "vertex";
+        } else if (formula.match(/x/g) &&
+            formula.match(/\(/g) &&
+            formula.match(/\)/g) &&
+            formula.match(/\^2/g)) {
+            return "standard";
+        } else {
+            return Manager.displayError(["You MUST use following:", "x", "(", ")", "^2"]);
+        }
     }
 
     setForms(formula: string) {
-        if (this.judgeForm(formula) === "vertex") {
-
+        if (QuadraticFunction.judgeForm(formula) === "vertex") {
             let array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(v => v);
             this.a = Number(array[0]);
             this.b = Number(array[1]);
@@ -192,19 +205,39 @@ class QuadraticFunction {
             let stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
             this.vertexForm = `${stringA}x^2${stringB}x${stringC}`;
 
-            this.p = -this.b / 2 * this.a;
-            this.q = -(this.b ** 2 - 4 * this.a * this.c) / 4 * this.a;
+            this.p = -this.b / (2 * this.a);
+            this.q = -(this.b ** 2 - 4 * this.a * this.c) / (4 * this.a);
 
             let stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
             let stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
             this.standardForm = `${stringA}(x${stringP})^2${stringQ}`;
 
-        } else if (this.judgeForm(formula) === "standard") {
+        } else if (QuadraticFunction.judgeForm(formula) === "standard") {
 
+            let array = formula.replace(/\s/g, "").split(/\(|\)|\+|x|\^2/).filter(v => v);
+            this.a = Number(array[0]);
+            this.p = Number(array[1]) * (-1);
+            this.q = Number(array[2]);
+
+            let stringA = String(this.a);
+            let stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
+            let stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
+            this.standardForm = `${stringA}(x${stringP})^2${stringQ}`;
+
+            this.b = -2 * this.a * this.p;
+            this.c = this.a * this.p ** 2 + this.q;
+            
+            let stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
+            let stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
+            this.vertexForm = `${stringA}x^2${stringB}x${stringC}`;
         }
     }
 
     getVertex() {
         return new Point(this.p, this.q);
+    }
+
+    getY(x: number) {
+        return this.a * x ** 2 + this.b * x + this.c;
     }
 }

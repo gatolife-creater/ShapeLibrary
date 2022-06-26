@@ -30,6 +30,9 @@ var Point = /** @class */ (function () {
     Point.getBarycenter = function (p1, p2, p3) {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     };
+    Point.O = function () {
+        return new Point(0, 0);
+    };
     return Point;
 }());
 var Line = /** @class */ (function () {
@@ -126,11 +129,23 @@ var QuadraticFunction = /** @class */ (function () {
         this.vertexForm;
         this.standardForm;
     }
-    QuadraticFunction.prototype.judgeForm = function (formula) {
-        return "vertex";
+    QuadraticFunction.judgeForm = function (formula) {
+        if (formula.match(/x\^2/g) &&
+            formula.match(/x/g)) {
+            return "vertex";
+        }
+        else if (formula.match(/x/g) &&
+            formula.match(/\(/g) &&
+            formula.match(/\)/g) &&
+            formula.match(/\^2/g)) {
+            return "standard";
+        }
+        else {
+            return Manager.displayError(["You MUST use following:", "x", "(", ")", "^2"]);
+        }
     };
     QuadraticFunction.prototype.setForms = function (formula) {
-        if (this.judgeForm(formula) === "vertex") {
+        if (QuadraticFunction.judgeForm(formula) === "vertex") {
             var array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(function (v) { return v; });
             this.a = Number(array[0]);
             this.b = Number(array[1]);
@@ -139,17 +154,33 @@ var QuadraticFunction = /** @class */ (function () {
             var stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
             var stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
             this.vertexForm = "".concat(stringA, "x^2").concat(stringB, "x").concat(stringC);
-            this.p = -this.b / 2 * this.a;
-            this.q = -(Math.pow(this.b, 2) - 4 * this.a * this.c) / 4 * this.a;
+            this.p = -this.b / (2 * this.a);
+            this.q = -(Math.pow(this.b, 2) - 4 * this.a * this.c) / (4 * this.a);
             var stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
             var stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
             this.standardForm = "".concat(stringA, "(x").concat(stringP, ")^2").concat(stringQ);
         }
-        else if (this.judgeForm(formula) === "standard") {
+        else if (QuadraticFunction.judgeForm(formula) === "standard") {
+            var array = formula.replace(/\s/g, "").split(/\(|\)|\+|x|\^2/).filter(function (v) { return v; });
+            this.a = Number(array[0]);
+            this.p = Number(array[1]) * (-1);
+            this.q = Number(array[2]);
+            var stringA = String(this.a);
+            var stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
+            var stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
+            this.standardForm = "".concat(stringA, "(x").concat(stringP, ")^2").concat(stringQ);
+            this.b = -2 * this.a * this.p;
+            this.c = this.a * Math.pow(this.p, 2) + this.q;
+            var stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
+            var stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
+            this.vertexForm = "".concat(stringA, "x^2").concat(stringB, "x").concat(stringC);
         }
     };
     QuadraticFunction.prototype.getVertex = function () {
         return new Point(this.p, this.q);
+    };
+    QuadraticFunction.prototype.getY = function (x) {
+        return this.a * Math.pow(x, 2) + this.b * x + this.c;
     };
     return QuadraticFunction;
 }());
