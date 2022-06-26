@@ -32,6 +32,42 @@ var Point = /** @class */ (function () {
     };
     return Point;
 }());
+var Line = /** @class */ (function () {
+    function Line(startPoint, endPoint) {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+    Line.prototype.getMidpoint = function () {
+        return Point.getMidpoint(this.startPoint, this.endPoint);
+    };
+    Line.prototype.getInteriorPoint = function (m, n) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        }
+        else {
+            return new Point((this.startPoint.x * n + this.endPoint.x * m) / (m + n), (this.startPoint.y * n + this.endPoint.y * m) / (m + n));
+        }
+    };
+    Line.prototype.getExteriorPoint = function (m, n) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        }
+        else {
+            return new Point((-this.startPoint.x * n + this.endPoint.x * m) / (m - n), (-this.startPoint.y * n + this.endPoint.y * m) / (m - n));
+        }
+    };
+    Line.prototype.getLength = function () {
+        return Point.dist(this.startPoint, this.endPoint);
+    };
+    Line.prototype.getDistBetweenPoint = function (p) {
+        var a = (this.endPoint.y - this.startPoint.y) /
+            (this.endPoint.x - this.startPoint.x);
+        var b = -1;
+        var c = this.startPoint.y + a * this.startPoint.x;
+        return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+    };
+    return Line;
+}());
 var Triangle = /** @class */ (function () {
     function Triangle(p1, p2, p3) {
         this.p1 = p1;
@@ -75,39 +111,45 @@ var Rectangle = /** @class */ (function () {
     };
     return Rectangle;
 }());
-var Line = /** @class */ (function () {
-    function Line(startPoint, endPoint) {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+var QuadraticFunction = /** @class */ (function () {
+    /**
+     * x^2, xの係数, 定数項が0, 1であっても入力すること
+     * @param formula
+     */
+    function QuadraticFunction(formula) {
+        this.setForms(formula);
+        this.a;
+        this.b;
+        this.c;
+        this.p;
+        this.q;
+        this.vertexForm;
+        this.standardForm;
     }
-    Line.prototype.getMidpoint = function () {
-        return Point.getMidpoint(this.startPoint, this.endPoint);
+    QuadraticFunction.prototype.judgeForm = function (formula) {
+        return "vertex";
     };
-    Line.prototype.getInteriorPoint = function (m, n) {
-        if (m <= 0 || n <= 0) {
-            return Manager.displayError(["m > 0", "n > 0"]);
+    QuadraticFunction.prototype.setForms = function (formula) {
+        if (this.judgeForm(formula) === "vertex") {
+            var array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(function (v) { return v; });
+            this.a = Number(array[0]);
+            this.b = Number(array[1]);
+            this.c = Number(array[2]);
+            var stringA = String(this.a);
+            var stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
+            var stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
+            this.vertexForm = "".concat(stringA, "x^2").concat(stringB, "x").concat(stringC);
+            this.p = -this.b / 2 * this.a;
+            this.q = -(Math.pow(this.b, 2) - 4 * this.a * this.c) / 4 * this.a;
+            var stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
+            var stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
+            this.standardForm = "".concat(stringA, "(x").concat(stringP, ")^2").concat(stringQ);
         }
-        else {
-            return new Point((this.startPoint.x * n + this.endPoint.x * m) / (m + n), (this.startPoint.y * n + this.endPoint.y * m) / (m + n));
+        else if (this.judgeForm(formula) === "standard") {
         }
     };
-    Line.prototype.getExteriorPoint = function (m, n) {
-        if (m <= 0 || n <= 0) {
-            return Manager.displayError(["m > 0", "n > 0"]);
-        }
-        else {
-            return new Point((-this.startPoint.x * n + this.endPoint.x * m) / (m - n), (-this.startPoint.y * n + this.endPoint.y * m) / (m - n));
-        }
+    QuadraticFunction.prototype.getVertex = function () {
+        return new Point(this.p, this.q);
     };
-    Line.prototype.getLength = function () {
-        return Point.dist(this.startPoint, this.endPoint);
-    };
-    Line.prototype.getDistBetweenPoint = function (p) {
-        var a = (this.endPoint.y - this.startPoint.y) /
-            (this.endPoint.x - this.startPoint.x);
-        var b = -1;
-        var c = this.startPoint.y + a * this.startPoint.x;
-        return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-    };
-    return Line;
+    return QuadraticFunction;
 }());

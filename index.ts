@@ -36,6 +36,55 @@ class Point {
     }
 }
 
+class Line {
+    startPoint: Point;
+    endPoint: Point;
+
+    constructor(startPoint: Point, endPoint: Point) {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+
+    getMidpoint() {
+        return Point.getMidpoint(this.startPoint, this.endPoint);
+    }
+
+    getInteriorPoint(m: number, n: number) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        } else {
+            return new Point(
+                (this.startPoint.x * n + this.endPoint.x * m) / (m + n),
+                (this.startPoint.y * n + this.endPoint.y * m) / (m + n)
+            );
+        }
+    }
+
+    getExteriorPoint(m: number, n: number) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        } else {
+            return new Point(
+                (-this.startPoint.x * n + this.endPoint.x * m) / (m - n),
+                (-this.startPoint.y * n + this.endPoint.y * m) / (m - n)
+            );
+        }
+    }
+
+    getLength() {
+        return Point.dist(this.startPoint, this.endPoint);
+    }
+
+    getDistBetweenPoint(p: Point) {
+        let a =
+            (this.endPoint.y - this.startPoint.y) /
+            (this.endPoint.x - this.startPoint.x);
+        let b = -1;
+        let c = this.startPoint.y + a * this.startPoint.x;
+        return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(a ** 2 + b ** 2);
+    }
+}
+
 class Triangle {
     p1: Point;
     p2: Point;
@@ -94,54 +143,68 @@ class Rectangle {
         let l4 = new Line(this.p4, this.p1);
         return l1.getLength() + l2.getLength() + l3.getLength() + l4.getLength();
     }
-    /* 対角線の交点を調べたい */
 }
 
-class Line {
-    startPoint: Point;
-    endPoint: Point;
+class QuadraticFunction {
+    standardForm: string;
+    vertexForm: string;
 
-    constructor(startPoint: Point, endPoint: Point) {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+    a: number;
+    b: number;
+    c: number;
+
+    p: number;
+    q: number;
+
+    /**
+     * x^2, xの係数, 定数項が0, 1であっても入力すること
+     * @param formula 
+     */
+    constructor(formula: string) {
+
+        this.setForms(formula);
+
+        this.a;
+        this.b;
+        this.c;
+
+        this.p;
+        this.q;
+
+        this.vertexForm;
+        this.standardForm;
     }
 
-    getMidpoint() {
-        return Point.getMidpoint(this.startPoint, this.endPoint);
+    judgeForm(formula: string) {
+        return "vertex";
     }
 
-    getInteriorPoint(m: number, n: number) {
-        if (m <= 0 || n <= 0) {
-            return Manager.displayError(["m > 0", "n > 0"]);
-        } else {
-            return new Point(
-                (this.startPoint.x * n + this.endPoint.x * m) / (m + n),
-                (this.startPoint.y * n + this.endPoint.y * m) / (m + n)
-            );
+    setForms(formula: string) {
+        if (this.judgeForm(formula) === "vertex") {
+
+            let array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(v => v);
+            this.a = Number(array[0]);
+            this.b = Number(array[1]);
+            this.c = Number(array[2]);
+
+            let stringA = String(this.a);
+            let stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
+            let stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
+            this.vertexForm = `${stringA}x^2${stringB}x${stringC}`;
+
+            this.p = -this.b / 2 * this.a;
+            this.q = -(this.b ** 2 - 4 * this.a * this.c) / 4 * this.a;
+
+            let stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
+            let stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
+            this.standardForm = `${stringA}(x${stringP})^2${stringQ}`;
+
+        } else if (this.judgeForm(formula) === "standard") {
+
         }
     }
 
-    getExteriorPoint(m: number, n: number) {
-        if (m <= 0 || n <= 0) {
-            return Manager.displayError(["m > 0", "n > 0"]);
-        } else {
-            return new Point(
-                (-this.startPoint.x * n + this.endPoint.x * m) / (m - n),
-                (-this.startPoint.y * n + this.endPoint.y * m) / (m - n)
-            );
-        }
-    }
-
-    getLength() {
-        return Point.dist(this.startPoint, this.endPoint);
-    }
-
-    getDistBetweenPoint(p: Point) {
-        let a =
-            (this.endPoint.y - this.startPoint.y) /
-            (this.endPoint.x - this.startPoint.x);
-        let b = -1;
-        let c = this.startPoint.y + a * this.startPoint.x;
-        return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(a ** 2 + b ** 2);
+    getVertex() {
+        return new Point(this.p, this.q);
     }
 }

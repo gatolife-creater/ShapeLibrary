@@ -34,6 +34,12 @@ let IP = l.getExteriorPoint(1, 5);
 // let line1 = new Line(0, 0, 0, l.getDistBetweenPoint(p));
 // console.log('dist:', l.getDistBetweenPoint(p));
 
+let quadraticFunction = new QuadraticFunction("1x^2 + 4x + 5");
+console.log(quadraticFunction.vertexForm);
+console.log(quadraticFunction.standardForm);
+console.log(quadraticFunction.getVertex());
+// let quadraticFunction2 = new QuadraticFunction("2(x-2) + 3");
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
 }
