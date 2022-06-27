@@ -17,24 +17,39 @@ class Point {
         this.y = y;
     }
 
+    /** 
+     * 2点間の距離を求める
+     * */ 
     static dist(p1: Point, p2: Point) {
         return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
     }
 
+    /**
+     * 中点を求める
+     *  */ 
     static getMidpoint(p1: Point, p2: Point) {
         return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
     }
 
+    /**
+     * 特定の点に対して対称な点を求める
+     * */ 
     static getSymmetricPoint(p: Point, center: Point) {
         let x = center.x - p.x;
         let y = center.y - p.y;
         return new Point(center.x + y, center.y + x);
     }
 
+    /** 
+     * 3点間の重心を求める
+     * */ 
     static getBarycenter(p1: Point, p2: Point, p3: Point) {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     }
 
+    /**
+     * 原点を求める
+     *  */ 
     static O() {
         return new Point(0, 0);
     }
@@ -49,10 +64,16 @@ class Line {
         this.endPoint = endPoint;
     }
 
+    /**
+     * 線分を二分する点を求める
+     *  */ 
     getMidpoint() {
         return Point.getMidpoint(this.startPoint, this.endPoint);
     }
 
+    /**
+     * 内分点を求める
+     *  */ 
     getInteriorPoint(m: number, n: number) {
         if (m <= 0 || n <= 0) {
             return Manager.displayError(["m > 0", "n > 0"]);
@@ -64,6 +85,9 @@ class Line {
         }
     }
 
+    /**
+     * 外分点を求める
+     *  */ 
     getExteriorPoint(m: number, n: number) {
         if (m <= 0 || n <= 0) {
             return Manager.displayError(["m > 0", "n > 0"]);
@@ -75,10 +99,16 @@ class Line {
         }
     }
 
+    /**
+     * 線の長さを求める
+     *  */ 
     getLength() {
         return Point.dist(this.startPoint, this.endPoint);
     }
 
+    /**
+     * 点と直線の距離を求める
+     *  */ 
     getDistBetweenPoint(p: Point) {
         let a =
             (this.endPoint.y - this.startPoint.y) /
@@ -93,16 +123,28 @@ class Triangle {
     p1: Point;
     p2: Point;
     p3: Point;
+    l1: Line;
+    l2: Line;
+    l3: Line;
     constructor(p1: Point, p2: Point, p3: Point) {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
+        this.l1 = new Line(this.p1, this.p2);
+        this.l2 = new Line(this.p2, this.p3);
+        this.l3 = new Line(this.p3, this.p1);
     }
 
+    /**
+     * 三角形の重心を求める
+     *  */ 
     getBarycenter() {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
     }
 
+    /** 
+     * 辺の長さの和を求める
+     *  */ 
     getAroundLength() {
         let p1 = new Line(this.p1, this.p2);
         let p2 = new Line(this.p2, this.p3);
@@ -110,6 +152,9 @@ class Triangle {
         return p1.getLength() + p2.getLength() + p3.getLength();
     }
 
+    /**
+     * 三角形の面積を求める
+     *  */ 
     getArea() {
         return (
             (1 / 2) *
@@ -126,20 +171,34 @@ class Rectangle {
     p2: Point;
     p3: Point;
     p4: Point;
+    l1: Line;
+    l2: Line;
+    l3: Line;
+    l4: Line;
 
     constructor(p1: Point, p2: Point, p3: Point, p4: Point) {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
         this.p4 = p4;
+        this.l1 = new Line(this.p1, this.p2);
+        this.l2 = new Line(this.p2, this.p3);
+        this.l3 = new Line(this.p3, this.p4);
+        this.l4 = new Line(this.p4, this.p1);
     }
 
+    /**
+     * 四角形の面積を求める
+     *  */ 
     getArea() {
         let triangle1 = new Triangle(this.p1, this.p2, this.p3);
         let triangle2 = new Triangle(this.p2, this.p3, this.p4);
         return triangle1.getArea() + triangle2.getArea();
     }
 
+    /**
+     * 辺の長さの和を求める
+     *  */ 
     getAroundLength() {
         let l1 = new Line(this.p1, this.p2);
         let l2 = new Line(this.p2, this.p3);
@@ -179,6 +238,9 @@ class QuadraticFunction {
         this.standardForm;
     }
 
+    /**
+     * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する
+     *  */ 
     static judgeForm(formula: string) {
         if (formula.match(/x\^2/g) &&
             formula.match(/x/g)) {
@@ -193,6 +255,9 @@ class QuadraticFunction {
         }
     }
 
+    /**
+     * a, b, c, p, qに値を代入し、一般形と標準形を完成させる
+     */
     setForms(formula: string) {
         if (QuadraticFunction.judgeForm(formula) === "vertex") {
             let array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(v => v);
@@ -226,18 +291,31 @@ class QuadraticFunction {
 
             this.b = -2 * this.a * this.p;
             this.c = this.a * this.p ** 2 + this.q;
-            
+
             let stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
             let stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
             this.vertexForm = `${stringA}x^2${stringB}x${stringC}`;
         }
     }
 
+    /**
+     * 二次関数の頂点を求める
+     *  */ 
     getVertex() {
         return new Point(this.p, this.q);
     }
 
+    /**
+     * xを代入して、yの値を求める
+     */
     getY(x: number) {
         return this.a * x ** 2 + this.b * x + this.c;
+    }
+
+    /**
+     * y切片の座標を求める
+     */
+    getYIntercept(){
+        return new Point(0, this.getY(0));
     }
 }

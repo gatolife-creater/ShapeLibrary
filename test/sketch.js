@@ -34,15 +34,25 @@ let IP = l.getExteriorPoint(1, 5);
 // let line1 = new Line(0, 0, 0, l.getDistBetweenPoint(p));
 // console.log('dist:', l.getDistBetweenPoint(p));
 
-let quadraticFunction = new QuadraticFunction("2x^2  -20x + 0");
-console.log(quadraticFunction.vertexForm);
-console.log(quadraticFunction.standardForm);
-console.log("Vertex:", quadraticFunction.getVertex());
+// let quadraticFunction = new QuadraticFunction("2x^2  -20x + 0");
+// console.log(quadraticFunction.vertexForm);
+// console.log(quadraticFunction.standardForm);
+// console.log("Vertex:", quadraticFunction.getVertex());
 
-let quadraticFunction2 = new QuadraticFunction("-0.1(x - 20)^2 + 200");
-console.log(quadraticFunction2.vertexForm);
-console.log(quadraticFunction2.standardForm);
-console.log("Vertex2:", quadraticFunction2.getVertex());
+let a = "-0.01";
+let quadraticFunction2 = new QuadraticFunction(`${a}(x - 20)^2 + 200`);
+
+let p1 = -200;
+let p1s = 1
+
+let min = -250;
+let max = 250;
+
+let triangles = [];
+
+for (let i = 0; i < 5; i++) {
+    let triangle = new Triangle()
+}
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -53,7 +63,7 @@ function draw() {
     translate(width / 2, height / 2);
 
     noFill();
-    strokeWeight(5);
+    strokeWeight(2);
     stroke("white");
     point(p.x, p.y);
     line(l.startPoint.x, l.startPoint.y, l.endPoint.x, l.endPoint.y);
@@ -62,8 +72,60 @@ function draw() {
     triangle(tri.p1.x, tri.p1.y, tri.p2.x, tri.p2.y, tri.p3.x, tri.p3.y);
     triangle(tri2.p1.x, tri2.p1.y, tri2.p2.x, tri2.p2.y, tri2.p3.x, tri2.p3.y);
 
-    for (let x = -100; x < 100; x++) {
+    p1 += p1s;
+
+    //二次関数宣言
+    quadraticFunction2 = new QuadraticFunction(`${a}(x +${p1})^2 + 200`);
+
+    //二次関数の定義域
+    if (quadraticFunction2.getVertex().x < min || max < quadraticFunction2.getVertex().x) p1s *= -1;
+
+    // 二次関数のグラフ表示
+    beginShape();
+    for (let x = min; x < max; x++) {
         let y = quadraticFunction2.getY(x);
-        point(x, y);
+        vertex(x, y);
     }
+    endShape();
+
+    // x軸、y軸の表示
+    stroke("gray");
+    line(-width / 2, 0, width / 2, 0);
+    line(0, -height / 2, 0, height / 2);
+
+    // 変形する三角形
+    let varTri = new Triangle(quadraticFunction2.getVertex(), tri.getBarycenter(), new Point(0, quadraticFunction2.getY(0)));
+    triangle(varTri.p1.x, varTri.p1.y, varTri.p2.x, varTri.p2.y, varTri.p3.x, varTri.p3.y)
+
+    // 定義域の直線
+    // stroke("white");
+    line(min, -height / 2, min, height / 2);
+    line(max, -height / 2, max, height / 2);
+
+    // 二次関数の軸
+    stroke(0, 255, 125);
+    strokeWeight(1);
+    line(quadraticFunction2.getVertex().x, -height / 2, quadraticFunction2.getVertex().x, height / 2);
+
+    // いろいろな点の表示
+    stroke(255, 0, 0);
+    strokeWeight(10);
+
+    let yIntercept = quadraticFunction2.getYIntercept();
+    point(yIntercept.x, yIntercept.y);
+    point(quadraticFunction2.getVertex().x, quadraticFunction2.getVertex().y);
+
+    point(tri.getBarycenter().x, tri.getBarycenter().y);
+    point(varTri.getBarycenter().x, varTri.getBarycenter().y);
+
+    stroke("lightgray");
+    strokeWeight(0.9);
+    text("y切片", yIntercept.x, yIntercept.y - 10);
+    text("重心", varTri.getBarycenter().x, varTri.getBarycenter().y - 10);
+    text("頂点", quadraticFunction2.getVertex().x, quadraticFunction2.getVertex().y - 10);
+
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
 }

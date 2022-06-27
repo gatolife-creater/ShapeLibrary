@@ -16,20 +16,35 @@ var Point = /** @class */ (function () {
         this.x = x;
         this.y = y;
     }
+    /**
+     * 2点間の距離を求める
+     * */
     Point.dist = function (p1, p2) {
         return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
     };
+    /**
+     * 中点を求める
+     *  */
     Point.getMidpoint = function (p1, p2) {
         return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
     };
+    /**
+     * 特定の点に対して対称な点を求める
+     * */
     Point.getSymmetricPoint = function (p, center) {
         var x = center.x - p.x;
         var y = center.y - p.y;
         return new Point(center.x + y, center.y + x);
     };
+    /**
+     * 3点間の重心を求める
+     * */
     Point.getBarycenter = function (p1, p2, p3) {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     };
+    /**
+     * 原点を求める
+     *  */
     Point.O = function () {
         return new Point(0, 0);
     };
@@ -40,9 +55,15 @@ var Line = /** @class */ (function () {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
     }
+    /**
+     * 線分を二分する点を求める
+     *  */
     Line.prototype.getMidpoint = function () {
         return Point.getMidpoint(this.startPoint, this.endPoint);
     };
+    /**
+     * 内分点を求める
+     *  */
     Line.prototype.getInteriorPoint = function (m, n) {
         if (m <= 0 || n <= 0) {
             return Manager.displayError(["m > 0", "n > 0"]);
@@ -51,6 +72,9 @@ var Line = /** @class */ (function () {
             return new Point((this.startPoint.x * n + this.endPoint.x * m) / (m + n), (this.startPoint.y * n + this.endPoint.y * m) / (m + n));
         }
     };
+    /**
+     * 外分点を求める
+     *  */
     Line.prototype.getExteriorPoint = function (m, n) {
         if (m <= 0 || n <= 0) {
             return Manager.displayError(["m > 0", "n > 0"]);
@@ -59,9 +83,15 @@ var Line = /** @class */ (function () {
             return new Point((-this.startPoint.x * n + this.endPoint.x * m) / (m - n), (-this.startPoint.y * n + this.endPoint.y * m) / (m - n));
         }
     };
+    /**
+     * 線の長さを求める
+     *  */
     Line.prototype.getLength = function () {
         return Point.dist(this.startPoint, this.endPoint);
     };
+    /**
+     * 点と直線の距離を求める
+     *  */
     Line.prototype.getDistBetweenPoint = function (p) {
         var a = (this.endPoint.y - this.startPoint.y) /
             (this.endPoint.x - this.startPoint.x);
@@ -76,16 +106,28 @@ var Triangle = /** @class */ (function () {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
+        this.l1 = new Line(this.p1, this.p2);
+        this.l2 = new Line(this.p2, this.p3);
+        this.l3 = new Line(this.p3, this.p1);
     }
+    /**
+     * 三角形の重心を求める
+     *  */
     Triangle.prototype.getBarycenter = function () {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
     };
+    /**
+     * 辺の長さの和を求める
+     *  */
     Triangle.prototype.getAroundLength = function () {
         var p1 = new Line(this.p1, this.p2);
         var p2 = new Line(this.p2, this.p3);
         var p3 = new Line(this.p3, this.p1);
         return p1.getLength() + p2.getLength() + p3.getLength();
     };
+    /**
+     * 三角形の面積を求める
+     *  */
     Triangle.prototype.getArea = function () {
         return ((1 / 2) *
             Math.abs((this.p1.x - this.p3.x) * (this.p2.y - this.p3.y) -
@@ -99,12 +141,22 @@ var Rectangle = /** @class */ (function () {
         this.p2 = p2;
         this.p3 = p3;
         this.p4 = p4;
+        this.l1 = new Line(this.p1, this.p2);
+        this.l2 = new Line(this.p2, this.p3);
+        this.l3 = new Line(this.p3, this.p4);
+        this.l4 = new Line(this.p4, this.p1);
     }
+    /**
+     * 四角形の面積を求める
+     *  */
     Rectangle.prototype.getArea = function () {
         var triangle1 = new Triangle(this.p1, this.p2, this.p3);
         var triangle2 = new Triangle(this.p2, this.p3, this.p4);
         return triangle1.getArea() + triangle2.getArea();
     };
+    /**
+     * 辺の長さの和を求める
+     *  */
     Rectangle.prototype.getAroundLength = function () {
         var l1 = new Line(this.p1, this.p2);
         var l2 = new Line(this.p2, this.p3);
@@ -129,6 +181,9 @@ var QuadraticFunction = /** @class */ (function () {
         this.vertexForm;
         this.standardForm;
     }
+    /**
+     * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する
+     *  */
     QuadraticFunction.judgeForm = function (formula) {
         if (formula.match(/x\^2/g) &&
             formula.match(/x/g)) {
@@ -144,6 +199,9 @@ var QuadraticFunction = /** @class */ (function () {
             return Manager.displayError(["You MUST use following:", "x", "(", ")", "^2"]);
         }
     };
+    /**
+     * a, b, c, p, qに値を代入し、一般形と標準形を完成させる
+     */
     QuadraticFunction.prototype.setForms = function (formula) {
         if (QuadraticFunction.judgeForm(formula) === "vertex") {
             var array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(function (v) { return v; });
@@ -176,11 +234,23 @@ var QuadraticFunction = /** @class */ (function () {
             this.vertexForm = "".concat(stringA, "x^2").concat(stringB, "x").concat(stringC);
         }
     };
+    /**
+     * 二次関数の頂点を求める
+     *  */
     QuadraticFunction.prototype.getVertex = function () {
         return new Point(this.p, this.q);
     };
+    /**
+     * xを代入して、yの値を求める
+     */
     QuadraticFunction.prototype.getY = function (x) {
         return this.a * Math.pow(x, 2) + this.b * x + this.c;
+    };
+    /**
+     * y切片の座標を求める
+     */
+    QuadraticFunction.prototype.getYIntercept = function () {
+        return new Point(0, this.getY(0));
     };
     return QuadraticFunction;
 }());
