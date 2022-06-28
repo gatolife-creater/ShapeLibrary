@@ -34,7 +34,7 @@ var Point = /** @class */ (function () {
     Point.getSymmetricPoint = function (p, center) {
         var x = center.x - p.x;
         var y = center.y - p.y;
-        return new Point(center.x + y, center.y + x);
+        return new Point(center.x + x, center.y + y);
     };
     /**
      * 3点間の重心を求める
@@ -133,6 +133,9 @@ var Triangle = /** @class */ (function () {
             Math.abs((this.p1.x - this.p3.x) * (this.p2.y - this.p3.y) -
                 (this.p2.x - this.p3.x) * (this.p1.y - this.p3.y)));
     };
+    Triangle.prototype.getSymmetricTriangle = function (center) {
+        return new Triangle(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center));
+    };
     return Triangle;
 }());
 var Rectangle = /** @class */ (function () {
@@ -164,14 +167,17 @@ var Rectangle = /** @class */ (function () {
         var l4 = new Line(this.p4, this.p1);
         return l1.getLength() + l2.getLength() + l3.getLength() + l4.getLength();
     };
+    Rectangle.prototype.getSymmetricRectangle = function (center) {
+        return new Rectangle(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center), Point.getSymmetricPoint(this.p4, center));
+    };
     return Rectangle;
 }());
-var QuadraticFunction = /** @class */ (function () {
+var Quadratic = /** @class */ (function () {
     /**
      * x^2, xの係数, 定数項が0, 1であっても入力すること
      * @param formula
      */
-    function QuadraticFunction(formula) {
+    function Quadratic(formula) {
         this.setForms(formula);
         this.a;
         this.b;
@@ -184,7 +190,7 @@ var QuadraticFunction = /** @class */ (function () {
     /**
      * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する
      *  */
-    QuadraticFunction.judgeForm = function (formula) {
+    Quadratic.judgeForm = function (formula) {
         if (formula.match(/x\^2/g) &&
             formula.match(/x/g)) {
             return "vertex";
@@ -202,8 +208,8 @@ var QuadraticFunction = /** @class */ (function () {
     /**
      * a, b, c, p, qに値を代入し、一般形と標準形を完成させる
      */
-    QuadraticFunction.prototype.setForms = function (formula) {
-        if (QuadraticFunction.judgeForm(formula) === "vertex") {
+    Quadratic.prototype.setForms = function (formula) {
+        if (Quadratic.judgeForm(formula) === "vertex") {
             var array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(function (v) { return v; });
             this.a = Number(array[0]);
             this.b = Number(array[1]);
@@ -218,7 +224,7 @@ var QuadraticFunction = /** @class */ (function () {
             var stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
             this.standardForm = "".concat(stringA, "(x").concat(stringP, ")^2").concat(stringQ);
         }
-        else if (QuadraticFunction.judgeForm(formula) === "standard") {
+        else if (Quadratic.judgeForm(formula) === "standard") {
             var array = formula.replace(/\s/g, "").split(/\(|\)|\+|x|\^2/).filter(function (v) { return v; });
             this.a = Number(array[0]);
             this.p = Number(array[1]) * (-1);
@@ -237,20 +243,26 @@ var QuadraticFunction = /** @class */ (function () {
     /**
      * 二次関数の頂点を求める
      *  */
-    QuadraticFunction.prototype.getVertex = function () {
+    Quadratic.prototype.getVertex = function () {
         return new Point(this.p, this.q);
     };
     /**
      * xを代入して、yの値を求める
      */
-    QuadraticFunction.prototype.getY = function (x) {
+    Quadratic.prototype.getY = function (x) {
         return this.a * Math.pow(x, 2) + this.b * x + this.c;
     };
     /**
      * y切片の座標を求める
      */
-    QuadraticFunction.prototype.getYIntercept = function () {
+    Quadratic.prototype.getYIntercept = function () {
         return new Point(0, this.getY(0));
     };
-    return QuadraticFunction;
+    Quadratic.prototype.getSymmetricQuadratic = function (center) {
+        var a = -this.a;
+        var p = -Point.getSymmetricPoint(this.getVertex(), center).x;
+        var q = Point.getSymmetricPoint(this.getVertex(), center).y;
+        return new Quadratic("".concat(a, "(x +").concat(p, ")^2 + ").concat(q));
+    };
+    return Quadratic;
 }());
