@@ -172,6 +172,29 @@ var Rectangle = /** @class */ (function () {
     };
     return Rectangle;
 }());
+var Polygon = /** @class */ (function () {
+    function Polygon(points) {
+        this.points = points;
+        this.lines = [];
+        for (var i = 0; i < this.points.length; i++) {
+            if (i < this.points.length - 1) {
+                this.lines.push(new Line(this.points[i], this.points[i + 1]));
+            }
+            else {
+                this.lines.push(new Line(this.points[i], this.points[0]));
+            }
+        }
+    }
+    Polygon.prototype.getAroundLength = function () {
+        var result = 0;
+        for (var _i = 0, _a = this.lines; _i < _a.length; _i++) {
+            var line = _a[_i];
+            result += line.getLength();
+        }
+        return result;
+    };
+    return Polygon;
+}());
 var Quadratic = /** @class */ (function () {
     /**
      * x^2, xの係数, 定数項が0, 1であっても入力すること

@@ -225,6 +225,36 @@ class Rectangle {
     }
 }
 
+class Polygon {
+
+    points: Point[];
+    lines: Line[];
+
+    constructor(points: Point[]) {
+        this.points = points;
+        this.lines = [];
+        for (let i = 0; i < this.points.length; i++) {
+            if (i < this.points.length - 1) {
+                this.lines.push(
+                    new Line(this.points[i], this.points[i + 1])
+                )
+            } else {
+                this.lines.push(
+                    new Line(this.points[i], this.points[0])
+                )
+            }
+        }
+    }
+
+    getAroundLength(){
+        let result = 0;
+        for(let line of this.lines){
+            result += line.getLength();
+        }
+        return result;
+    }
+}
+
 class Quadratic {
     standardForm: string;
     vertexForm: string;
