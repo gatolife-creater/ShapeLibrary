@@ -172,6 +172,16 @@ class Triangle {
             Point.getSymmetricPoint(this.p3, center)
         );
     }
+
+    // magnify(center: Point, magnification: number) {
+    //     let l1 = new Line(center, this.p1);
+    //     let l2 = new Line(center, this.p2);
+    //     let l3 = new Line(center, this.p3);
+    //     let p1 = l1.getExteriorPoint(magnification, 1);
+    //     let p2 = l2.getExteriorPoint(magnification, 1);
+    //     let p3 = l3.getExteriorPoint(magnification, 1);
+    //     return new Triangle(p1 || Point.O(), p2 || Point.O(), p3 || Point.O());
+    // }
 }
 
 class Rectangle {
@@ -246,9 +256,9 @@ class Polygon {
         }
     }
 
-    getAroundLength(){
+    getAroundLength() {
         let result = 0;
-        for(let line of this.lines){
+        for (let line of this.lines) {
             result += line.getLength();
         }
         return result;

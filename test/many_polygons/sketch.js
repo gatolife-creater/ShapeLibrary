@@ -9,7 +9,7 @@ let n;
 
 let apex = 3;
 
-let count = 30;
+let count = 400;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -21,14 +21,14 @@ function draw() {
     translate(width / 2, height / 2);
 
     noFill();
-    strokeWeight(2);
+    strokeWeight(1);
     stroke("white");
 
     x += xs;
     m = 100 - x;
     n = x;
-
-
+    // m = 20;
+    // n = 1;
 
     let points = [];
 
@@ -74,4 +74,11 @@ function draw() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+}
+
+function mouseWheel(event) {
+    r += event.deltaY * r / 1500;
+    if (r === 0) {
+        r === 1;
+    }
 }
