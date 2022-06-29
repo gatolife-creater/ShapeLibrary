@@ -263,6 +263,15 @@ class Polygon {
         }
         return result;
     }
+
+    getSymmetricPolygon(center: Point){
+        let points: Point[] = [];    
+        for(let point of this.points){
+            
+            points.push(Point.getSymmetricPoint(point, center));
+        }
+        return new Polygon(points);
+    }
 }
 
 class Quadratic {

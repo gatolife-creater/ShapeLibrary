@@ -193,6 +193,14 @@ var Polygon = /** @class */ (function () {
         }
         return result;
     };
+    Polygon.prototype.getSymmetricPolygon = function (center) {
+        var points = [];
+        for (var _i = 0, _a = this.points; _i < _a.length; _i++) {
+            var point = _a[_i];
+            points.push(Point.getSymmetricPoint(point, center));
+        }
+        return new Polygon(points);
+    };
     return Polygon;
 }());
 var Quadratic = /** @class */ (function () {
