@@ -1,3 +1,5 @@
+let r = 300;
+
 let tri = new Triangle(
     new Point(250, 0),
     new Point(200, 200),
@@ -27,8 +29,14 @@ let p1s = 1
 let min = -300;
 let max = 300;
 
+let x = 50;
+let xs = 1 / 8;
+let m;
+let n;
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
+    angleMode(DEGREES);
 }
 
 function draw() {
@@ -67,6 +75,8 @@ function draw() {
         vertex(x, y);
     }
     endShape();
+
+
 
     // x軸、y軸の表示
     stroke("gray");

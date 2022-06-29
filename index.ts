@@ -114,7 +114,7 @@ class Line {
             (this.endPoint.y - this.startPoint.y) /
             (this.endPoint.x - this.startPoint.x);
         let b = -1;
-        let c = this.startPoint.y + a * this.startPoint.x;
+        let c = this.startPoint.y - a * this.startPoint.x;
         return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(a ** 2 + b ** 2);
     }
 }
