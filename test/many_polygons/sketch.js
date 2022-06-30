@@ -7,9 +7,9 @@ let xs = 1 / 8;
 let m;
 let n;
 
-let apex = 3;
+let apex = 4;
 
-let count = 400;
+let count = 200;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -24,11 +24,11 @@ function draw() {
     strokeWeight(1);
     stroke("white");
 
-    x += xs;
-    m = 100 - x;
-    n = x;
-    // m = 20;
-    // n = 1;
+    // x += xs;
+    // m = 100 - x;
+    // n = x;
+    m = 20;
+    n = 1;
 
     let points = [];
 
@@ -62,6 +62,13 @@ function draw() {
         }
         endShape(CLOSE);
     }
+
+    // let symmetricPolygon = polygons[0].getSymmetricPolygon(new Point(100, 100));
+    // beginShape();
+    // vertex(symmetricPolygon.points[0].x, symmetricPolygon.points[0].y);
+    // vertex(symmetricPolygon.points[1].x, symmetricPolygon.points[1].y);
+    // vertex(symmetricPolygon.points[2].x, symmetricPolygon.points[2].y);
+    // endShape(CLOSE);
 
     // 二次関数の軸
     stroke(0, 255, 125);

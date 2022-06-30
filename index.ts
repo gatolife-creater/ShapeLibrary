@@ -117,6 +117,14 @@ class Line {
         let c = this.startPoint.y - a * this.startPoint.x;
         return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(a ** 2 + b ** 2);
     }
+
+    getIntersection(l: Line) {
+        let a = (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x);
+        let b = l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x;
+        let c = (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x);
+        let d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
+        return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
+    }
 }
 
 class Triangle {
@@ -264,10 +272,10 @@ class Polygon {
         return result;
     }
 
-    getSymmetricPolygon(center: Point){
-        let points: Point[] = [];    
-        for(let point of this.points){
-            
+    getSymmetricPolygon(center: Point) {
+        let points: Point[] = [];
+        for (let point of this.points) {
+
             points.push(Point.getSymmetricPoint(point, center));
         }
         return new Polygon(points);

@@ -99,6 +99,13 @@ var Line = /** @class */ (function () {
         var c = this.startPoint.y - a * this.startPoint.x;
         return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     };
+    Line.prototype.getIntersection = function (l) {
+        var a = (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x);
+        var b = l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x;
+        var c = (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x);
+        var d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
+        return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
+    };
     return Line;
 }());
 var Triangle = /** @class */ (function () {
