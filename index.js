@@ -210,6 +210,31 @@ var Polygon = /** @class */ (function () {
     };
     return Polygon;
 }());
+var Linear = /** @class */ (function () {
+    function Linear(formula) {
+        this.setForms(formula);
+        this.slope;
+        this.yIntercept;
+        this.a;
+        this.b;
+        this.vertexForm;
+        this.standardForm;
+    }
+    Linear.judgeForm = function (formula) {
+    };
+    Linear.prototype.setForms = function (formula) {
+        var array = formula.replace(/\s/g, "").split(/\+|x/).filter(function (v) { return v; });
+        this.slope = Number(array[0]);
+        this.yIntercept = Number(array[1]);
+        var stringSlope = String(this.slope);
+        var stringYIntercept = this.yIntercept >= 0 ? "+" + String(this.yIntercept) : String(this.yIntercept);
+        this.vertexForm = "".concat(stringSlope, "x").concat(stringYIntercept);
+    };
+    Linear.prototype.getY = function (x) {
+        return this.slope * x + this.yIntercept;
+    };
+    return Linear;
+}());
 var Quadratic = /** @class */ (function () {
     /**
      * x^2, xの係数, 定数項が0, 1であっても入力すること
@@ -301,6 +326,18 @@ var Quadratic = /** @class */ (function () {
         var p = -Point.getSymmetricPoint(this.getVertex(), center).x;
         var q = Point.getSymmetricPoint(this.getVertex(), center).y;
         return new Quadratic("".concat(a, "(x +").concat(p, ")^2 + ").concat(q));
+    };
+    Quadratic.prototype.getIntersectionOfQuadraticAndLinear = function (linear) {
+        var a = this.a;
+        var b = this.b;
+        var c = this.c;
+        var d = linear.slope;
+        var e = linear.yIntercept;
+        var x1 = (d - b + Math.sqrt(Math.pow((b - d), 2) - 4 * a * (c - e))) / (2 * a);
+        var y1 = d * x1 + e;
+        var x2 = (d - b - Math.sqrt(Math.pow((b - d), 2) - 4 * a * (c - e))) / (2 * a);
+        var y2 = d * x2 + e;
+        return [new Point(x1, y1), new Point(x2, y2)];
     };
     return Quadratic;
 }());

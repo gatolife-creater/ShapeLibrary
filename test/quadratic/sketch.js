@@ -21,7 +21,7 @@ console.log(tri.getBarycenter(), tri2.getBarycenter());
 let l = new Line(100, 150, 200, 100);
 
 let a = "-0.01";
-let Quadratic2 = new Quadratic(`${a}(x - 20)^2 + 200`);
+let Quadratic2 = new Quadratic(`${a}(x-20)^2+200`);
 
 let p1 = -200;
 let p1s = 1
@@ -54,7 +54,7 @@ function draw() {
     p1 += p1s;
 
     //二次関数宣言
-    Quadratic2 = new Quadratic(`${a}(x +${p1})^2 + 200`);
+    Quadratic2 = new Quadratic(`${a}(x+${p1})^2+200`);
     symmetricQuadratic = Quadratic2.getSymmetricQuadratic(Point.O());
 
     //二次関数の定義域

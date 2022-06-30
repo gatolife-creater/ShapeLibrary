@@ -275,10 +275,52 @@ class Polygon {
     getSymmetricPolygon(center: Point) {
         let points: Point[] = [];
         for (let point of this.points) {
-
             points.push(Point.getSymmetricPoint(point, center));
         }
         return new Polygon(points);
+    }
+}
+
+class Linear {
+
+    slope: number;
+    yIntercept: number;
+
+    a: number;
+    b: number;
+
+    vertexForm: string;
+    standardForm: string;
+
+    constructor(formula: string) {
+        this.setForms(formula);
+
+        this.slope;
+        this.yIntercept;
+
+        this.a;
+        this.b;
+
+        this.vertexForm;
+        this.standardForm;
+    }
+
+    static judgeForm(formula: string) {
+
+    }
+
+    setForms(formula: string) {
+        let array = formula.replace(/\s/g, "").split(/\+|x/).filter(v => v);
+        this.slope = Number(array[0]);
+        this.yIntercept = Number(array[1]);
+
+        let stringSlope = String(this.slope);
+        let stringYIntercept = this.yIntercept >= 0 ? "+" + String(this.yIntercept) : String(this.yIntercept);
+        this.vertexForm = `${stringSlope}x${stringYIntercept}`;
+    }
+
+    getY(x: number) {
+        return this.slope * x + this.yIntercept;
     }
 }
 
@@ -398,5 +440,20 @@ class Quadratic {
         let p = -Point.getSymmetricPoint(this.getVertex(), center).x;
         let q = Point.getSymmetricPoint(this.getVertex(), center).y;
         return new Quadratic(`${a}(x +${p})^2 + ${q}`);
+    }
+
+    getIntersectionOfQuadraticAndLinear(linear: Linear) {
+        let a = this.a;
+        let b = this.b;
+        let c = this.c;
+        let d = linear.slope;
+        let e = linear.yIntercept;
+
+        let x1 = (d - b + Math.sqrt((b - d) ** 2 - 4 * a * (c - e))) / (2 * a);
+        let y1 = d * x1 + e;
+        let x2 = (d - b - Math.sqrt((b - d) ** 2 - 4 * a * (c - e))) / (2 * a);
+        let y2 = d * x2 + e;
+
+        return [new Point(x1, y1), new Point(x2, y2)];
     }
 }
