@@ -323,7 +323,7 @@ class Linear {
         return this.slope * x + this.yIntercept;
     }
 
-    getIntersection(linear: Linear){
+    getIntersection(linear: Linear) {
         let a = this.slope;
         let b = this.yIntercept;
         let c = linear.slope;
@@ -450,7 +450,7 @@ class Quadratic {
         return new Quadratic(`${a}(x +${p})^2 + ${q}`);
     }
 
-    getIntersectionOfQuadraticAndLinear(linear: Linear) {
+    getIntersectionsOfQL(linear: Linear) {
         let a = this.a;
         let b = this.b;
         let c = this.c;
@@ -465,6 +465,28 @@ class Quadratic {
         return [new Point(x1, y1), new Point(x2, y2)];
     }
 
+    getIntersectionsOfQQ(quadratic: Quadratic) {
+        let a = this.a;
+        let b = this.b;
+        let c = this.c;
+        let d = quadratic.a;
+        let e = quadratic.b;
+        let f = quadratic.c;
+
+        if (a === d) {
+            let x = (f - c) / (b - e);
+            let y = a * x ** 2 + b * x + c;
+            return [new Point(x, y), new Point(NaN, NaN)];
+        } else {
+            let x1 = (e - b + Math.sqrt((b - e) ** 2 - 4 * (a - d) * (c - f))) / (2 * (a - d));
+            let y1 = a * x1 ** 2 + b * x1 + c;
+            let x2 = (e - b - Math.sqrt((b - e) ** 2 - 4 * (a - d) * (c - f))) / (2 * (a - d));
+            let y2 = a * x2 ** 2 + b * x2 + c;
+
+            return [new Point(x1, y1), new Point(x2, y2)];
+        }
+    }
+
     getTangentLinear(x: number) {
         let a = this.a;
         let b = this.b;
@@ -474,7 +496,44 @@ class Quadratic {
         return new Linear(`${d}x+${e}`);
     }
 
-    getSolution(){
-        return this.getIntersectionOfQuadraticAndLinear(new Linear("0x+0"));
+    getSolution() {
+        return this.getIntersectionsOfQL(new Linear("0x+0"));
+    }
+
+    static estimateQuadraticByAandTwoPoints(a: number, p1: Point, p2: Point) {
+        let x1 = p1.x;
+        let y1 = p1.y;
+        let x2 = p2.x;
+        let y2 = p2.y;
+
+        let b = ((y2 - y1) - a * (x2 ** 2 - x1 ** 2)) / (x2 - x1);
+        let c = y1 - a * x1 ** 2 - b * x1 ** 2;
+
+        return new Quadratic(`${a}x^2+${b}x+${c}`);
+    }
+
+    static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
+        let x1 = p1.x;
+        let y1 = p1.y;
+        let x2 = p2.x;
+        let y2 = p2.y;
+        let x3 = p3.x;
+        let y3 = p3.y;
+
+        let b =
+            (
+                ((y3 - y1) * x2 ** 2 - (y3 - y1) * x1 ** 2) -
+                ((y2 - y1) * x3 ** 2 - (y2 - y1) * x1 ** 2)
+            ) /
+            ((x2 - x1) * (x1 ** 2 - x3 ** 2) -
+                ((x3 - x1) * (x1 ** 2 - x2 ** 2)
+                )
+            );
+
+        let a = ((y2 - y1) - b * (x2 - x1)) / (x2 ** 2 - x1 ** 2);
+
+        let c = y1 - a * x1 ** 2 - b * x1;
+
+        return new Quadratic(`${a}x^2+${b}x+${c}`);
     }
 }

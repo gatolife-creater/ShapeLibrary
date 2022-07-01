@@ -334,7 +334,7 @@ var Quadratic = /** @class */ (function () {
         var q = Point.getSymmetricPoint(this.getVertex(), center).y;
         return new Quadratic("".concat(a, "(x +").concat(p, ")^2 + ").concat(q));
     };
-    Quadratic.prototype.getIntersectionOfQuadraticAndLinear = function (linear) {
+    Quadratic.prototype.getIntersectionsOfQL = function (linear) {
         var a = this.a;
         var b = this.b;
         var c = this.c;
@@ -346,6 +346,26 @@ var Quadratic = /** @class */ (function () {
         var y2 = d * x2 + e;
         return [new Point(x1, y1), new Point(x2, y2)];
     };
+    Quadratic.prototype.getIntersectionsOfQQ = function (quadratic) {
+        var a = this.a;
+        var b = this.b;
+        var c = this.c;
+        var d = quadratic.a;
+        var e = quadratic.b;
+        var f = quadratic.c;
+        if (a === d) {
+            var x = (f - c) / (b - e);
+            var y = a * Math.pow(x, 2) + b * x + c;
+            return [new Point(x, y), new Point(NaN, NaN)];
+        }
+        else {
+            var x1 = (e - b + Math.sqrt(Math.pow((b - e), 2) - 4 * (a - d) * (c - f))) / (2 * (a - d));
+            var y1 = a * Math.pow(x1, 2) + b * x1 + c;
+            var x2 = (e - b - Math.sqrt(Math.pow((b - e), 2) - 4 * (a - d) * (c - f))) / (2 * (a - d));
+            var y2 = a * Math.pow(x2, 2) + b * x2 + c;
+            return [new Point(x1, y1), new Point(x2, y2)];
+        }
+    };
     Quadratic.prototype.getTangentLinear = function (x) {
         var a = this.a;
         var b = this.b;
@@ -355,7 +375,31 @@ var Quadratic = /** @class */ (function () {
         return new Linear("".concat(d, "x+").concat(e));
     };
     Quadratic.prototype.getSolution = function () {
-        return this.getIntersectionOfQuadraticAndLinear(new Linear("0x+0"));
+        return this.getIntersectionsOfQL(new Linear("0x+0"));
+    };
+    Quadratic.estimateQuadraticByAandTwoPoints = function (a, p1, p2) {
+        var x1 = p1.x;
+        var y1 = p1.y;
+        var x2 = p2.x;
+        var y2 = p2.y;
+        var b = ((y2 - y1) - a * (Math.pow(x2, 2) - Math.pow(x1, 2))) / (x2 - x1);
+        var c = y1 - a * Math.pow(x1, 2) - b * Math.pow(x1, 2);
+        return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
+    };
+    Quadratic.estimateQuadraticByThreePoints = function (p1, p2, p3) {
+        var x1 = p1.x;
+        var y1 = p1.y;
+        var x2 = p2.x;
+        var y2 = p2.y;
+        var x3 = p3.x;
+        var y3 = p3.y;
+        var b = (((y3 - y1) * Math.pow(x2, 2) - (y3 - y1) * Math.pow(x1, 2)) -
+            ((y2 - y1) * Math.pow(x3, 2) - (y2 - y1) * Math.pow(x1, 2))) /
+            ((x2 - x1) * (Math.pow(x1, 2) - Math.pow(x3, 2)) -
+                ((x3 - x1) * (Math.pow(x1, 2) - Math.pow(x2, 2))));
+        var a = ((y2 - y1) - b * (x2 - x1)) / (Math.pow(x2, 2) - Math.pow(x1, 2));
+        var c = y1 - a * Math.pow(x1, 2) - b * x1;
+        return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
     };
     return Quadratic;
 }());
