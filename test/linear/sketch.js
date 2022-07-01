@@ -1,5 +1,5 @@
 let linear = new Linear("-0.5x+0");
-let quadratic = new Quadratic("-0.01(x-10)^2+200");
+let quadratic = new Quadratic("-0.01(x-100)^2+300");
 let min = -400;
 let max = 400;
 let a = -0.5;
@@ -7,13 +7,16 @@ let b = -100;
 let bs = 1.5;
 let points = quadratic.getIntersectionOfQuadraticAndLinear(linear);
 
+let sessenLine = quadratic.getTangentLinear(0);
 let bSlider;
+
+let results = quadratic.getSolution();
 
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     angleMode(DEGREES);
-    bSlider = createSlider(-300, 300, 0, 0.1);
+    bSlider = createSlider(-300, 300, 0, 1);
     bSlider.style("width", "80px");
     bSlider.position("top", "20px");
 }
@@ -37,8 +40,12 @@ function draw() {
     if (b < -300 || 300 < b) {
         bs *= -1;
     }
+    sessenLine = quadratic.getTangentLinear(bSlider.value());
+
     linear = new Linear(`${a}x+${b}`);
     points = quadratic.getIntersectionOfQuadraticAndLinear(linear);
+
+    let intersection = linear.getIntersection(sessenLine);
 
     beginShape();
     for (let x = min; x < max; x++) {
@@ -51,6 +58,16 @@ function draw() {
     beginShape();
     for (let x = min; x < max; x++) {
         stroke("white");
+        strokeWeight(2);
+        let y = sessenLine.getY(x);
+        vertex(x, y);
+    }
+    endShape();
+
+    beginShape();
+    for (let x = min; x < max; x++) {
+        stroke("white");
+        strokeWeight(2);
         noFill();
         let y = quadratic.getY(x);
         vertex(x, y);
@@ -58,10 +75,17 @@ function draw() {
     endShape();
 
     push();
+    stroke("red");
+    strokeWeight(10);
+    point(intersection.x, intersection.y);
     for (let p of points) {
         stroke("red");
         strokeWeight(10);
         point(p.x, p.y);
+    }
+
+    for (let result of results) {
+        point(result.x, result.y);
     }
     pop();
 

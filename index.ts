@@ -322,6 +322,14 @@ class Linear {
     getY(x: number) {
         return this.slope * x + this.yIntercept;
     }
+
+    getIntersection(linear: Linear){
+        let a = this.slope;
+        let b = this.yIntercept;
+        let c = linear.slope;
+        let d = linear.yIntercept;
+        return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
+    }
 }
 
 class Quadratic {
@@ -455,5 +463,18 @@ class Quadratic {
         let y2 = d * x2 + e;
 
         return [new Point(x1, y1), new Point(x2, y2)];
+    }
+
+    getTangentLinear(x: number) {
+        let a = this.a;
+        let b = this.b;
+        let c = this.c;
+        let d = 4 * a * x + b;
+        let e = c - 4 * a * x ** 2;
+        return new Linear(`${d}x+${e}`);
+    }
+
+    getSolution(){
+        return this.getIntersectionOfQuadraticAndLinear(new Linear("0x+0"));
     }
 }

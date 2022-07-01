@@ -233,6 +233,13 @@ var Linear = /** @class */ (function () {
     Linear.prototype.getY = function (x) {
         return this.slope * x + this.yIntercept;
     };
+    Linear.prototype.getIntersection = function (linear) {
+        var a = this.slope;
+        var b = this.yIntercept;
+        var c = linear.slope;
+        var d = linear.yIntercept;
+        return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
+    };
     return Linear;
 }());
 var Quadratic = /** @class */ (function () {
@@ -338,6 +345,17 @@ var Quadratic = /** @class */ (function () {
         var x2 = (d - b - Math.sqrt(Math.pow((b - d), 2) - 4 * a * (c - e))) / (2 * a);
         var y2 = d * x2 + e;
         return [new Point(x1, y1), new Point(x2, y2)];
+    };
+    Quadratic.prototype.getTangentLinear = function (x) {
+        var a = this.a;
+        var b = this.b;
+        var c = this.c;
+        var d = 4 * a * x + b;
+        var e = c - 4 * a * Math.pow(x, 2);
+        return new Linear("".concat(d, "x+").concat(e));
+    };
+    Quadratic.prototype.getSolution = function () {
+        return this.getIntersectionOfQuadraticAndLinear(new Linear("0x+0"));
     };
     return Quadratic;
 }());
