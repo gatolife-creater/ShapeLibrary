@@ -25,8 +25,10 @@ function draw() {
     let orthocenter = tri.getOrthocenter();
     let circumcenter = tri.getCircumcenter();
     let barycenter = tri.getBarycenter();
+    let innerCenter = tri.getInnerCenter();
+    let excenters = tri.getExcenters();
 
-    let newTri = new Triangle(orthocenter, circumcenter, barycenter);
+    let newPolygon = new Polygon([orthocenter, circumcenter, barycenter, innerCenter]);
 
 
     // x軸、y軸の表示
@@ -77,9 +79,38 @@ function draw() {
     strokeWeight(10);
     point(barycenter.x, barycenter.y);
 
+    stroke("red")
+    strokeWeight(10);
+    point(innerCenter.x, innerCenter.y);
+
+    noStroke();
+    fill("white");
+    text("内心", innerCenter.x - 10, innerCenter.y - 10);
+
+    stroke("red")
+    strokeWeight(10);
+    point(innerCenter.x, innerCenter.y);
+
+    for (let excenter of excenters) {
+        noStroke();
+        fill("white");
+        text("傍心", excenter.x - 10, excenter.y - 10);
+
+        stroke("red")
+        strokeWeight(10);
+        point(excenter.x, excenter.y);
+    }
+
     pop();
 
-    triangle(newTri.p1.x, newTri.p1.y, newTri.p2.x, newTri.p2.y, newTri.p3.x, newTri.p3.y);
+    // triangle(newTri.p1.x, newTri.p1.y, newTri.p2.x, newTri.p2.y, newTri.p3.x, newTri.p3.y);
+    beginShape();
+    for (let p of newPolygon.points) {
+        stroke("white");
+        strokeWeight(2);
+        point(p.x, p.y);
+    }
+    endShape();
 
     noFill();
     stroke("white");

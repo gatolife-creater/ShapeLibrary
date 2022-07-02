@@ -62,17 +62,56 @@ class Point {
         let x1 = p1.x;
         let y1 = p1.y;
         let x2 = p2.x;
-        let y2 = p2.y;  
+        let y2 = p2.y;
         let x3 = p3.x;
-        let y3 = p3.y;  
+        let y3 = p3.y;
 
         let l1 = new Linear(`${(y2 - y1) / (x2 - x1)}x+${-((y2 - y1) / (x2 - x1)) + y1}`);
         let l2 = new Linear(`${(y3 - y2) / (x3 - x2)}x+${-((y3 - y2) / (x3 - x2)) + y2}`);
 
         let perpendicularLinear1 = l1.getPerpendicularLinear(p3);
         let perpendicularLinear2 = l2.getPerpendicularLinear(p1);
-        
+
         return perpendicularLinear1.getIntersection(perpendicularLinear2);
+    }
+
+    static getInnerCenter(p1: Point, p2: Point, p3: Point) {
+        let A = p1;
+        let B = p2;
+        let C = p3;
+
+        let AB = new Line(A, B);
+        let BC = new Line(B, C);
+        let CA = new Line(C, A);
+
+        let P = BC.getDividingPoint(AB.getLength(), CA.getLength());
+        let Q = CA.getDividingPoint(AB.getLength(), BC.getLength());
+        let R = AB.getDividingPoint(BC.getLength(), CA.getLength());
+
+        let AP = new Line(A, P);
+        let CR = new Line(C, R);
+
+        return AP.getIntersection(CR);
+    }
+
+    static getExcenters(p1: Point, p2: Point, p3: Point) {
+        let A = p1;
+        let B = p2;
+        let C = p3;
+
+        let BA= new Line(A, B);
+        let CB = new Line(B, C);
+        let AC = new Line(C, A);
+
+        let P = CB.getDividingPoint(BA.getLength(), -AC.getLength());
+        let Q = BA.getDividingPoint(AC.getLength(), -CB.getLength());
+        let R = AC.getDividingPoint(CB.getLength(), -BA.getLength());
+
+        let AP = new Line(A, P);
+        let CQ = new Line(C, Q);
+        let BR = new Line(B, R);
+
+        return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     }
 
     /**
@@ -125,6 +164,13 @@ class Line {
                 (-this.startPoint.y * n + this.endPoint.y * m) / (m - n)
             );
         }
+    }
+
+    getDividingPoint(m: number, n: number) {
+        return new Point(
+            (this.startPoint.x * n + this.endPoint.x * m) / (m + n),
+            (this.startPoint.y * n + this.endPoint.y * m) / (m + n)
+        );
     }
 
     /**
@@ -194,8 +240,16 @@ class Triangle {
         return Point.getCircumcenter(this.p1, this.p2, this.p3);
     }
 
-    getOrthocenter(){
+    getOrthocenter() {
         return Point.getOrthocenter(this.p1, this.p2, this.p3);
+    }
+
+    getInnerCenter() {
+        return Point.getInnerCenter(this.p1, this.p2, this.p3);
+    }
+
+    getExcenters(){
+        return Point.getExcenters(this.p1, this.p2, this.p3);
     }
 
     /** 

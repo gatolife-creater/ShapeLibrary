@@ -63,6 +63,35 @@ var Point = /** @class */ (function () {
         var perpendicularLinear2 = l2.getPerpendicularLinear(p1);
         return perpendicularLinear1.getIntersection(perpendicularLinear2);
     };
+    Point.getInnerCenter = function (p1, p2, p3) {
+        var A = p1;
+        var B = p2;
+        var C = p3;
+        var AB = new Line(A, B);
+        var BC = new Line(B, C);
+        var CA = new Line(C, A);
+        var P = BC.getDividingPoint(AB.getLength(), CA.getLength());
+        var Q = CA.getDividingPoint(AB.getLength(), BC.getLength());
+        var R = AB.getDividingPoint(BC.getLength(), CA.getLength());
+        var AP = new Line(A, P);
+        var CR = new Line(C, R);
+        return AP.getIntersection(CR);
+    };
+    Point.getExcenters = function (p1, p2, p3) {
+        var A = p1;
+        var B = p2;
+        var C = p3;
+        var BA = new Line(A, B);
+        var CB = new Line(B, C);
+        var AC = new Line(C, A);
+        var P = CB.getDividingPoint(BA.getLength(), -AC.getLength());
+        var Q = BA.getDividingPoint(AC.getLength(), -CB.getLength());
+        var R = AC.getDividingPoint(CB.getLength(), -BA.getLength());
+        var AP = new Line(A, P);
+        var CQ = new Line(C, Q);
+        var BR = new Line(B, R);
+        return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
+    };
     /**
      * 原点を求める
      *  */
@@ -103,6 +132,9 @@ var Line = /** @class */ (function () {
         else {
             return new Point((-this.startPoint.x * n + this.endPoint.x * m) / (m - n), (-this.startPoint.y * n + this.endPoint.y * m) / (m - n));
         }
+    };
+    Line.prototype.getDividingPoint = function (m, n) {
+        return new Point((this.startPoint.x * n + this.endPoint.x * m) / (m + n), (this.startPoint.y * n + this.endPoint.y * m) / (m + n));
     };
     /**
      * 線の長さを求める
@@ -158,6 +190,12 @@ var Triangle = /** @class */ (function () {
     };
     Triangle.prototype.getOrthocenter = function () {
         return Point.getOrthocenter(this.p1, this.p2, this.p3);
+    };
+    Triangle.prototype.getInnerCenter = function () {
+        return Point.getInnerCenter(this.p1, this.p2, this.p3);
+    };
+    Triangle.prototype.getExcenters = function () {
+        return Point.getExcenters(this.p1, this.p2, this.p3);
     };
     /**
      * 辺の長さの和を求める
