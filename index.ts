@@ -331,12 +331,12 @@ class Linear {
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     }
 
-    // getPerpendicularLinear(p: Point) {
-    //     let a = this.slope;
-    //     let x1 = p.x;
-    //     let y1 = p.y;
-    //     return new Linear(`${1 / a}x+${x1 / a + y1}`);
-    // }
+    getPerpendicularLinear(p: Point) {
+        let a = this.slope;
+        let x1 = p.x;
+        let y1 = p.y;
+        return new Linear(`${-1 / a}x+${x1 / a + y1}`);
+    }
 }
 
 class Quadratic {

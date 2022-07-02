@@ -240,6 +240,12 @@ var Linear = /** @class */ (function () {
         var d = linear.yIntercept;
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     };
+    Linear.prototype.getPerpendicularLinear = function (p) {
+        var a = this.slope;
+        var x1 = p.x;
+        var y1 = p.y;
+        return new Linear("".concat(-1 / a, "x+").concat(x1 / a + y1));
+    };
     return Linear;
 }());
 var Quadratic = /** @class */ (function () {
