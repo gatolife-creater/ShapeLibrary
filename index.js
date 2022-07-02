@@ -42,6 +42,27 @@ var Point = /** @class */ (function () {
     Point.getBarycenter = function (p1, p2, p3) {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     };
+    Point.getCircumcenter = function (p1, p2, p3) {
+        var l1 = new Line(p1, p2);
+        var l2 = new Line(p2, p3);
+        // let l3 = new Line(p3, p1);
+        var perpendicularBisector1 = l1.getPerpendicularBisector();
+        var perpendicularBisector2 = l2.getPerpendicularBisector();
+        return perpendicularBisector1.getIntersection(perpendicularBisector2);
+    };
+    Point.getOrthocenter = function (p1, p2, p3) {
+        var x1 = p1.x;
+        var y1 = p1.y;
+        var x2 = p2.x;
+        var y2 = p2.y;
+        var x3 = p3.x;
+        var y3 = p3.y;
+        var l1 = new Linear("".concat((y2 - y1) / (x2 - x1), "x+").concat(-((y2 - y1) / (x2 - x1)) + y1));
+        var l2 = new Linear("".concat((y3 - y2) / (x3 - x2), "x+").concat(-((y3 - y2) / (x3 - x2)) + y2));
+        var perpendicularLinear1 = l1.getPerpendicularLinear(p3);
+        var perpendicularLinear2 = l2.getPerpendicularLinear(p1);
+        return perpendicularLinear1.getIntersection(perpendicularLinear2);
+    };
     /**
      * 原点を求める
      *  */
@@ -106,6 +127,15 @@ var Line = /** @class */ (function () {
         var d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     };
+    Line.prototype.getPerpendicularBisector = function () {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        var linear = new Linear("".concat((y2 - y1) / (x2 - x1), "x+").concat((-(y2 - y1) / (x2 - x1) * x1) + y1));
+        return linear.getPerpendicularLinear(this.getMidpoint());
+        // 戻り値が関数ってやばくね？
+    };
     return Line;
 }());
 var Triangle = /** @class */ (function () {
@@ -122,6 +152,12 @@ var Triangle = /** @class */ (function () {
      *  */
     Triangle.prototype.getBarycenter = function () {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
+    };
+    Triangle.prototype.getCircumcenter = function () {
+        return Point.getCircumcenter(this.p1, this.p2, this.p3);
+    };
+    Triangle.prototype.getOrthocenter = function () {
+        return Point.getOrthocenter(this.p1, this.p2, this.p3);
     };
     /**
      * 辺の長さの和を求める

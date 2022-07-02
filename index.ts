@@ -47,6 +47,34 @@ class Point {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     }
 
+    static getCircumcenter(p1: Point, p2: Point, p3: Point) {
+        let l1 = new Line(p1, p2);
+        let l2 = new Line(p2, p3);
+        // let l3 = new Line(p3, p1);
+
+        let perpendicularBisector1 = l1.getPerpendicularBisector();
+        let perpendicularBisector2 = l2.getPerpendicularBisector();
+
+        return perpendicularBisector1.getIntersection(perpendicularBisector2);
+    }
+
+    static getOrthocenter(p1: Point, p2: Point, p3: Point) {
+        let x1 = p1.x;
+        let y1 = p1.y;
+        let x2 = p2.x;
+        let y2 = p2.y;  
+        let x3 = p3.x;
+        let y3 = p3.y;  
+
+        let l1 = new Linear(`${(y2 - y1) / (x2 - x1)}x+${-((y2 - y1) / (x2 - x1)) + y1}`);
+        let l2 = new Linear(`${(y3 - y2) / (x3 - x2)}x+${-((y3 - y2) / (x3 - x2)) + y2}`);
+
+        let perpendicularLinear1 = l1.getPerpendicularLinear(p3);
+        let perpendicularLinear2 = l2.getPerpendicularLinear(p1);
+        
+        return perpendicularLinear1.getIntersection(perpendicularLinear2);
+    }
+
     /**
      * 原点を求める
      *  */
@@ -125,6 +153,18 @@ class Line {
         let d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     }
+
+    getPerpendicularBisector() {
+        let x1 = this.startPoint.x;
+        let y1 = this.startPoint.y;
+        let x2 = this.endPoint.x;
+        let y2 = this.endPoint.y;
+
+        let linear = new Linear(`${(y2 - y1) / (x2 - x1)}x+${(-(y2 - y1) / (x2 - x1) * x1) + y1}`);
+
+        return linear.getPerpendicularLinear(this.getMidpoint());
+        // 戻り値が関数ってやばくね？
+    }
 }
 
 class Triangle {
@@ -148,6 +188,14 @@ class Triangle {
      *  */
     getBarycenter() {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
+    }
+
+    getCircumcenter() {
+        return Point.getCircumcenter(this.p1, this.p2, this.p3);
+    }
+
+    getOrthocenter(){
+        return Point.getOrthocenter(this.p1, this.p2, this.p3);
     }
 
     /** 
