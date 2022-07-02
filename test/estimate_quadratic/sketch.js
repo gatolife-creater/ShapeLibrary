@@ -1,11 +1,9 @@
-let quadratic = new Quadratic("-0.01(x-100)^2+300");
-
 let min = -400;
 let max = 400;
 let b = -100;
 let bs = 1.5;
 
-let p1 = new Point(-200, 0);
+let p1 = new Point(-100, 200);
 let p2 = new Point(0, 200);
 let p3 = new Point(200, 0);
 
