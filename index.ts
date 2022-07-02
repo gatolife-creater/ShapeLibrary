@@ -84,7 +84,7 @@ class Point {
         let BC = new Line(B, C);
         let CA = new Line(C, A);
 
-        let P = BC.getDividingPoint(AB.getLength(),CA.getLength());
+        let P = BC.getDividingPoint(AB.getLength(), CA.getLength());
         let Q = CA.getDividingPoint(BC.getLength(), AB.getLength());
         let R = AB.getDividingPoint(CA.getLength(), BC.getLength());
 
@@ -100,7 +100,7 @@ class Point {
         let B = p2;
         let C = p3;
 
-        let BA= new Line(A, B);
+        let BA = new Line(A, B);
         let CB = new Line(B, C);
         let AC = new Line(C, A);
 
@@ -113,6 +113,12 @@ class Point {
         let BR = new Line(B, R);
 
         return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
+    }
+
+    magnify(center: Point, magnification: number) {
+        let l1 = new Line(center, this);
+        let p1 = l1.getDividingPoint(-magnification, magnification-1);
+        return new Point(p1.x, p1.y);
     }
 
     /**
@@ -212,6 +218,14 @@ class Line {
         return linear.getPerpendicularLinear(this.getMidpoint());
         // 戻り値が関数ってやばくね？
     }
+
+    magnify(center: Point, magnification: number) {
+        let l1 = new Line(center, this.startPoint);
+        let l2 = new Line(center, this.endPoint);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        return new Line(p1, p2);
+    }
 }
 
 class Triangle {
@@ -249,7 +263,7 @@ class Triangle {
         return Point.getInnerCenter(this.p1, this.p2, this.p3);
     }
 
-    getExcenters(){
+    getExcenters() {
         return Point.getExcenters(this.p1, this.p2, this.p3);
     }
 
@@ -284,15 +298,15 @@ class Triangle {
         );
     }
 
-    // magnify(center: Point, magnification: number) {
-    //     let l1 = new Line(center, this.p1);
-    //     let l2 = new Line(center, this.p2);
-    //     let l3 = new Line(center, this.p3);
-    //     let p1 = l1.getExteriorPoint(magnification, 1);
-    //     let p2 = l2.getExteriorPoint(magnification, 1);
-    //     let p3 = l3.getExteriorPoint(magnification, 1);
-    //     return new Triangle(p1 || Point.O(), p2 || Point.O(), p3 || Point.O());
-    // }
+    magnify(center: Point, magnification: number) {
+        let l1 = new Line(center, this.p1);
+        let l2 = new Line(center, this.p2);
+        let l3 = new Line(center, this.p3);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        return new Triangle(p1, p2, p3);
+    }
 }
 
 class Rectangle {
@@ -344,6 +358,18 @@ class Rectangle {
             Point.getSymmetricPoint(this.p4, center)
         );
     }
+
+    magnify(center: Point, magnification: number) {
+        let l1 = new Line(center, this.p1);
+        let l2 = new Line(center, this.p2);
+        let l3 = new Line(center, this.p3);
+        let l4 = new Line(center, this.p4);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        let p4 = l4.getDividingPoint(-magnification, magnification - 1);
+        return new Rectangle(p1, p2, p3, p4);
+    }
 }
 
 class Polygon {
@@ -381,6 +407,16 @@ class Polygon {
             points.push(Point.getSymmetricPoint(point, center));
         }
         return new Polygon(points);
+    }
+
+    magnify(center: Point, magnification: number) {
+        let magnifiedPoints: Point[] = [];
+        for(let point of this.points){
+            let l = new Line(center, point);
+            let p = l.getDividingPoint(-magnification, magnification-1);
+            magnifiedPoints.push(p);
+        }
+        return new Polygon(magnifiedPoints);
     }
 }
 

@@ -93,6 +93,11 @@ var Point = /** @class */ (function () {
         var BR = new Line(B, R);
         return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     };
+    Point.prototype.magnify = function (center, magnification) {
+        var l1 = new Line(center, this);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        return new Point(p1.x, p1.y);
+    };
     /**
      * 原点を求める
      *  */
@@ -169,6 +174,13 @@ var Line = /** @class */ (function () {
         return linear.getPerpendicularLinear(this.getMidpoint());
         // 戻り値が関数ってやばくね？
     };
+    Line.prototype.magnify = function (center, magnification) {
+        var l1 = new Line(center, this.startPoint);
+        var l2 = new Line(center, this.endPoint);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        return new Line(p1, p2);
+    };
     return Line;
 }());
 var Triangle = /** @class */ (function () {
@@ -218,6 +230,15 @@ var Triangle = /** @class */ (function () {
     Triangle.prototype.getSymmetricTriangle = function (center) {
         return new Triangle(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center));
     };
+    Triangle.prototype.magnify = function (center, magnification) {
+        var l1 = new Line(center, this.p1);
+        var l2 = new Line(center, this.p2);
+        var l3 = new Line(center, this.p3);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        var p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        return new Triangle(p1, p2, p3);
+    };
     return Triangle;
 }());
 var Rectangle = /** @class */ (function () {
@@ -252,6 +273,17 @@ var Rectangle = /** @class */ (function () {
     Rectangle.prototype.getSymmetricRectangle = function (center) {
         return new Rectangle(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center), Point.getSymmetricPoint(this.p4, center));
     };
+    Rectangle.prototype.magnify = function (center, magnification) {
+        var l1 = new Line(center, this.p1);
+        var l2 = new Line(center, this.p2);
+        var l3 = new Line(center, this.p3);
+        var l4 = new Line(center, this.p4);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        var p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        var p4 = l4.getDividingPoint(-magnification, magnification - 1);
+        return new Rectangle(p1, p2, p3, p4);
+    };
     return Rectangle;
 }());
 var Polygon = /** @class */ (function () {
@@ -282,6 +314,16 @@ var Polygon = /** @class */ (function () {
             points.push(Point.getSymmetricPoint(point, center));
         }
         return new Polygon(points);
+    };
+    Polygon.prototype.magnify = function (center, magnification) {
+        var magnifiedPoints = [];
+        for (var _i = 0, _a = this.points; _i < _a.length; _i++) {
+            var point = _a[_i];
+            var l = new Line(center, point);
+            var p = l.getDividingPoint(-magnification, magnification - 1);
+            magnifiedPoints.push(p);
+        }
+        return new Polygon(magnifiedPoints);
     };
     return Polygon;
 }());
