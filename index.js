@@ -71,11 +71,12 @@ var Point = /** @class */ (function () {
         var BC = new Line(B, C);
         var CA = new Line(C, A);
         var P = BC.getDividingPoint(AB.getLength(), CA.getLength());
-        var Q = CA.getDividingPoint(AB.getLength(), BC.getLength());
-        var R = AB.getDividingPoint(BC.getLength(), CA.getLength());
+        var Q = CA.getDividingPoint(BC.getLength(), AB.getLength());
+        var R = AB.getDividingPoint(CA.getLength(), BC.getLength());
         var AP = new Line(A, P);
+        var BQ = new Line(B, Q);
         var CR = new Line(C, R);
-        return AP.getIntersection(CR);
+        return AP.getIntersection(BQ);
     };
     Point.getExcenters = function (p1, p2, p3) {
         var A = p1;

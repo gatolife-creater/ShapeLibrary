@@ -84,14 +84,15 @@ class Point {
         let BC = new Line(B, C);
         let CA = new Line(C, A);
 
-        let P = BC.getDividingPoint(AB.getLength(), CA.getLength());
-        let Q = CA.getDividingPoint(AB.getLength(), BC.getLength());
-        let R = AB.getDividingPoint(BC.getLength(), CA.getLength());
+        let P = BC.getDividingPoint(AB.getLength(),CA.getLength());
+        let Q = CA.getDividingPoint(BC.getLength(), AB.getLength());
+        let R = AB.getDividingPoint(CA.getLength(), BC.getLength());
 
         let AP = new Line(A, P);
+        let BQ = new Line(B, Q);
         let CR = new Line(C, R);
 
-        return AP.getIntersection(CR);
+        return AP.getIntersection(BQ);
     }
 
     static getExcenters(p1: Point, p2: Point, p3: Point) {
