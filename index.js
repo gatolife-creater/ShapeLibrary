@@ -363,6 +363,18 @@ var Linear = /** @class */ (function () {
         var y1 = p.y;
         return new Linear("".concat(-1 / a, "x+").concat(x1 / a + y1));
     };
+    Linear.prototype.magnify = function (center, magnification) {
+        var l1 = new Line(center, new Point(0, this.yIntercept));
+        var l2 = new Line(center, new Point(5, this.getY(5)));
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        return Linear.estimateLinearByTwoPoints(p1, p2);
+    };
+    Linear.estimateLinearByTwoPoints = function (p1, p2) {
+        var a = (p2.y - p1.y) / (p2.x - p1.x);
+        var b = (p1.y - a * p1.x);
+        return new Linear("".concat(a, "x+").concat(b));
+    };
     return Linear;
 }());
 var Quadratic = /** @class */ (function () {
@@ -499,6 +511,19 @@ var Quadratic = /** @class */ (function () {
     };
     Quadratic.prototype.getSolution = function () {
         return this.getIntersectionsOfQL(new Linear("0x+0"));
+    };
+    /**
+     * 数学的にあっているかどうかは知らない
+     * @returns
+     */
+    Quadratic.prototype.magnify = function (center, magnification) {
+        var l1 = new Line(center, this.getYIntercept());
+        var l2 = new Line(center, new Point(-5, this.getY(-5)));
+        var l3 = new Line(center, new Point(5, this.getY(5)));
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        var p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        return Quadratic.estimateQuadraticByThreePoints(p1, p2, p3);
     };
     Quadratic.prototype.moveQuadratic = function (x, y) {
         var newP = -(this.p + x);

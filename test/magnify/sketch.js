@@ -39,6 +39,9 @@ let polygon = new Polygon(
     ]
 );
 
+let linear = new Linear("2x+300");
+let quadratic = new Quadratic("-0.01(x-200)^2+300");
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
     angleMode(DEGREES);
@@ -55,6 +58,8 @@ function draw() {
     let newTri = tri.magnify(center, scope);
     let newRect = rectangle.magnify(center, scope);
     let newPolygon = polygon.magnify(center, scope);
+    let newLinear = linear.magnify(center, scope);
+    let newQuadratic = quadratic.magnify(center, scope);
 
     // x軸、y軸の表示
     stroke("gray");
@@ -71,6 +76,30 @@ function draw() {
     if (b < -300 || 300 < b) {
         bs *= -1;
     }
+
+    beginShape();
+    for (let i = min; i < max; i++) {
+        let x = i;
+        let y = newLinear.getY(x);
+
+        noFill();
+        stroke("white");
+        strokeWeight(2);
+        vertex(x, y);
+    }
+    endShape();
+
+    beginShape();
+    for (let i = min; i < max; i++) {
+        let x = i;
+        let y = newQuadratic.getY(x);
+
+        noFill();
+        stroke("white");
+        strokeWeight(2);
+        vertex(x, y);
+    }
+    endShape();
 
     noFill();
     stroke("white");

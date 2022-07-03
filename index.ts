@@ -117,7 +117,7 @@ class Point {
 
     magnify(center: Point, magnification: number) {
         let l1 = new Line(center, this);
-        let p1 = l1.getDividingPoint(-magnification, magnification-1);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
         return new Point(p1.x, p1.y);
     }
 
@@ -411,9 +411,9 @@ class Polygon {
 
     magnify(center: Point, magnification: number) {
         let magnifiedPoints: Point[] = [];
-        for(let point of this.points){
+        for (let point of this.points) {
             let l = new Line(center, point);
-            let p = l.getDividingPoint(-magnification, magnification-1);
+            let p = l.getDividingPoint(-magnification, magnification - 1);
             magnifiedPoints.push(p);
         }
         return new Polygon(magnifiedPoints);
@@ -475,6 +475,20 @@ class Linear {
         let x1 = p.x;
         let y1 = p.y;
         return new Linear(`${-1 / a}x+${x1 / a + y1}`);
+    }
+
+    magnify(center: Point, magnification: number) {
+        let l1 = new Line(center, new Point(0, this.yIntercept));
+        let l2 = new Line(center, new Point(5, this.getY(5)));
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        return Linear.estimateLinearByTwoPoints(p1, p2);
+    }
+
+    static estimateLinearByTwoPoints(p1: Point, p2: Point) {
+        let a = (p2.y - p1.y) / (p2.x - p1.x);
+        let b = (p1.y - a * p1.x);
+        return new Linear(`${a}x+${b}`);
     }
 }
 
@@ -646,7 +660,22 @@ class Quadratic {
         return this.getIntersectionsOfQL(new Linear("0x+0"));
     }
 
-    moveQuadratic(x:number, y:number){
+    /**
+     * 数学的にあっているかどうかは知らない
+     * @returns 
+     */
+    magnify(center: Point, magnification: number) {
+        let l1 = new Line(center, this.getYIntercept());
+        let l2 = new Line(center, new Point(-5, this.getY(-5)));
+        let l3 = new Line(center, new Point(5, this.getY(5)))
+
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        return Quadratic.estimateQuadraticByThreePoints(p1, p2, p3);
+    }
+
+    moveQuadratic(x: number, y: number) {
         let newP = -(this.p + x);
         let newQ = this.q + y;
         return new Quadratic(`${this.a}(x+${newP})^2+${newQ}`);
