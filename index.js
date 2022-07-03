@@ -500,6 +500,11 @@ var Quadratic = /** @class */ (function () {
     Quadratic.prototype.getSolution = function () {
         return this.getIntersectionsOfQL(new Linear("0x+0"));
     };
+    Quadratic.prototype.moveQuadratic = function (x, y) {
+        var newP = -(this.p + x);
+        var newQ = this.q + y;
+        return new Quadratic("".concat(this.a, "(x+").concat(newP, ")^2+").concat(newQ));
+    };
     Quadratic.estimateQuadraticByAandTwoPoints = function (a, p1, p2) {
         var x1 = p1.x;
         var y1 = p1.y;

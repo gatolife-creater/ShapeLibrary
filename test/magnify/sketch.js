@@ -3,6 +3,8 @@ let max = 400;
 let b = -100;
 let bs = 1.5;
 
+// let center = new Point(100, 100);
+let center = Point.O();
 let scope = 1;
 
 let p1 = new Point(100, 0);
@@ -46,11 +48,13 @@ function draw() {
     background(30);
     translate(width / 2, height / 2);
 
-    let newP = p.magnify(Point.O(), scope);
-    let newL = l.magnify(Point.O(), scope);
-    let newTri = tri.magnify(Point.O(), scope);
-    let newRect = rectangle.magnify(Point.O(), scope);
-    let newPolygon = polygon.magnify(Point.O(), scope);
+    // center = new Point(mouseX - width / 2, mouseY - height / 2);
+
+    let newP = p.magnify(center, scope);
+    let newL = l.magnify(center, scope);
+    let newTri = tri.magnify(center, scope);
+    let newRect = rectangle.magnify(center, scope);
+    let newPolygon = polygon.magnify(center, scope);
 
     // x軸、y軸の表示
     stroke("gray");

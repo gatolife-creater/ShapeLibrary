@@ -646,6 +646,12 @@ class Quadratic {
         return this.getIntersectionsOfQL(new Linear("0x+0"));
     }
 
+    moveQuadratic(x:number, y:number){
+        let newP = -(this.p + x);
+        let newQ = this.q + y;
+        return new Quadratic(`${this.a}(x+${newP})^2+${newQ}`);
+    }
+
     static estimateQuadraticByAandTwoPoints(a: number, p1: Point, p2: Point) {
         let x1 = p1.x;
         let y1 = p1.y;
