@@ -165,13 +165,35 @@ var Line = /** @class */ (function () {
         var b = l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x;
         var c = (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x);
         var d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
-        if (a === Infinity && c === Infinity)
+        if (a === c)
             return new Point(NaN, NaN);
         else if (a === Infinity)
             return new Point(l.startPoint.x, c * l.startPoint.x + d);
         else if (c === Infinity)
             return new Point(this.startPoint.x, a * this.startPoint.x + b);
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
+    };
+    Line.prototype.getIntersectionStrict = function (l) {
+        var x1 = this.startPoint.x;
+        var y1 = this.startPoint.y;
+        var x2 = this.endPoint.x;
+        var y2 = this.endPoint.y;
+        var x3 = l.startPoint.x;
+        var y3 = l.startPoint.y;
+        var x4 = l.endPoint.x;
+        var y4 = l.endPoint.y;
+        var a1 = (y2 - y1) / (x2 - x1), a2 = (y4 - y3) / (x4 - x3);
+        var x = (a1 * x1 - y1 - a2 * x3 + y3) / (a1 - a2), y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
+        if (Math.abs(a1) === Math.abs(a2))
+            return new Point(NaN, NaN);
+        if (x > Math.max(x1, x2) || x > Math.max(x3, x4) ||
+            y > Math.max(y1, y2) || y > Math.max(y3, y4) ||
+            x < Math.min(x1, x2) || x < Math.min(x3, x4) ||
+            x < Math.min(x1, x2) || y < Math.min(y3, y4))
+            return new Point(NaN, NaN);
+        // else if (a1 === Infinity) return new Point(this.startPoint.x, a2* this.startPoint.x + l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x)
+        // else if (a2 === Infinity) return new Point(l.startPoint.x, a1 * l.startPoint.x + l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x);
+        return new Point(x, y);
     };
     Line.prototype.getPerpendicularBisector = function () {
         var x1 = this.startPoint.x;
