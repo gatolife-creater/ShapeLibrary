@@ -155,8 +155,10 @@ var Line = /** @class */ (function () {
         var a = (this.endPoint.y - this.startPoint.y) /
             (this.endPoint.x - this.startPoint.x);
         var b = -1;
-        var c = this.startPoint.y - a * this.startPoint.x;
-        return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+        var c = this.startPoint.y - (a * this.startPoint.x);
+        if (a === Infinity)
+            return Math.abs(this.startPoint.x - p.x);
+        return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     };
     Line.prototype.getIntersection = function (l) {
         var a = (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x);

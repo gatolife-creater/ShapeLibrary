@@ -195,8 +195,9 @@ class Line {
             (this.endPoint.y - this.startPoint.y) /
             (this.endPoint.x - this.startPoint.x);
         let b = -1;
-        let c = this.startPoint.y - a * this.startPoint.x;
-        return Math.abs(a * p.x + b + p.y + c) / Math.sqrt(a ** 2 + b ** 2);
+        let c = this.startPoint.y - (a * this.startPoint.x);
+        if (a === Infinity) return Math.abs(this.startPoint.x - p.x);
+        return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(a ** 2 + b ** 2);
     }
 
     getIntersection(l: Line) {
