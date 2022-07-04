@@ -205,6 +205,9 @@ class Line {
         let b = l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x;
         let c = (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x);
         let d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
+        if (a === Infinity && c === Infinity) return new Point(NaN, NaN);
+        else if (a === Infinity) return new Point(l.startPoint.x, c * l.startPoint.x + d);
+        else if (c === Infinity) return new Point(this.startPoint.x, a * this.startPoint.x + b);
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     }
 
