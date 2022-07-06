@@ -1,115 +1,161 @@
-let b = -100;
-let bs = 1.5;
+class Player {
+    constructor(x, y, scope, accuracy, angle) {
+        this.x = x;
+        this.y = y;
+        this.coor = new Point(x, y);
+        this.scope = scope;
+        this.angle = angle;
+        this.leftAngle = this.angle - 150 / 2;
+        this.rightAngle = this.angle + 150 / 2;
+        this.lines = [];
+        this.accuracy = accuracy;
+        for (let i = -90; i < 90; i += 180 / this.accuracy) {
+            this.lines.push(
+                new Line(
+                    new Point(this.x, this.y), new Point(this.x + cos(i + this.angle) * this.scope, this.y + sin(i + this.angle) * this.scope)
+                )
+            )
+        }
+    }
+    update(x, y) {
+        this.x = x;
+        this.y = y;
+        this.coor = new Point(x, y);
+        this.lines = [];
+        for (let i = 0; i < 150; i += 150 / this.accuracy) {
+            this.lines.push(
+                new Line(
+                    new Point(this.x, this.y), new Point(this.x + cos(i + this.angle) * this.scope, this.y + sin(i + this.angle) * this.scope)
+                )
+            )
+        }
+    }
 
-// let center = new Point(100, 100);
-let center = Point.O();
-let scope = 1;
+    draw() {
+        push();
+        stroke("white");
+        strokeWeight(2);
+        for (let l of this.lines) {
+            line(l.startPoint.x, l.startPoint.y, l.endPoint.x, l.endPoint.y);
+        }
+        pop();
+    }
 
-// let p1 = new Point(100, 0);
-// let p2 = new Point(100, 200);
-// let p3 = new Point(300, -100);
+    move() {
+        if (keyIsDown(LEFT_ARROW)) {
+            this.angle++;
+            this.leftAngle = this.angle - this.scope / 2;
+            this.rightAngle = this.angle + this.scope / 2;
+        } else if (keyIsDown(RIGHT_ARROW)) {
+            this.angle--;
+            this.leftAngle = this.angle - this.scope / 2;
+            this.rightAngle = this.angle + this.scope / 2;
+        }
+        // w
+        if (keyIsDown(87)) {
+            let y = this.y - 1;
+            this.update(this.x, y);
+        }
+    }
 
-// let p = new Point(300, 100);
+    wallView(wall) {
+        let intersections = [];
+        let distances = [];
+        for (let l of this.lines) {
+            let intersection = l.getIntersectionStrict(wall.l);
+            intersections.push(intersection);
+            distances.push(Point.dist(this.coor, intersection));
+        }
+        return { intersections, distances };
+    }
+}
 
-// let l = new Line(
-//     new Point(-100, -100),
-//     new Point(0, -200)
-// );
+class Wall {
+    constructor(x1, y1, x2, y2) {
+        this.p1 = new Point(x1, y1);
+        this.p2 = new Point(x2, y2);
+        this.l = new Line(this.p1, this.p2);
+    }
 
-// let tri = new Triangle(p1, p2, p3);
+    update(x1, y1, x2, y2) {
+        this.p1 = new Point(x1, y1);
+        this.p2 = new Point(x2, y2);
+        this.l = new Line(this.p1, this.p2);
+    }
 
-// let rectangle = new Rectangle(
-//     new Point(100, 0),
-//     new Point(-200, 0),
-//     new Point(-300, 200),
-//     new Point(0, 200)
-// );
+    draw() {
+        push();
+        stroke("white");
+        strokeWeight(2);
+        line(this.l.startPoint.x, this.l.startPoint.y, this.l.endPoint.x, this.l.endPoint.y);
+        pop();
+    }
+}
 
-let r = 10;
-
-let polygon = new Polygon(
-    [
-        new Point(Math.cos(rad(0)) * r, Math.sin(rad(0)) * r),
-        new Point(Math.cos(rad(72)) * r, Math.sin(rad(72)) * r),
-        new Point(Math.cos(rad(144)) * r, Math.sin(rad(144)) * r),
-        new Point(Math.cos(rad(216)) * r, Math.sin(rad(216)) * r),
-        new Point(Math.cos(rad(288)) * r, Math.sin(rad(288)) * r),
-    ]
-);
-
-let linear = new Linear("2x+300");
+let player;
+let rectangle;
+let r = 200;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     angleMode(DEGREES);
+    player = new Player(0, 150, 200, 30, 0);
+    rectangle = new Rectangle(
+        new Point(cos(0) * r, sin(0) * r),
+        new Point(cos(90) * r, sin(90) * r),
+        new Point(cos(180) * r, sin(180) * r),
+        new Point(cos(270) * r, sin(270) * r)
+    );
 }
 
 function draw() {
     background(30);
     translate(width / 2, height / 2);
+    player.draw();
+    player.move();
+    player.update(mouseX - width / 2, mouseY - height / 2);
+    let lines = [
+        rectangle.l1,
+        rectangle.l2,
+        rectangle.l3,
+        rectangle.l4
+    ];
 
-    // center = new Point(mouseX - width / 2, mouseY - height / 2);
-
-    // let newP = p.magnify(center, scope);
-    // let newL = l.magnify(center, scope);
-    // let newTri = tri.magnify(center, scope);
-    // let newRect = rectangle.magnify(center, scope);
-    let polygons = [polygon];
-    for (let i = 0; i < 10; i++) {
-        polygons.push(polygons[i].magnify(center, scope));
+    let walls = [];
+    for (let line of lines) {
+        walls.push(new Wall(
+            line.startPoint.x,
+            line.startPoint.y,
+            line.endPoint.x,
+            line.endPoint.y));
     }
 
-    // x軸、y軸の表示
-    stroke("gray");
-    line(-width / 2, 0, width / 2, 0);
-    line(0, -height / 2, 0, height / 2);
+    let infos = [];
+    for (let wall of walls) {
+        infos.push(player.wallView(wall));
+    }
 
-    // noFill();
-    // stroke("white");
-    // strokeWeight(2);
-    // triangle(newTri.p1.x, newTri.p1.y, newTri.p2.x, newTri.p2.y, newTri.p3.x, newTri.p3.y);
-
-    // beginShape();
-    // stroke("white");
-    // strokeWeight(2);
-    // vertex(newRect.p1.x, newRect.p1.y);
-    // vertex(newRect.p2.x, newRect.p2.y);
-    // vertex(newRect.p3.x, newRect.p3.y);
-    // vertex(newRect.p4.x, newRect.p4.y);
-    // endShape(CLOSE);
-
-
-    for (let polygon of polygons) {
-        beginShape();
-        for (let p of polygon.points) {
-            noFill();
+    stroke("red");
+    strokeWeight(10);
+    for (let info of infos) {
+        let i = -1;
+        for (let angle = player.leftAngle; angle < player.rightAngle - 0.01; angle += 150 / player.accuracy) {
+            i++;
+            let distance = info.distances[i];
+            let wallPerDist = distance * cos(angle - player.angle);
+            let h = constrain(2000 / wallPerDist, 0, 300);
             stroke("white");
-            strokeWeight(2);
-            vertex(p.x, p.y);
+            strokeWeight(5);
+            line(i * 10 + width / 5, -h / 2 - height / 3, i * 10 + width / 5, h / 2 - height / 3);
         }
-        endShape(CLOSE);
+
     }
 
-
-    // strokeWeight(5);
-    // point(newP.x, newP.y);
-    // strokeWeight(2);
-    // line(newL.startPoint.x, newL.startPoint.y, newL.endPoint.x, newL.endPoint.y);
-
-    fill("white");
-    strokeWeight(1);
-    textSize(20);
-    text(scope.toFixed(1) + "倍", width / 2 - 300, -height / 2 + 100);
+    for (let wall of walls) {
+        wall.draw();
+    }
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
-}
-
-function mouseWheel(event) {
-    scope += event.deltaY / 5000 * scope;
-}
-
-function rad(theta) {
-    return Math.PI / 180 * theta;
 }

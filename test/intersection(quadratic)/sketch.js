@@ -45,9 +45,7 @@ function draw() {
     line(min, -height / 2, min, height / 2);
     line(max, -height / 2, max, height / 2);
 
-    // a -= 0.01;
     b += bs;
-    // b = bSlider.value();
     if (b < -300 || 300 < b) {
         bs *= -1;
     }

@@ -6,7 +6,6 @@ let bs = 1.5;
 let r = 100;
 let tmp;
 
-
 function setup() {
     createCanvas(windowWidth, windowHeight);
     angleMode(DEGREES);
@@ -40,9 +39,7 @@ function draw() {
     line(min, -height / 2, min, height / 2);
     line(max, -height / 2, max, height / 2);
 
-    // a -= 0.01;
     b += bs;
-    // b = bSlider.value();
     if (b < -300 || 300 < b) {
         bs *= -1;
     }
@@ -103,7 +100,6 @@ function draw() {
 
     pop();
 
-    // triangle(newTri.p1.x, newTri.p1.y, newTri.p2.x, newTri.p2.y, newTri.p3.x, newTri.p3.y);
     beginShape();
     for (let p of newPolygon.points) {
         stroke("white");

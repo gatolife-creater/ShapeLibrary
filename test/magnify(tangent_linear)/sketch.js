@@ -36,9 +36,7 @@ function draw() {
 
     anotherQuadratic = quadratic.magnify(Point.O(), scope);
 
-    // a -= 0.01;
     b += bs;
-    // b = bSlider.value();
     if (b < -300 || 300 < b) {
         bs *= -1;
     }

@@ -47,6 +47,9 @@ class Point {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     }
 
+    /**
+     * 外心を求める
+     */
     static getCircumcenter(p1: Point, p2: Point, p3: Point) {
         let l1 = new Line(p1, p2);
         let l2 = new Line(p2, p3);
@@ -58,6 +61,9 @@ class Point {
         return perpendicularBisector1.getIntersection(perpendicularBisector2);
     }
 
+    /**
+     * 垂心を求める
+     */
     static getOrthocenter(p1: Point, p2: Point, p3: Point) {
         let x1 = p1.x;
         let y1 = p1.y;
@@ -75,6 +81,9 @@ class Point {
         return perpendicularLinear1.getIntersection(perpendicularLinear2);
     }
 
+    /**
+     * 内心を求める
+     */
     static getInnerCenter(p1: Point, p2: Point, p3: Point) {
         let A = p1;
         let B = p2;
@@ -93,6 +102,9 @@ class Point {
         return AP.getIntersection(BQ);
     }
 
+    /**
+     * 傍心を求める
+     */
     static getExcenters(p1: Point, p2: Point, p3: Point) {
         let A = p1;
         let B = p2;
@@ -113,6 +125,9 @@ class Point {
         return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     }
 
+    /**
+     * 基準点に合わせて拡大縮小する
+     */
     magnify(center: Point, magnification: number) {
         let l1 = new Line(center, this);
         let p1 = l1.getDividingPoint(-magnification, magnification - 1);
@@ -171,6 +186,9 @@ class Line {
         }
     }
 
+    /**
+     * 内分点、外分点を求める
+     */
     getDividingPoint(m: number, n: number) {
         return new Point(
             (this.startPoint.x * n + this.endPoint.x * m) / (m + n),
@@ -198,6 +216,9 @@ class Line {
         return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(a ** 2 + b ** 2);
     }
 
+    /**
+     * 延長線上を含め直線同士の交点を求める
+     */
     getIntersection(l: Line) {
         let a = (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x);
         let b = l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x;
@@ -209,6 +230,9 @@ class Line {
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     }
 
+    /**
+     * 直線同士の交点を求める
+     */
     getIntersectionStrict(l: Line) {
         let x1 = this.startPoint.x;
         let y1 = this.startPoint.y;
@@ -237,6 +261,9 @@ class Line {
         return new Point(x, y);
     }
 
+    /**
+     * 垂直二等分線を求める
+     */
     getPerpendicularBisector() {
         let x1 = this.startPoint.x;
         let y1 = this.startPoint.y;
@@ -249,6 +276,9 @@ class Line {
         // 戻り値が関数ってやばくね？
     }
 
+    /**
+     * 直線を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point, magnification: number) {
         let l1 = new Line(center, this.startPoint);
         let l2 = new Line(center, this.endPoint);
@@ -281,18 +311,30 @@ class Triangle {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
     }
 
+    /**
+     * 三角形の外心を求める
+     */
     getCircumcenter() {
         return Point.getCircumcenter(this.p1, this.p2, this.p3);
     }
 
+    /**
+     * 三角形の垂心を求める
+     */
     getOrthocenter() {
         return Point.getOrthocenter(this.p1, this.p2, this.p3);
     }
 
+    /**
+     * 三角形の内心を求める
+     */
     getInnerCenter() {
         return Point.getInnerCenter(this.p1, this.p2, this.p3);
     }
 
+    /**
+     * 三角形の傍心を求める
+     */
     getExcenters() {
         return Point.getExcenters(this.p1, this.p2, this.p3);
     }
@@ -320,6 +362,9 @@ class Triangle {
         );
     }
 
+    /**
+     * 基準点に対して対称な三角形を求める
+     */
     getSymmetricTriangle(center: Point) {
         return new Triangle(
             Point.getSymmetricPoint(this.p1, center),
@@ -328,6 +373,9 @@ class Triangle {
         );
     }
 
+    /**
+     * 三角形を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point, magnification: number) {
         let l1 = new Line(center, this.p1);
         let l2 = new Line(center, this.p2);
@@ -380,6 +428,9 @@ class Rectangle {
         return l1.getLength() + l2.getLength() + l3.getLength() + l4.getLength();
     }
 
+    /**
+     * 基準点に対して対称な四角形を求める
+     */
     getSymmetricRectangle(center: Point) {
         return new Rectangle(
             Point.getSymmetricPoint(this.p1, center),
@@ -389,6 +440,9 @@ class Rectangle {
         );
     }
 
+    /**
+     * 四角形を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point, magnification: number) {
         let l1 = new Line(center, this.p1);
         let l2 = new Line(center, this.p2);
@@ -423,6 +477,9 @@ class Polygon {
         }
     }
 
+    /**
+     * 多角形の辺の長さの和を求める
+     */
     getAroundLength() {
         let result = 0;
         for (let line of this.lines) {
@@ -431,6 +488,9 @@ class Polygon {
         return result;
     }
 
+    /**
+     * 基準点に対して対称な多角形を求める
+     */
     getSymmetricPolygon(center: Point) {
         let points: Point[] = [];
         for (let point of this.points) {
@@ -439,6 +499,9 @@ class Polygon {
         return new Polygon(points);
     }
 
+    /**
+     * 多角形を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point, magnification: number) {
         let magnifiedPoints: Point[] = [];
         for (let point of this.points) {
@@ -474,9 +537,9 @@ class Linear {
         this.standardForm;
     }
 
-    static judgeForm(formula: string) {
+    // static judgeForm(formula: string) {
 
-    }
+    // }
 
     setForms(formula: string) {
         let array = formula.replace(/\s/g, "").split(/\+|x/).filter(v => v);
@@ -488,10 +551,16 @@ class Linear {
         this.vertexForm = `${stringSlope}x${stringYIntercept}`;
     }
 
+    /**
+     * xを代入して、yの値を求める
+     */
     getY(x: number) {
         return this.slope * x + this.yIntercept;
     }
 
+    /**
+     * 一次関数同士の交点を求める
+     */
     getIntersection(linear: Linear) {
         let a = this.slope;
         let b = this.yIntercept;
@@ -500,6 +569,9 @@ class Linear {
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     }
 
+    /**
+     * 基準となる一次関数に垂直な一次関数をもとめる
+     */
     getPerpendicularLinear(p: Point) {
         let a = this.slope;
         let x1 = p.x;
@@ -507,6 +579,9 @@ class Linear {
         return new Linear(`${-1 / a}x+${x1 / a + y1}`);
     }
 
+    /**
+     * 一次関数を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point, magnification: number) {
         let l1 = new Line(center, new Point(0, this.yIntercept));
         let l2 = new Line(center, new Point(5, this.getY(5)));
@@ -515,6 +590,9 @@ class Linear {
         return Linear.estimateLinearByTwoPoints(p1, p2);
     }
 
+    /**
+     * 2点を通る一次関数を求める
+     */
     static estimateLinearByTwoPoints(p1: Point, p2: Point) {
         let a = (p2.y - p1.y) / (p2.x - p1.x);
         let b = (p1.y - a * p1.x);
@@ -633,6 +711,9 @@ class Quadratic {
         return new Point(0, this.getY(0));
     }
 
+    /**
+     * 基準点に対して対称な二次関数を求める
+     */
     getSymmetricQuadratic(center: Point) {
         let a = -this.a;
         let p = -Point.getSymmetricPoint(this.getVertex(), center).x;
@@ -640,6 +721,9 @@ class Quadratic {
         return new Quadratic(`${a}(x +${p})^2 + ${q}`);
     }
 
+    /**
+     * 二次関数と一次関数の交点を求める
+     */
     getIntersectionsOfQL(linear: Linear) {
         let a = this.a;
         let b = this.b;
@@ -655,6 +739,9 @@ class Quadratic {
         return [new Point(x1, y1), new Point(x2, y2)];
     }
 
+    /**
+     * 二次関数同士の交点を求める
+     */
     getIntersectionsOfQQ(quadratic: Quadratic) {
         let a = this.a;
         let b = this.b;
@@ -677,6 +764,9 @@ class Quadratic {
         }
     }
 
+    /**
+     * 二次関数の接線を求める
+     */
     getTangentLinear(x: number) {
         let a = this.a;
         let b = this.b;
@@ -686,12 +776,16 @@ class Quadratic {
         return new Linear(`${d}x+${e}`);
     }
 
+    /**
+     * 二次方程式の解を求める
+     */
     getSolution() {
         return this.getIntersectionsOfQL(new Linear("0x+0"));
     }
 
     /**
      * 数学的にあっているかどうかは知らない
+     * 二次関数を基準点に合わせて拡大する
      * @returns 
      */
     magnify(center: Point, magnification: number) {
@@ -705,12 +799,18 @@ class Quadratic {
         return Quadratic.estimateQuadraticByThreePoints(p1, p2, p3);
     }
 
+    /**
+     * 二次関数を平行移動させる
+     */
     moveQuadratic(x: number, y: number) {
         let newP = -(this.p + x);
         let newQ = this.q + y;
         return new Quadratic(`${this.a}(x+${newP})^2+${newQ}`);
     }
 
+    /**
+     * aの値と、通る2点から二次関数を求める
+     */
     static estimateQuadraticByAandTwoPoints(a: number, p1: Point, p2: Point) {
         let x1 = p1.x;
         let y1 = p1.y;
@@ -723,6 +823,9 @@ class Quadratic {
         return new Quadratic(`${a}x^2+${b}x+${c}`);
     }
 
+    /**
+     * 3点を通る二次関数を求める
+     */
     static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
         let x1 = p1.x;
         let y1 = p1.y;

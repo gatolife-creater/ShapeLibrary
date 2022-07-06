@@ -53,14 +53,6 @@ function draw() {
         vertex(rectangles[i].p3.x, rectangles[i].p3.y);
         vertex(rectangles[i].p4.x, rectangles[i].p4.y);
         endShape(CLOSE);
-        // triangle(
-        //     rectangles[i].p1.x,
-        //     rectangles[i].p1.y,
-        //     rectangles[i].p2.x,
-        //     rectangles[i].p2.y,
-        //     rectangles[i].p3.x,
-        //     rectangles[i].p3.y
-        // );
     }
 
     // 二次関数の軸

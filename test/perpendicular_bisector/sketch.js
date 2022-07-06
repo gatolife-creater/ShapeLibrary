@@ -18,11 +18,9 @@ function draw() {
 
     let p1 = new Point(cos(0) * r, sin(0) * r);
     let p2 = new Point(mouseX - width / 2, mouseY - height / 2);
-    // let p3 = new Point(cos(240) * r, sin(240) * r);
     let l = new Line(p1, p2);
 
     tmp = l.getPerpendicularBisector();
-    // let orthocenter = Point.getOrthocenter(p1, p2, p3);
 
     // x軸、y軸の表示
     stroke("gray");
@@ -33,9 +31,7 @@ function draw() {
     line(min, -height / 2, min, height / 2);
     line(max, -height / 2, max, height / 2);
 
-    // a -= 0.01;
     b += bs;
-    // b = bSlider.value();
     if (b < -300 || 300 < b) {
         bs *= -1;
     }
@@ -55,9 +51,7 @@ function draw() {
     strokeWeight(10);
     point(p1.x, p1.y);
     point(p2.x, p2.y);
-    // point(p3.x, p3.y);
     stroke("green");
-    // point(orthocenter.x, orthocenter.y);
     pop();
 
 }

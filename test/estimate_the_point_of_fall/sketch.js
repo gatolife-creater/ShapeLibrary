@@ -5,7 +5,7 @@ let bs = 1.5;
 
 const g = 9.8 / 10;
 const V0 = -30;
-const theta = 150;
+const theta = 110;
 let x;
 let y;
 let t = 0;
@@ -32,9 +32,7 @@ function draw() {
     line(min, -height / 2, min, height / 2);
     line(max, -height / 2, max, height / 2);
 
-    // a -= 0.01;
     b += bs;
-    // b = bSlider.value();
     if (b < -300 || 300 < b) {
         bs *= -1;
     }
