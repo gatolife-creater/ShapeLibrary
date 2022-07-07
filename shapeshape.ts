@@ -140,6 +140,11 @@ class Point {
     static O() {
         return new Point(0, 0);
     }
+
+    draw() {
+        // @ts-ignore
+        point(this.x, this.y);
+    }
 }
 
 class Line {
@@ -250,7 +255,7 @@ class Line {
             y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
 
         if (Math.abs(a1) === Math.abs(a2)) return new Point(NaN, NaN);
-        
+
 
         if (x > Math.max(x1, x2) || x > Math.max(x3, x4) ||
             y > Math.max(y1, y2) || y > Math.max(y3, y4) ||
@@ -285,6 +290,11 @@ class Line {
         let p1 = l1.getDividingPoint(-magnification, magnification - 1);
         let p2 = l2.getDividingPoint(-magnification, magnification - 1);
         return new Line(p1, p2);
+    }
+
+    draw() {
+        // @ts-ignore
+        line(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
     }
 }
 
@@ -385,6 +395,11 @@ class Triangle {
         let p3 = l3.getDividingPoint(-magnification, magnification - 1);
         return new Triangle(p1, p2, p3);
     }
+
+    draw() {
+        // @ts-ignore
+        triangle(this.p1.x, this.p1.y, this.p2.x, this.p2.y, this.p3.x, this.p3.y);
+    }
 }
 
 class Quad {
@@ -454,6 +469,21 @@ class Quad {
         let p4 = l4.getDividingPoint(-magnification, magnification - 1);
         return new Quad(p1, p2, p3, p4);
     }
+
+    draw() {
+        // @ts-ignore
+        beginShape();
+        // @ts-ignore
+        vertex(this.p1.x, this.p1.y);
+        // @ts-ignore
+        vertex(this.p2.x, this.p2.y);
+        // @ts-ignore
+        vertex(this.p3.x, this.p3.y);
+        // @ts-ignore
+        vertex(this.p4.x, this.p4.y);
+        // @ts-ignore
+        endShape(CLOSE);
+    }
 }
 
 class Polygon {
@@ -510,6 +540,17 @@ class Polygon {
             magnifiedPoints.push(p);
         }
         return new Polygon(magnifiedPoints);
+    }
+
+    draw() {
+        // @ts-ignore
+        beginShape();
+        for (let point of this.points) {
+            // @ts-ignore
+            vertex(point.x, point.y);
+        }
+        // @ts-ignore
+        endShape(CLOSE);
     }
 }
 
@@ -597,6 +638,18 @@ class Linear {
         let a = (p2.y - p1.y) / (p2.x - p1.x);
         let b = (p1.y - a * p1.x);
         return new Linear(`${a}x+${b}`);
+    }
+
+    draw(min: number, max: number) {
+        // @ts-ignore
+        beginShape();
+        for (let x = min; x < max; x++) {
+            let y = this.getY(x);
+            // @ts-ignore
+            vertex(x, y);
+        }
+        // @ts-ignore
+        endShape();
     }
 }
 
@@ -849,5 +902,17 @@ class Quadratic {
         let c = y1 - a * x1 ** 2 - b * x1;
 
         return new Quadratic(`${a}x^2+${b}x+${c}`);
+    }
+
+    draw(min: number, max: number) {
+        // @ts-ignore
+        beginShape();
+        for (let x = min; x < max; x++) {
+            let y = this.getY(x);
+            // @ts-ignore
+            vertex(x, y);
+        }
+        // @ts-ignore
+        endShape();
     }
 }

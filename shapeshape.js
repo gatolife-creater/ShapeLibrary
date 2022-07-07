@@ -117,6 +117,10 @@ var Point = /** @class */ (function () {
     Point.O = function () {
         return new Point(0, 0);
     };
+    Point.prototype.draw = function () {
+        // @ts-ignore
+        point(this.x, this.y);
+    };
     return Point;
 }());
 var Line = /** @class */ (function () {
@@ -239,6 +243,10 @@ var Line = /** @class */ (function () {
         var p2 = l2.getDividingPoint(-magnification, magnification - 1);
         return new Line(p1, p2);
     };
+    Line.prototype.draw = function () {
+        // @ts-ignore
+        line(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+    };
     return Line;
 }());
 var Triangle = /** @class */ (function () {
@@ -315,6 +323,10 @@ var Triangle = /** @class */ (function () {
         var p3 = l3.getDividingPoint(-magnification, magnification - 1);
         return new Triangle(p1, p2, p3);
     };
+    Triangle.prototype.draw = function () {
+        // @ts-ignore
+        triangle(this.p1.x, this.p1.y, this.p2.x, this.p2.y, this.p3.x, this.p3.y);
+    };
     return Triangle;
 }());
 var Quad = /** @class */ (function () {
@@ -366,6 +378,20 @@ var Quad = /** @class */ (function () {
         var p4 = l4.getDividingPoint(-magnification, magnification - 1);
         return new Quad(p1, p2, p3, p4);
     };
+    Quad.prototype.draw = function () {
+        // @ts-ignore
+        beginShape();
+        // @ts-ignore
+        vertex(this.p1.x, this.p1.y);
+        // @ts-ignore
+        vertex(this.p2.x, this.p2.y);
+        // @ts-ignore
+        vertex(this.p3.x, this.p3.y);
+        // @ts-ignore
+        vertex(this.p4.x, this.p4.y);
+        // @ts-ignore
+        endShape(CLOSE);
+    };
     return Quad;
 }());
 var Polygon = /** @class */ (function () {
@@ -415,6 +441,17 @@ var Polygon = /** @class */ (function () {
             magnifiedPoints.push(p);
         }
         return new Polygon(magnifiedPoints);
+    };
+    Polygon.prototype.draw = function () {
+        // @ts-ignore
+        beginShape();
+        for (var _i = 0, _a = this.points; _i < _a.length; _i++) {
+            var point = _a[_i];
+            // @ts-ignore
+            vertex(point.x, point.y);
+        }
+        // @ts-ignore
+        endShape(CLOSE);
     };
     return Polygon;
 }());
@@ -480,6 +517,17 @@ var Linear = /** @class */ (function () {
         var a = (p2.y - p1.y) / (p2.x - p1.x);
         var b = (p1.y - a * p1.x);
         return new Linear("".concat(a, "x+").concat(b));
+    };
+    Linear.prototype.draw = function (min, max) {
+        // @ts-ignore
+        beginShape();
+        for (var x = min; x < max; x++) {
+            var y = this.getY(x);
+            // @ts-ignore
+            vertex(x, y);
+        }
+        // @ts-ignore
+        endShape();
     };
     return Linear;
 }());
@@ -684,6 +732,17 @@ var Quadratic = /** @class */ (function () {
         var a = ((y2 - y1) - b * (x2 - x1)) / (Math.pow(x2, 2) - Math.pow(x1, 2));
         var c = y1 - a * Math.pow(x1, 2) - b * x1;
         return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
+    };
+    Quadratic.prototype.draw = function (min, max) {
+        // @ts-ignore
+        beginShape();
+        for (var x = min; x < max; x++) {
+            var y = this.getY(x);
+            // @ts-ignore
+            vertex(x, y);
+        }
+        // @ts-ignore
+        endShape();
     };
     return Quadratic;
 }());
