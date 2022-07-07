@@ -13,6 +13,10 @@ Also, you can make the following by applying this library.
 * Prediction of ball drop location
 * Pseudo 3D
 
+<br>You can watch some examples in this video.</br>
+https://www.youtube.com/watch?v=hW4a9Aw-8ms
+<br></br>
+
 ## Usage
 
 1. Download <strong>shapeshape.min.js</strong>
@@ -44,4 +48,4 @@ Also, you can make the following by applying this library.
 
 ## Tip
 There are many example programs in the <strong>/test</strong> folder.<br></br>
-You can check it if you need further information.
+Download and check them if you need further information.
