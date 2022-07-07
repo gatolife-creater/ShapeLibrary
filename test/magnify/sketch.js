@@ -20,7 +20,7 @@ let l = new Line(
 
 let tri = new Triangle(p1, p2, p3);
 
-let rectangle = new Rectangle(
+let quad = new Quad(
     new Point(100, 0),
     new Point(-200, 0),
     new Point(-300, 200),
@@ -56,7 +56,7 @@ function draw() {
     let newP = p.magnify(center, scope);
     let newL = l.magnify(center, scope);
     let newTri = tri.magnify(center, scope);
-    let newRect = rectangle.magnify(center, scope);
+    let newRect = quad.magnify(center, scope);
     let newPolygon = polygon.magnify(center, scope);
     let newLinear = linear.magnify(center, scope);
     let newQuadratic = quadratic.magnify(center, scope);

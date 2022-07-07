@@ -93,14 +93,14 @@ class Wall {
 }
 
 let player;
-let rectangle;
+let quad;
 let r = 200;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     angleMode(DEGREES);
     player = new Player(0, 150, 200, 30, 0);
-    rectangle = new Rectangle(
+    quad = new Quad(
         new Point(cos(0) * r, sin(0) * r),
         new Point(cos(90) * r, sin(90) * r),
         new Point(cos(180) * r, sin(180) * r),
@@ -115,10 +115,10 @@ function draw() {
     player.move();
     player.update(mouseX - width / 2, mouseY - height / 2);
     let lines = [
-        rectangle.l1,
-        rectangle.l2,
-        rectangle.l3,
-        rectangle.l4
+        quad.l1,
+        quad.l2,
+        quad.l3,
+        quad.l4
     ];
 
     let walls = [];

@@ -317,8 +317,8 @@ var Triangle = /** @class */ (function () {
     };
     return Triangle;
 }());
-var Rectangle = /** @class */ (function () {
-    function Rectangle(p1, p2, p3, p4) {
+var Quad = /** @class */ (function () {
+    function Quad(p1, p2, p3, p4) {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
@@ -331,7 +331,7 @@ var Rectangle = /** @class */ (function () {
     /**
      * 四角形の面積を求める
      *  */
-    Rectangle.prototype.getArea = function () {
+    Quad.prototype.getArea = function () {
         var triangle1 = new Triangle(this.p1, this.p2, this.p3);
         var triangle2 = new Triangle(this.p2, this.p3, this.p4);
         return triangle1.getArea() + triangle2.getArea();
@@ -339,7 +339,7 @@ var Rectangle = /** @class */ (function () {
     /**
      * 辺の長さの和を求める
      *  */
-    Rectangle.prototype.getAroundLength = function () {
+    Quad.prototype.getAroundLength = function () {
         var l1 = new Line(this.p1, this.p2);
         var l2 = new Line(this.p2, this.p3);
         var l3 = new Line(this.p3, this.p4);
@@ -349,13 +349,13 @@ var Rectangle = /** @class */ (function () {
     /**
      * 基準点に対して対称な四角形を求める
      */
-    Rectangle.prototype.getSymmetricRectangle = function (center) {
-        return new Rectangle(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center), Point.getSymmetricPoint(this.p4, center));
+    Quad.prototype.getSymmetricQuad = function (center) {
+        return new Quad(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center), Point.getSymmetricPoint(this.p4, center));
     };
     /**
      * 四角形を基準点に合わせて拡大縮小する
      */
-    Rectangle.prototype.magnify = function (center, magnification) {
+    Quad.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this.p1);
         var l2 = new Line(center, this.p2);
         var l3 = new Line(center, this.p3);
@@ -364,9 +364,9 @@ var Rectangle = /** @class */ (function () {
         var p2 = l2.getDividingPoint(-magnification, magnification - 1);
         var p3 = l3.getDividingPoint(-magnification, magnification - 1);
         var p4 = l4.getDividingPoint(-magnification, magnification - 1);
-        return new Rectangle(p1, p2, p3, p4);
+        return new Quad(p1, p2, p3, p4);
     };
-    return Rectangle;
+    return Quad;
 }());
 var Polygon = /** @class */ (function () {
     function Polygon(points) {

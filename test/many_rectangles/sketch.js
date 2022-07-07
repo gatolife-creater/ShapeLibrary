@@ -1,6 +1,6 @@
 let r = 300;
 
-let rectangles;
+let quads;
 
 let x = 50;
 let xs = 1 / 8;
@@ -23,8 +23,8 @@ function draw() {
     x += xs;
     m = 100 - x;
     n = x;
-    rectangles = [
-        new Rectangle(
+    quads = [
+        new Quad(
             new Point(cos(0) * r, sin(0) * r),
             new Point(cos(90) * r, sin(90) * r),
             new Point(cos(180) * r, sin(180) * r),
@@ -38,20 +38,20 @@ function draw() {
     }
 
     for (let i = 0; i < 30; i++) {
-        let newRectangle = new Rectangle(
-            rectangles[i].l1.getInteriorPoint(m, n),
-            rectangles[i].l2.getInteriorPoint(m, n),
-            rectangles[i].l3.getInteriorPoint(m, n),
-            rectangles[i].l4.getInteriorPoint(m, n))
-        rectangles.push(newRectangle);
+        let newQuad = new Quad(
+            quads[i].l1.getInteriorPoint(m, n),
+            quads[i].l2.getInteriorPoint(m, n),
+            quads[i].l3.getInteriorPoint(m, n),
+            quads[i].l4.getInteriorPoint(m, n))
+        quads.push(newQuad);
     }
 
     for (let i = 0; i < 30; i++) {
         beginShape();
-        vertex(rectangles[i].p1.x, rectangles[i].p1.y);
-        vertex(rectangles[i].p2.x, rectangles[i].p2.y);
-        vertex(rectangles[i].p3.x, rectangles[i].p3.y);
-        vertex(rectangles[i].p4.x, rectangles[i].p4.y);
+        vertex(quads[i].p1.x, quads[i].p1.y);
+        vertex(quads[i].p2.x, quads[i].p2.y);
+        vertex(quads[i].p3.x, quads[i].p3.y);
+        vertex(quads[i].p4.x, quads[i].p4.y);
         endShape(CLOSE);
     }
 

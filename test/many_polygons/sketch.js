@@ -48,8 +48,8 @@ function draw() {
         for (let line of polygons[i].lines) {
             newPoints.push(line.getInteriorPoint(m, n));
         }
-        let newRectangle = new Polygon(newPoints);
-        polygons.push(newRectangle);
+        let newQuad = new Polygon(newPoints);
+        polygons.push(newQuad);
     }
 
     for (let i = 0; i < count; i++) {

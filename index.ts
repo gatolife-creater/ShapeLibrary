@@ -387,7 +387,7 @@ class Triangle {
     }
 }
 
-class Rectangle {
+class Quad {
     p1: Point;
     p2: Point;
     p3: Point;
@@ -431,8 +431,8 @@ class Rectangle {
     /**
      * 基準点に対して対称な四角形を求める
      */
-    getSymmetricRectangle(center: Point) {
-        return new Rectangle(
+    getSymmetricQuad(center: Point) {
+        return new Quad(
             Point.getSymmetricPoint(this.p1, center),
             Point.getSymmetricPoint(this.p2, center),
             Point.getSymmetricPoint(this.p3, center),
@@ -452,7 +452,7 @@ class Rectangle {
         let p2 = l2.getDividingPoint(-magnification, magnification - 1);
         let p3 = l3.getDividingPoint(-magnification, magnification - 1);
         let p4 = l4.getDividingPoint(-magnification, magnification - 1);
-        return new Rectangle(p1, p2, p3, p4);
+        return new Quad(p1, p2, p3, p4);
     }
 }
 
