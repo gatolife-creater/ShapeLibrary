@@ -36,7 +36,7 @@ class Player {
         stroke("white");
         strokeWeight(2);
         for (let l of this.lines) {
-            line(l.startPoint.x, l.startPoint.y, l.endPoint.x, l.endPoint.y);
+            line(l.start.x, l.start.y, l.end.x, l.end.y);
         }
         pop();
     }
@@ -87,7 +87,7 @@ class Wall {
         push();
         stroke("white");
         strokeWeight(2);
-        line(this.l.startPoint.x, this.l.startPoint.y, this.l.endPoint.x, this.l.endPoint.y);
+        this.l.draw();
         pop();
     }
 }
@@ -124,10 +124,10 @@ function draw() {
     let walls = [];
     for (let line of lines) {
         walls.push(new Wall(
-            line.startPoint.x,
-            line.startPoint.y,
-            line.endPoint.x,
-            line.endPoint.y));
+            line.start.x,
+            line.start.y,
+            line.end.x,
+            line.end.y));
     }
 
     let infos = [];
@@ -148,7 +148,6 @@ function draw() {
             strokeWeight(5);
             line(i * 10 + width / 5, -h / 2 - height / 3, i * 10 + width / 5, h / 2 - height / 3);
         }
-
     }
 
     for (let wall of walls) {

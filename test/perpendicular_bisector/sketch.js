@@ -36,22 +36,15 @@ function draw() {
         bs *= -1;
     }
 
-    beginShape();
-    for (let i = min; i < max; i++) {
-        stroke("white");
-        strokeWeight(2);
-        let x = i;
-        let y = tmp.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    stroke("white");
+    strokeWeight(2);
+    tmp.draw(min, max);
 
     push();
     stroke("red");
     strokeWeight(10);
-    point(p1.x, p1.y);
-    point(p2.x, p2.y);
-    stroke("green");
+    p1.draw();
+    p2.draw();
     pop();
 
 }

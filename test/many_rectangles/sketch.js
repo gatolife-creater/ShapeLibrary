@@ -46,22 +46,9 @@ function draw() {
         quads.push(newQuad);
     }
 
-    for (let i = 0; i < 30; i++) {
-        beginShape();
-        vertex(quads[i].p1.x, quads[i].p1.y);
-        vertex(quads[i].p2.x, quads[i].p2.y);
-        vertex(quads[i].p3.x, quads[i].p3.y);
-        vertex(quads[i].p4.x, quads[i].p4.y);
-        endShape(CLOSE);
+    for (let quad of quads) {
+        quad.draw();
     }
-
-    // 二次関数の軸
-    stroke(0, 255, 125);
-    strokeWeight(1);
-
-    // いろいろな点の表示
-    stroke(255, 0, 0);
-    strokeWeight(10);
 }
 
 function windowResized() {

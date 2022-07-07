@@ -7,10 +7,6 @@ let bs = 1.5;
 let center = Point.O();
 let scope = 1;
 
-let p1 = new Point(100, 0);
-let p2 = new Point(100, 200);
-let p3 = new Point(300, -100);
-
 let p = new Point(300, 100);
 
 let l = new Line(
@@ -18,7 +14,11 @@ let l = new Line(
     new Point(0, -200)
 );
 
-let tri = new Triangle(p1, p2, p3);
+let tri = new Triangle(
+    new Point(100, 0),
+    new Point(100, 200),
+    new Point(300, -100)
+);
 
 let quad = new Quad(
     new Point(100, 0),
@@ -75,56 +75,17 @@ function draw() {
         bs *= -1;
     }
 
-    beginShape();
-    for (let i = min; i < max; i++) {
-        let x = i;
-        let y = newLinear.getY(x);
-
-        noFill();
-        stroke("white");
-        strokeWeight(2);
-        vertex(x, y);
-    }
-    endShape();
-
-    beginShape();
-    for (let i = min; i < max; i++) {
-        let x = i;
-        let y = newQuadratic.getY(x);
-
-        noFill();
-        stroke("white");
-        strokeWeight(2);
-        vertex(x, y);
-    }
-    endShape();
-
     noFill();
     stroke("white");
     strokeWeight(2);
-    triangle(newTri.p1.x, newTri.p1.y, newTri.p2.x, newTri.p2.y, newTri.p3.x, newTri.p3.y);
-
-    beginShape();
-    stroke("white");
-    strokeWeight(2);
-    vertex(newRect.p1.x, newRect.p1.y);
-    vertex(newRect.p2.x, newRect.p2.y);
-    vertex(newRect.p3.x, newRect.p3.y);
-    vertex(newRect.p4.x, newRect.p4.y);
-    endShape(CLOSE);
-
-    beginShape();
-    for (let p of newPolygon.points) {
-        stroke("white");
-        strokeWeight(2);
-        vertex(p.x, p.y);
-    }
-    endShape(CLOSE);
-
+    newLinear.draw(min, max);
+    newQuadratic.draw(min, max);
+    newTri.draw();
+    newRect.draw();
+    newPolygon.draw();
+    newL.draw();
     strokeWeight(5);
-    point(newP.x, newP.y);
-    strokeWeight(2);
-    line(newL.startPoint.x, newL.startPoint.y, newL.endPoint.x, newL.endPoint.y);
+    newP.draw();
 
     fill("white");
     strokeWeight(1);

@@ -46,10 +46,10 @@ function draw() {
     noFill();
     strokeWeight(2);
     stroke("white");
-    line(l.startPoint.x, l.startPoint.y, l.endPoint.x, l.endPoint.y);
-    triangle(tri.p1.x, tri.p1.y, tri.p2.x, tri.p2.y, tri.p3.x, tri.p3.y);
-    triangle(tri2.p1.x, tri2.p1.y, tri2.p2.x, tri2.p2.y, tri2.p3.x, tri2.p3.y);
-    triangle(symmetricTri.p1.x, symmetricTri.p1.y, symmetricTri.p2.x, symmetricTri.p2.y, symmetricTri.p3.x, symmetricTri.p3.y);
+    l.draw();
+    tri.draw();
+    tri2.draw();
+    symmetricTri.draw();
 
     p1 += p1s;
 
@@ -61,21 +61,11 @@ function draw() {
     if (Quadratic2.getVertex().x < min || max < Quadratic2.getVertex().x) p1s *= -1;
 
     // 二次関数のグラフ表示
-    beginShape();
-    for (let x = min; x < max; x++) {
-        let y = Quadratic2.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    Quadratic2.draw(min, max);
 
     beginShape();
     stroke("gray");
-    for (let x = min; x < max; x++) {
-        let y = symmetricQuadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
-
+    symmetricQuadratic.draw(min, max);
 
 
     // x軸、y軸の表示
@@ -85,7 +75,7 @@ function draw() {
 
     // 変形する三角形
     let varTri = new Triangle(Quadratic2.getVertex(), tri.getBarycenter(), new Point(0, Quadratic2.getY(0)));
-    triangle(varTri.p1.x, varTri.p1.y, varTri.p2.x, varTri.p2.y, varTri.p3.x, varTri.p3.y)
+    varTri.draw();
 
     // 定義域の直線
     line(min, -height / 2, min, height / 2);
@@ -101,11 +91,11 @@ function draw() {
     strokeWeight(10);
 
     let yIntercept = Quadratic2.getYIntercept();
-    point(yIntercept.x, yIntercept.y);
-    point(Quadratic2.getVertex().x, Quadratic2.getVertex().y);
+    yIntercept.draw();
+    Quadratic2.getVertex().draw();
 
-    point(tri.getBarycenter().x, tri.getBarycenter().y);
-    point(varTri.getBarycenter().x, varTri.getBarycenter().y);
+    tri.getBarycenter().draw();
+    varTri.getBarycenter().draw();
 
     stroke("lightgray");
     strokeWeight(0.9);

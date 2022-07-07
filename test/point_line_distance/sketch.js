@@ -30,10 +30,10 @@ function draw() {
     push();
     strokeWeight(2);
     stroke("white");
-    line(l.startPoint.x, l.startPoint.y, l.endPoint.x, l.endPoint.y);
+    l.draw();
 
     strokeWeight(5);
-    point(p.x, p.y);
+    p.draw();
     pop();
 
     noFill();

@@ -53,8 +53,8 @@ function draw() {
         push();
         stroke("red");
         strokeWeight(15);
-        point(fallingPoint.x, fallingPoint.y);
-        point(passingPoint.x, passingPoint.y);
+        fallingPoint.draw();
+        passingPoint.draw();
         pop();
     }
 }

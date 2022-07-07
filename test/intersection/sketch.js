@@ -18,13 +18,13 @@ function draw() {
     translate(width / 2, height / 2);
     stroke("white");
     strokeWeight(2);
-    line(l1.startPoint.x, l1.startPoint.y, l1.endPoint.x, l1.endPoint.y);
-    line(l2.startPoint.x, l2.startPoint.y, l2.endPoint.x, l2.endPoint.y);
+    l1.draw();
+    l2.draw();
 
     stroke("red");
     strokeWeight(15);
     let p1 = l1.getIntersection(l2);
-    point(p1.x, p1.y);
+    p1.draw();
 }
 
 function windowResized() {

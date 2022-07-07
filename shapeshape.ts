@@ -148,19 +148,19 @@ class Point {
 }
 
 class Line {
-    startPoint: Point;
-    endPoint: Point;
+    start: Point;
+    end: Point;
 
-    constructor(startPoint: Point, endPoint: Point) {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+    constructor(start: Point, end: Point) {
+        this.start = start;
+        this.end = end;
     }
 
     /**
      * 線分を二分する点を求める
      *  */
     getMidpoint() {
-        return Point.getMidpoint(this.startPoint, this.endPoint);
+        return Point.getMidpoint(this.start, this.end);
     }
 
     /**
@@ -171,8 +171,8 @@ class Line {
             return Manager.displayError(["m > 0", "n > 0"]);
         } else {
             return new Point(
-                (this.startPoint.x * n + this.endPoint.x * m) / (m + n),
-                (this.startPoint.y * n + this.endPoint.y * m) / (m + n)
+                (this.start.x * n + this.end.x * m) / (m + n),
+                (this.start.y * n + this.end.y * m) / (m + n)
             );
         }
     }
@@ -185,8 +185,8 @@ class Line {
             return Manager.displayError(["m > 0", "n > 0"]);
         } else {
             return new Point(
-                (-this.startPoint.x * n + this.endPoint.x * m) / (m - n),
-                (-this.startPoint.y * n + this.endPoint.y * m) / (m - n)
+                (-this.start.x * n + this.end.x * m) / (m - n),
+                (-this.start.y * n + this.end.y * m) / (m - n)
             );
         }
     }
@@ -196,8 +196,8 @@ class Line {
      */
     getDividingPoint(m: number, n: number) {
         return new Point(
-            (this.startPoint.x * n + this.endPoint.x * m) / (m + n),
-            (this.startPoint.y * n + this.endPoint.y * m) / (m + n)
+            (this.start.x * n + this.end.x * m) / (m + n),
+            (this.start.y * n + this.end.y * m) / (m + n)
         );
     }
 
@@ -205,7 +205,7 @@ class Line {
      * 線の長さを求める
      *  */
     getLength() {
-        return Point.dist(this.startPoint, this.endPoint);
+        return Point.dist(this.start, this.end);
     }
 
     /**
@@ -213,11 +213,11 @@ class Line {
      *  */
     getDistBetweenPoint(p: Point) {
         let a =
-            (this.endPoint.y - this.startPoint.y) /
-            (this.endPoint.x - this.startPoint.x);
+            (this.end.y - this.start.y) /
+            (this.end.x - this.start.x);
         let b = -1;
-        let c = this.startPoint.y - (a * this.startPoint.x);
-        if (a === Infinity) return Math.abs(this.startPoint.x - p.x);
+        let c = this.start.y - (a * this.start.x);
+        if (a === Infinity) return Math.abs(this.start.x - p.x);
         return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(a ** 2 + b ** 2);
     }
 
@@ -225,13 +225,13 @@ class Line {
      * 延長線上を含め直線同士の交点を求める
      */
     getIntersection(l: Line) {
-        let a = (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x);
-        let b = l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x;
-        let c = (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x);
-        let d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
+        let a = (l.end.y - l.start.y) / (l.end.x - l.start.x);
+        let b = l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x;
+        let c = (this.end.y - this.start.y) / (this.end.x - this.start.x);
+        let d = this.start.y - (this.end.y - this.start.y) / (this.end.x - this.start.x) * this.start.x;
         if (a === c) return new Point(NaN, NaN);
-        else if (a === Infinity) return new Point(l.startPoint.x, c * l.startPoint.x + d);
-        else if (c === Infinity) return new Point(this.startPoint.x, a * this.startPoint.x + b);
+        else if (a === Infinity) return new Point(l.start.x, c * l.start.x + d);
+        else if (c === Infinity) return new Point(this.start.x, a * this.start.x + b);
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     }
 
@@ -239,14 +239,14 @@ class Line {
      * 直線同士の交点を求める
      */
     getIntersectionStrict(l: Line) {
-        let x1 = this.startPoint.x;
-        let y1 = this.startPoint.y;
-        let x2 = this.endPoint.x;
-        let y2 = this.endPoint.y;
-        let x3 = l.startPoint.x;
-        let y3 = l.startPoint.y;
-        let x4 = l.endPoint.x;
-        let y4 = l.endPoint.y;
+        let x1 = this.start.x;
+        let y1 = this.start.y;
+        let x2 = this.end.x;
+        let y2 = this.end.y;
+        let x3 = l.start.x;
+        let y3 = l.start.y;
+        let x4 = l.end.x;
+        let y4 = l.end.y;
 
         var a1 = (y2 - y1) / (x2 - x1),
             a2 = (y4 - y3) / (x4 - x3);
@@ -261,8 +261,8 @@ class Line {
             y > Math.max(y1, y2) || y > Math.max(y3, y4) ||
             x < Math.min(x1, x2) || x < Math.min(x3, x4) ||
             x < Math.min(x1, x2) || y < Math.min(y3, y4)) return new Point(NaN, NaN);
-        // else if (a1 === Infinity) return new Point(this.startPoint.x, a2* this.startPoint.x + l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x)
-        // else if (a2 === Infinity) return new Point(l.startPoint.x, a1 * l.startPoint.x + l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x);
+        // else if (a1 === Infinity) return new Point(this.start.x, a2* this.start.x + l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x)
+        // else if (a2 === Infinity) return new Point(l.start.x, a1 * l.start.x + l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x);
         return new Point(x, y);
     }
 
@@ -270,10 +270,10 @@ class Line {
      * 垂直二等分線を求める
      */
     getPerpendicularBisector() {
-        let x1 = this.startPoint.x;
-        let y1 = this.startPoint.y;
-        let x2 = this.endPoint.x;
-        let y2 = this.endPoint.y;
+        let x1 = this.start.x;
+        let y1 = this.start.y;
+        let x2 = this.end.x;
+        let y2 = this.end.y;
 
         let linear = new Linear(`${(y2 - y1) / (x2 - x1)}x+${(-(y2 - y1) / (x2 - x1) * x1) + y1}`);
 
@@ -285,8 +285,8 @@ class Line {
      * 直線を基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, this.startPoint);
-        let l2 = new Line(center, this.endPoint);
+        let l1 = new Line(center, this.start);
+        let l2 = new Line(center, this.end);
         let p1 = l1.getDividingPoint(-magnification, magnification - 1);
         let p2 = l2.getDividingPoint(-magnification, magnification - 1);
         return new Line(p1, p2);
@@ -294,7 +294,7 @@ class Line {
 
     draw() {
         // @ts-ignore
-        line(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+        line(this.start.x, this.start.y, this.end.x, this.end.y);
     }
 }
 

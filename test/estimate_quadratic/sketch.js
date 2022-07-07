@@ -33,15 +33,10 @@ function draw() {
         bs *= -1;
     }
 
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        strokeWeight(2);
-        noFill();
-        let y = estimatedQuadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    noFill();
+    stroke("white");
+    strokeWeight(2);
+    estimatedQuadratic.draw(min, max);
 }
 
 function windowResized() {

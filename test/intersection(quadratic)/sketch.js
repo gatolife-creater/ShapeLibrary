@@ -50,36 +50,20 @@ function draw() {
         bs *= -1;
     }
 
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        strokeWeight(2);
-        noFill();
-        let y = quadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
-
-
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        strokeWeight(2);
-        noFill();
-        let y = anotherQuadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    noFill();
+    stroke("white");
+    strokeWeight(2);
+    quadratic.draw(min, max);
+    anotherQuadratic.draw();
 
     push();
     stroke("red");
     strokeWeight(10);
 
     for (let p of quadraticPoints) {
-        point(p.x, p.y);
+        p.draw();
     }
     pop();
-
 }
 
 function windowResized() {

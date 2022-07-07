@@ -36,25 +36,10 @@ function draw() {
         bs *= -1;
     }
 
-    beginShape();
-    for (let i = min; i < max; i++) {
-        stroke("white");
-        strokeWeight(2);
-        let x = i;
-        let y = linear.getY(x);
-        vertex(x, y);
-    }
-    endShape();
-
-    beginShape();
-    for (let i = min; i < max; i++) {
-        stroke("white");
-        strokeWeight(2);
-        let x = i;
-        let y = perpendicularLinear.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    stroke("white");
+    strokeWeight(2);
+    linear.draw(min, max);
+    perpendicularLinear.draw(min, max);
 }
 
 function windowResized() {

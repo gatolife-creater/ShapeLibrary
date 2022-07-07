@@ -124,15 +124,15 @@ var Point = /** @class */ (function () {
     return Point;
 }());
 var Line = /** @class */ (function () {
-    function Line(startPoint, endPoint) {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+    function Line(start, end) {
+        this.start = start;
+        this.end = end;
     }
     /**
      * 線分を二分する点を求める
      *  */
     Line.prototype.getMidpoint = function () {
-        return Point.getMidpoint(this.startPoint, this.endPoint);
+        return Point.getMidpoint(this.start, this.end);
     };
     /**
      * 内分点を求める
@@ -142,7 +142,7 @@ var Line = /** @class */ (function () {
             return Manager.displayError(["m > 0", "n > 0"]);
         }
         else {
-            return new Point((this.startPoint.x * n + this.endPoint.x * m) / (m + n), (this.startPoint.y * n + this.endPoint.y * m) / (m + n));
+            return new Point((this.start.x * n + this.end.x * m) / (m + n), (this.start.y * n + this.end.y * m) / (m + n));
         }
     };
     /**
@@ -153,61 +153,61 @@ var Line = /** @class */ (function () {
             return Manager.displayError(["m > 0", "n > 0"]);
         }
         else {
-            return new Point((-this.startPoint.x * n + this.endPoint.x * m) / (m - n), (-this.startPoint.y * n + this.endPoint.y * m) / (m - n));
+            return new Point((-this.start.x * n + this.end.x * m) / (m - n), (-this.start.y * n + this.end.y * m) / (m - n));
         }
     };
     /**
      * 内分点、外分点を求める
      */
     Line.prototype.getDividingPoint = function (m, n) {
-        return new Point((this.startPoint.x * n + this.endPoint.x * m) / (m + n), (this.startPoint.y * n + this.endPoint.y * m) / (m + n));
+        return new Point((this.start.x * n + this.end.x * m) / (m + n), (this.start.y * n + this.end.y * m) / (m + n));
     };
     /**
      * 線の長さを求める
      *  */
     Line.prototype.getLength = function () {
-        return Point.dist(this.startPoint, this.endPoint);
+        return Point.dist(this.start, this.end);
     };
     /**
      * 点と直線の距離を求める
      *  */
     Line.prototype.getDistBetweenPoint = function (p) {
-        var a = (this.endPoint.y - this.startPoint.y) /
-            (this.endPoint.x - this.startPoint.x);
+        var a = (this.end.y - this.start.y) /
+            (this.end.x - this.start.x);
         var b = -1;
-        var c = this.startPoint.y - (a * this.startPoint.x);
+        var c = this.start.y - (a * this.start.x);
         if (a === Infinity)
-            return Math.abs(this.startPoint.x - p.x);
+            return Math.abs(this.start.x - p.x);
         return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     };
     /**
      * 延長線上を含め直線同士の交点を求める
      */
     Line.prototype.getIntersection = function (l) {
-        var a = (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x);
-        var b = l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x;
-        var c = (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x);
-        var d = this.startPoint.y - (this.endPoint.y - this.startPoint.y) / (this.endPoint.x - this.startPoint.x) * this.startPoint.x;
+        var a = (l.end.y - l.start.y) / (l.end.x - l.start.x);
+        var b = l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x;
+        var c = (this.end.y - this.start.y) / (this.end.x - this.start.x);
+        var d = this.start.y - (this.end.y - this.start.y) / (this.end.x - this.start.x) * this.start.x;
         if (a === c)
             return new Point(NaN, NaN);
         else if (a === Infinity)
-            return new Point(l.startPoint.x, c * l.startPoint.x + d);
+            return new Point(l.start.x, c * l.start.x + d);
         else if (c === Infinity)
-            return new Point(this.startPoint.x, a * this.startPoint.x + b);
+            return new Point(this.start.x, a * this.start.x + b);
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     };
     /**
      * 直線同士の交点を求める
      */
     Line.prototype.getIntersectionStrict = function (l) {
-        var x1 = this.startPoint.x;
-        var y1 = this.startPoint.y;
-        var x2 = this.endPoint.x;
-        var y2 = this.endPoint.y;
-        var x3 = l.startPoint.x;
-        var y3 = l.startPoint.y;
-        var x4 = l.endPoint.x;
-        var y4 = l.endPoint.y;
+        var x1 = this.start.x;
+        var y1 = this.start.y;
+        var x2 = this.end.x;
+        var y2 = this.end.y;
+        var x3 = l.start.x;
+        var y3 = l.start.y;
+        var x4 = l.end.x;
+        var y4 = l.end.y;
         var a1 = (y2 - y1) / (x2 - x1), a2 = (y4 - y3) / (x4 - x3);
         var x = (a1 * x1 - y1 - a2 * x3 + y3) / (a1 - a2), y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
         if (Math.abs(a1) === Math.abs(a2))
@@ -217,18 +217,18 @@ var Line = /** @class */ (function () {
             x < Math.min(x1, x2) || x < Math.min(x3, x4) ||
             x < Math.min(x1, x2) || y < Math.min(y3, y4))
             return new Point(NaN, NaN);
-        // else if (a1 === Infinity) return new Point(this.startPoint.x, a2* this.startPoint.x + l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x)
-        // else if (a2 === Infinity) return new Point(l.startPoint.x, a1 * l.startPoint.x + l.startPoint.y - (l.endPoint.y - l.startPoint.y) / (l.endPoint.x - l.startPoint.x) * l.startPoint.x);
+        // else if (a1 === Infinity) return new Point(this.start.x, a2* this.start.x + l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x)
+        // else if (a2 === Infinity) return new Point(l.start.x, a1 * l.start.x + l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x);
         return new Point(x, y);
     };
     /**
      * 垂直二等分線を求める
      */
     Line.prototype.getPerpendicularBisector = function () {
-        var x1 = this.startPoint.x;
-        var y1 = this.startPoint.y;
-        var x2 = this.endPoint.x;
-        var y2 = this.endPoint.y;
+        var x1 = this.start.x;
+        var y1 = this.start.y;
+        var x2 = this.end.x;
+        var y2 = this.end.y;
         var linear = new Linear("".concat((y2 - y1) / (x2 - x1), "x+").concat((-(y2 - y1) / (x2 - x1) * x1) + y1));
         return linear.getPerpendicularLinear(this.getMidpoint());
         // 戻り値が関数ってやばくね？
@@ -237,15 +237,15 @@ var Line = /** @class */ (function () {
      * 直線を基準点に合わせて拡大縮小する
      */
     Line.prototype.magnify = function (center, magnification) {
-        var l1 = new Line(center, this.startPoint);
-        var l2 = new Line(center, this.endPoint);
+        var l1 = new Line(center, this.start);
+        var l2 = new Line(center, this.end);
         var p1 = l1.getDividingPoint(-magnification, magnification - 1);
         var p2 = l2.getDividingPoint(-magnification, magnification - 1);
         return new Line(p1, p2);
     };
     Line.prototype.draw = function () {
         // @ts-ignore
-        line(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+        line(this.start.x, this.start.y, this.end.x, this.end.y);
     };
     return Line;
 }());

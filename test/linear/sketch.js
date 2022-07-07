@@ -48,45 +48,25 @@ function draw() {
 
     let intersection = linear.getIntersection(tangentLinear);
 
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        let y = linear.getY(x);
-        vertex(x, y);
-    }
-    endShape();
-
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        strokeWeight(2);
-        let y = tangentLinear.getY(x);
-        vertex(x, y);
-    }
-    endShape();
-
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        strokeWeight(2);
-        noFill();
-        let y = quadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    noFill();
+    stroke("white");
+    strokeWeight(2);
+    linear.draw(min, max);
+    tangentLinear.draw(min, max);
+    quadratic.draw(min, max);
 
     push();
     stroke("red");
     strokeWeight(10);
-    point(intersection.x, intersection.y);
+    intersection.draw();
     for (let p of points) {
         stroke("red");
         strokeWeight(10);
-        point(p.x, p.y);
+        p.draw();
     }
 
     for (let result of results) {
-        point(result.x, result.y);
+        result.draw();
     }
     pop();
 

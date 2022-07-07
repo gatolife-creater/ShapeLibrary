@@ -7,7 +7,7 @@ let xs = 1 / 8;
 let m;
 let n;
 
-let apex = 4;
+let apex = 5;
 
 let count = 200;
 
@@ -52,21 +52,9 @@ function draw() {
         polygons.push(newQuad);
     }
 
-    for (let i = 0; i < count; i++) {
-        beginShape();
-        for (let point of polygons[i].points) {
-            vertex(point.x, point.y);
-        }
-        endShape(CLOSE);
+    for (let polygon of polygons) {
+        polygon.draw();
     }
-
-    // 二次関数の軸
-    stroke(0, 255, 125);
-    strokeWeight(1);
-
-    // いろいろな点の表示
-    stroke(255, 0, 0);
-    strokeWeight(10);
 }
 
 function windowResized() {

@@ -27,8 +27,6 @@ function draw() {
     let innerCenter = tri.getInnerCenter();
     let excenters = tri.getExcenters();
 
-    let newPolygon = new Polygon([orthocenter, circumcenter, barycenter, innerCenter]);
-
 
     // x軸、y軸の表示
     stroke("gray");
@@ -48,9 +46,9 @@ function draw() {
 
     stroke("red")
     strokeWeight(10);
-    point(p1.x, p1.y);
-    point(p2.x, p2.y);
-    point(p3.x, p3.y);
+    p1.draw();
+    p2.draw();
+    p3.draw();
 
     noStroke();
     fill("white");
@@ -58,7 +56,7 @@ function draw() {
 
     stroke("red")
     strokeWeight(10);
-    point(orthocenter.x, orthocenter.y);
+    orthocenter.draw();
 
     noStroke();
     fill("white");
@@ -66,7 +64,7 @@ function draw() {
 
     stroke("red")
     strokeWeight(10);
-    point(circumcenter.x, circumcenter.y);
+    circumcenter.draw();
 
     noStroke();
     fill("white");
@@ -74,11 +72,11 @@ function draw() {
 
     stroke("red")
     strokeWeight(10);
-    point(barycenter.x, barycenter.y);
+    barycenter.draw();
 
     stroke("red")
     strokeWeight(10);
-    point(innerCenter.x, innerCenter.y);
+    innerCenter.draw();
 
     noStroke();
     fill("white");
@@ -86,7 +84,7 @@ function draw() {
 
     stroke("red")
     strokeWeight(10);
-    point(innerCenter.x, innerCenter.y);
+    innerCenter.draw();
 
     for (let excenter of excenters) {
         noStroke();
@@ -95,18 +93,10 @@ function draw() {
 
         stroke("red")
         strokeWeight(10);
-        point(excenter.x, excenter.y);
+        excenter.draw();
     }
 
     pop();
-
-    beginShape();
-    for (let p of newPolygon.points) {
-        stroke("white");
-        strokeWeight(2);
-        point(p.x, p.y);
-    }
-    endShape();
 
     noFill();
     stroke("white");

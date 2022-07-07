@@ -42,24 +42,11 @@ function draw() {
     }
     tangentLinear = anotherQuadratic.getTangentLinear(bSlider.value() * scope);
 
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        strokeWeight(2);
-        let y = tangentLinear.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    stroke("white");
+    strokeWeight(2);
+    tangentLinear.draw(min, max);
 
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        strokeWeight(2);
-        noFill();
-        let y = anotherQuadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    anotherQuadratic.draw(min, max);
 }
 
 function windowResized() {

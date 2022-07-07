@@ -25,21 +25,11 @@ function draw() {
     if (quadratic.getVertex().x < min || max < quadratic.getVertex().x) p1s *= -1;
 
     // 二次関数のグラフ表示
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("gray");
-        let y = quadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    stroke("gray");
+    quadratic.draw(min, max);
 
-    beginShape();
-    for (let x = min; x < max; x++) {
-        stroke("white");
-        let y = movedQuadratic.getY(x);
-        vertex(x, y);
-    }
-    endShape();
+    stroke("white");
+    movedQuadratic.draw(min, max);
 
     // x軸、y軸の表示
     stroke("gray");

@@ -4,8 +4,7 @@ let triangles;
 
 let x = 50;
 let xs = 1 / 8;
-let m;
-let n;
+let m, n;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -29,12 +28,9 @@ function draw() {
             new Point(cos(120) * r, sin(120) * r),
             new Point(cos(240) * r, sin(240) * r)
         )
-
     ];
 
-    if (x >= 99 || x <= 1) {
-        xs *= -1;
-    }
+    if (x <= 1 || 90 <= x) xs *= -1;
 
     for (let i = 0; i < 30; i++) {
         let newTriangle = new Triangle(
@@ -44,24 +40,9 @@ function draw() {
         triangles.push(newTriangle);
     }
 
-    for (let i = 0; i < 30; i++) {
-        triangle(
-            triangles[i].p1.x,
-            triangles[i].p1.y,
-            triangles[i].p2.x,
-            triangles[i].p2.y,
-            triangles[i].p3.x,
-            triangles[i].p3.y
-        );
+    for (let tri of triangles) {
+        tri.draw();
     }
-
-    // 二次関数の軸
-    stroke(0, 255, 125);
-    strokeWeight(1);
-
-    // いろいろな点の表示
-    stroke(255, 0, 0);
-    strokeWeight(10);
 }
 
 function windowResized() {
