@@ -455,6 +455,36 @@ var Polygon = /** @class */ (function () {
     };
     return Polygon;
 }());
+var Circle = /** @class */ (function () {
+    function Circle(x, y, r) {
+        this.x = x;
+        this.y = y;
+        this.center = new Point(x, y);
+        this.r = r;
+        this.d = r * 2;
+    }
+    Circle.prototype.getAround = function () {
+        return 2 * Math.PI * this.r;
+    };
+    Circle.prototype.getArea = function () {
+        return Math.PI * Math.pow(this.r, 2);
+    };
+    Circle.prototype.getSymmetricCircle = function (center) {
+        var p = this.center;
+        var _a = Point.getSymmetricPoint(p, center), x = _a.x, y = _a.y;
+        return new Circle(x, y, this.r);
+    };
+    Circle.prototype.magnify = function (center, magnification) {
+        var l1 = new Line(center, this);
+        var p = l1.getDividingPoint(-magnification, magnification - 1);
+        return new Circle(p.x, p.y, this.r * magnification);
+    };
+    Circle.prototype.draw = function () {
+        // @ts-ignore
+        circle(this.x, this.y, this.d);
+    };
+    return Circle;
+}());
 var Linear = /** @class */ (function () {
     function Linear(formula) {
         this.setForms(formula);

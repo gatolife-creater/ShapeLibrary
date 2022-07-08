@@ -554,6 +554,47 @@ class Polygon {
     }
 }
 
+class Circle {
+
+    center: Point;
+    x: number;
+    y: number;
+    r: number;
+    d: number;
+    constructor(x: number, y: number, r: number) {
+        this.x = x;
+        this.y = y;
+        this.center = new Point(x, y);
+        this.r = r;
+        this.d = r * 2;
+    }
+
+    getAround() {
+        return 2 * Math.PI * this.r;
+    }
+
+    getArea() {
+        return Math.PI * this.r ** 2;
+    }
+
+    getSymmetricCircle(center: Point) {
+        let p = this.center;
+        let { x, y } = Point.getSymmetricPoint(p, center);
+        return new Circle(x, y, this.r);
+    }
+
+    magnify(center: Point, magnification: number) {
+        let l1 = new Line(center, this);
+        let p = l1.getDividingPoint(-magnification, magnification - 1);
+        return new Circle(p.x, p.y, this.r * magnification);
+    }
+
+    draw() {
+        // @ts-ignore
+        circle(this.x, this.y, this.d);
+    }
+}
+
 class Linear {
 
     slope: number;
