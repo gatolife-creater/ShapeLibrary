@@ -595,6 +595,196 @@ class Circle {
     }
 }
 
+class Point3D {
+
+    x: number;
+    y: number;
+    z: number;
+    constructor(x: number, y: number, z: number) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    static dist(p1: Point3D, p2: Point3D) {
+        return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2 + (p2.z - p1.z) ** 2);
+    }
+
+    /**
+     * 中点を求める
+     *  */
+    static getMidpoint(p1: Point3D, p2: Point3D) {
+        return new Point3D((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
+    }
+
+    /**
+     * 原点を求める
+     *  */
+    static O() {
+        return new Point3D(0, 0, 0);
+    }
+
+    draw() {
+        // @ts-ignore
+        point(this.x, this.y, this.z);
+    }
+}
+
+class Line3D {
+
+    start: Point3D;
+    end: Point3D;
+    constructor(start: Point3D, end: Point3D) {
+        this.start = start;
+        this.end = end;
+    }
+
+    getLength() {
+        return Point3D.dist(this.start, this.end);
+    }
+
+    draw() {
+        // @ts-ignore
+        line(this.start.x, this.start.y, this.start.z, this.end.x, this.end.y, this.end.z);
+    }
+}
+
+class Triangle3D {
+    p1: Point3D;
+    p2: Point3D;
+    p3: Point3D;
+    l1: Line3D;
+    l2: Line3D;
+    l3: Line3D;
+    constructor(p1: Point3D, p2: Point3D, p3: Point3D) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.l1 = new Line3D(p1, p2);
+        this.l2 = new Line3D(p2, p3);
+        this.l3 = new Line3D(p3, p1);
+    }
+
+    draw() {
+        // @ts-ignore
+        beginShape();
+        // @ts-ignore
+        vertex(this.p1.x, this.p1.y, this.p1.z);
+        // @ts-ignore
+        vertex(this.p2.x, this.p2.y, this.p2.z);
+        // @ts-ignore
+        vertex(this.p3.x, this.p3.y, this.p3.z);
+        // @ts-ignore
+        endShape(CLOSE);
+    }
+}
+
+class Quad3D {
+    p1: Point3D;
+    p2: Point3D;
+    p3: Point3D;
+    p4: Point3D;
+    l1: Line3D;
+    l2: Line3D;
+    l3: Line3D;
+    l4: Line3D;
+    constructor(p1: Point3D, p2: Point3D, p3: Point3D, p4: Point3D) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.p4 = p4;
+        this.l1 = new Line3D(this.p1, this.p2);
+        this.l2 = new Line3D(this.p2, this.p3);
+        this.l3 = new Line3D(this.p3, this.p4);
+        this.l4 = new Line3D(this.p4, this.p1);
+    }
+
+    draw() {
+        // @ts-ignore
+        beginShape();
+        // @ts-ignore
+        vertex(this.p1.x, this.p1.y, this.p1.z);
+        // @ts-ignore
+        vertex(this.p2.x, this.p2.y, this.p2.z);
+        // @ts-ignore
+        vertex(this.p3.x, this.p3.y, this.p3.z);
+        // @ts-ignore
+        vertex(this.p4.x, this.p4.y, this.p4.z);
+        // @ts-ignore
+        endShape(CLOSE);
+    }
+}
+
+class Box {
+
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+    h: number;
+    d: number;
+    constructor(x: number, y: number, z: number, w: number, h: number, d: number) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+        this.h = h;
+        this.d = d;
+    }
+
+    getSurfaceArea() {
+        return 2 * (this.w * this.h + this.h * this.d + this.d * this.w);
+    }
+
+    getVolume() {
+        return this.w * this.h * this.d;
+    }
+
+    draw() {
+        // @ts-ignore
+        push();
+        // @ts-ignore
+        translate(this.x, this.y, this.z);
+        // @ts-ignore
+        box(this.w, this.h, this.d);
+        // @ts-ignore
+        pop();
+    }
+}
+
+class Sphere {
+
+    x: number;
+    y: number;
+    z: number;
+    r: number;
+    constructor(x: number, y: number, z: number, r: number) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.r = r;
+    }
+
+    getSurfaceArea() {
+        return 4 * Math.PI * this.r ** 2;
+    }
+
+    getVolume() {
+        return (4 * Math.PI * this.r ** 3) / 3
+    }
+
+    draw() {
+        // @ts-ignore
+        push();
+        // @ts-ignore
+        translate(this.x, this.y, this.z);
+        // @ts-ignore
+        sphere(this.r);
+        // @ts-ignore
+        pop();
+    }
+}
+
 class Linear {
 
     slope: number;

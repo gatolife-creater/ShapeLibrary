@@ -485,6 +485,149 @@ var Circle = /** @class */ (function () {
     };
     return Circle;
 }());
+var Point3D = /** @class */ (function () {
+    function Point3D(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    Point3D.dist = function (p1, p2) {
+        return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2) + Math.pow((p2.z - p1.z), 2));
+    };
+    /**
+     * 中点を求める
+     *  */
+    Point3D.getMidpoint = function (p1, p2) {
+        return new Point3D((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
+    };
+    /**
+     * 原点を求める
+     *  */
+    Point3D.O = function () {
+        return new Point3D(0, 0, 0);
+    };
+    Point3D.prototype.draw = function () {
+        // @ts-ignore
+        point(this.x, this.y, this.z);
+    };
+    return Point3D;
+}());
+var Line3D = /** @class */ (function () {
+    function Line3D(start, end) {
+        this.start = start;
+        this.end = end;
+    }
+    Line3D.prototype.getLength = function () {
+        return Point3D.dist(this.start, this.end);
+    };
+    Line3D.prototype.draw = function () {
+        // @ts-ignore
+        line(this.start.x, this.start.y, this.start.z, this.end.x, this.end.y, this.end.z);
+    };
+    return Line3D;
+}());
+var Triangle3D = /** @class */ (function () {
+    function Triangle3D(p1, p2, p3) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.l1 = new Line3D(p1, p2);
+        this.l2 = new Line3D(p2, p3);
+        this.l3 = new Line3D(p3, p1);
+    }
+    Triangle3D.prototype.draw = function () {
+        // @ts-ignore
+        beginShape();
+        // @ts-ignore
+        vertex(this.p1.x, this.p1.y, this.p1.z);
+        // @ts-ignore
+        vertex(this.p2.x, this.p2.y, this.p2.z);
+        // @ts-ignore
+        vertex(this.p3.x, this.p3.y, this.p3.z);
+        // @ts-ignore
+        endShape(CLOSE);
+    };
+    return Triangle3D;
+}());
+var Quad3D = /** @class */ (function () {
+    function Quad3D(p1, p2, p3, p4) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.p4 = p4;
+        this.l1 = new Line3D(this.p1, this.p2);
+        this.l2 = new Line3D(this.p2, this.p3);
+        this.l3 = new Line3D(this.p3, this.p4);
+        this.l4 = new Line3D(this.p4, this.p1);
+    }
+    Quad3D.prototype.draw = function () {
+        // @ts-ignore
+        beginShape();
+        // @ts-ignore
+        vertex(this.p1.x, this.p1.y, this.p1.z);
+        // @ts-ignore
+        vertex(this.p2.x, this.p2.y, this.p2.z);
+        // @ts-ignore
+        vertex(this.p3.x, this.p3.y, this.p3.z);
+        // @ts-ignore
+        vertex(this.p4.x, this.p4.y, this.p4.z);
+        // @ts-ignore
+        endShape(CLOSE);
+    };
+    return Quad3D;
+}());
+var Box = /** @class */ (function () {
+    function Box(x, y, z, w, h, d) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+        this.h = h;
+        this.d = d;
+    }
+    Box.prototype.getSurfaceArea = function () {
+        return 2 * (this.w * this.h + this.h * this.d + this.d * this.w);
+    };
+    Box.prototype.getVolume = function () {
+        return this.w * this.h * this.d;
+    };
+    Box.prototype.draw = function () {
+        // @ts-ignore
+        push();
+        // @ts-ignore
+        translate(this.x, this.y, this.z);
+        // @ts-ignore
+        box(this.w, this.h, this.d);
+        // @ts-ignore
+        pop();
+    };
+    return Box;
+}());
+var Sphere = /** @class */ (function () {
+    function Sphere(x, y, z, r) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.r = r;
+    }
+    Sphere.prototype.getSurfaceArea = function () {
+        return 4 * Math.PI * Math.pow(this.r, 2);
+    };
+    Sphere.prototype.getVolume = function () {
+        return (4 * Math.PI * Math.pow(this.r, 3)) / 3;
+    };
+    Sphere.prototype.draw = function () {
+        // @ts-ignore
+        push();
+        // @ts-ignore
+        translate(this.x, this.y, this.z);
+        // @ts-ignore
+        sphere(this.r);
+        // @ts-ignore
+        pop();
+    };
+    return Sphere;
+}());
 var Linear = /** @class */ (function () {
     function Linear(formula) {
         this.setForms(formula);
