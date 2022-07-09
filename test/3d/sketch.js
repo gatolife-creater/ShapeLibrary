@@ -15,7 +15,9 @@ let quad = new Quad3D(
     new Point3D(0, 0, -200),
     new Point3D(-100, -200, -200),
     new Point3D(100, -200, -200),
-)
+);
+
+
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
@@ -45,6 +47,9 @@ function draw() {
     quad.draw();
     strokeWeight(5);
     p.draw();
+    stroke("red");
+    strokeWeight(10);
+    tri.getBarycenter().draw();
     pop();
 }
 

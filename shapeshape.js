@@ -501,6 +501,82 @@ var Point3D = /** @class */ (function () {
         return new Point3D((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
     };
     /**
+     * 特定の点に対して対称な点を求める
+     * */
+    Point3D.getSymmetricPoint = function (p, center) {
+        var x = center.x - p.x;
+        var y = center.y - p.y;
+        var z = center.z - p.z;
+        return new Point3D(center.x + x, center.y + y, center.z + z);
+    };
+    /**
+     * 3点間の重心を求める
+     * */
+    Point3D.getBarycenter = function (p1, p2, p3) {
+        return new Point3D((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3, (p1.z + p2.z + p3.z) / 3);
+    };
+    /**
+     * 外心を求める
+     */
+    // static getCircumcenter(p1: Point3D, p2: Point3D, p3: Point3D) {
+    //     let l1 = new Line3D(p1, p2);
+    //     let l2 = new Line3D(p2, p3);
+    //     // let l3 = new Line(p3, p1);
+    //     let perpendicularBisector1 = l1.getPerpendicularBisector();
+    //     let perpendicularBisector2 = l2.getPerpendicularBisector();
+    //     return perpendicularBisector1.getIntersection(perpendicularBisector2);
+    // }
+    /**
+     * 垂心を求める
+     */
+    // static getOrthocenter(p1: Point, p2: Point, p3: Point) {
+    //     let x1 = p1.x;
+    //     let y1 = p1.y;
+    //     let x2 = p2.x;
+    //     let y2 = p2.y;
+    //     let x3 = p3.x;
+    //     let y3 = p3.y;
+    //     let l1 = new Linear(`${(y2 - y1) / (x2 - x1)}x+${-((y2 - y1) / (x2 - x1)) + y1}`);
+    //     let l2 = new Linear(`${(y3 - y2) / (x3 - x2)}x+${-((y3 - y2) / (x3 - x2)) + y2}`);
+    //     let perpendicularLinear1 = l1.getPerpendicularLinear(p3);
+    //     let perpendicularLinear2 = l2.getPerpendicularLinear(p1);
+    //     return perpendicularLinear1.getIntersection(perpendicularLinear2);
+    // }
+    /**
+     * 内心を求める
+     */
+    // static getInnerCenter(p1: Point, p2: Point, p3: Point) {
+    //     let A = p1;
+    //     let B = p2;
+    //     let C = p3;
+    //     let AB = new Line(A, B);
+    //     let BC = new Line(B, C);
+    //     let CA = new Line(C, A);
+    //     let P = BC.getDividingPoint(AB.getLength(), CA.getLength());
+    //     let Q = CA.getDividingPoint(BC.getLength(), AB.getLength());
+    //     let AP = new Line(A, P);
+    //     let BQ = new Line(B, Q);
+    //     return AP.getIntersection(BQ);
+    // }
+    /**
+     * 傍心を求める
+     */
+    // static getExcenters(p1: Point, p2: Point, p3: Point) {
+    //     let A = p1;
+    //     let B = p2;
+    //     let C = p3;
+    //     let BA = new Line(A, B);
+    //     let CB = new Line(B, C);
+    //     let AC = new Line(C, A);
+    //     let P = CB.getDividingPoint(BA.getLength(), -AC.getLength());
+    //     let Q = BA.getDividingPoint(AC.getLength(), -CB.getLength());
+    //     let R = AC.getDividingPoint(CB.getLength(), -BA.getLength());
+    //     let AP = new Line(A, P);
+    //     let CQ = new Line(C, Q);
+    //     let BR = new Line(B, R);
+    //     return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
+    // }
+    /**
      * 原点を求める
      *  */
     Point3D.O = function () {
@@ -517,9 +593,108 @@ var Line3D = /** @class */ (function () {
         this.start = start;
         this.end = end;
     }
+    /**
+     * 線の長さを求める
+     *  */
     Line3D.prototype.getLength = function () {
         return Point3D.dist(this.start, this.end);
     };
+    /**
+     * 線分を二分する点を求める
+     *  */
+    Line3D.prototype.getMidpoint = function () {
+        return Point3D.getMidpoint(this.start, this.end);
+    };
+    /**
+     * 内分点を求める
+     *  */
+    Line3D.prototype.getInteriorPoint = function (m, n) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        }
+        else {
+            return new Point3D((this.start.x * n + this.end.x * m) / (m + n), (this.start.y * n + this.end.y * m) / (m + n), (this.start.z * n + this.end.z * m) / (m + n));
+        }
+    };
+    /**
+     * 外分点を求める
+     *  */
+    Line3D.prototype.getExteriorPoint = function (m, n) {
+        if (m <= 0 || n <= 0) {
+            return Manager.displayError(["m > 0", "n > 0"]);
+        }
+        else {
+            return new Point3D((-this.start.x * n + this.end.x * m) / (m - n), (-this.start.y * n + this.end.y * m) / (m - n), (-this.start.z * n + this.end.z * m) / (m - n));
+        }
+    };
+    /**
+     * 内分点、外分点を求める
+     */
+    Line3D.prototype.getDividingPoint = function (m, n) {
+        return new Point3D((this.start.x * n + this.end.x * m) / (m + n), (this.start.y * n + this.end.y * m) / (m + n), (this.start.z * n + this.end.z * m) / (m + n));
+    };
+    /**
+     * 点と直線の距離を求める
+     *  */
+    // getDistBetweenPoint(p: Point) {
+    //     let a =
+    //         (this.end.y - this.start.y) /
+    //         (this.end.x - this.start.x);
+    //     let b = -1;
+    //     let c = this.start.y - (a * this.start.x);
+    //     if (a === Infinity) return Math.abs(this.start.x - p.x);
+    //     return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(a ** 2 + b ** 2);
+    // }
+    /**
+     * 延長線上を含め直線同士の交点を求める
+     */
+    // getIntersection(l: Line) {
+    //     let a = (l.end.y - l.start.y) / (l.end.x - l.start.x);
+    //     let b = l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x;
+    //     let c = (this.end.y - this.start.y) / (this.end.x - this.start.x);
+    //     let d = this.start.y - (this.end.y - this.start.y) / (this.end.x - this.start.x) * this.start.x;
+    //     if (a === c) return new Point(NaN, NaN);
+    //     else if (a === Infinity) return new Point(l.start.x, c * l.start.x + d);
+    //     else if (c === Infinity) return new Point(this.start.x, a * this.start.x + b);
+    //     return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
+    // }
+    /**
+     * 直線同士の交点を求める
+     */
+    // getIntersectionStrict(l: Line) {
+    //     let x1 = this.start.x;
+    //     let y1 = this.start.y;
+    //     let x2 = this.end.x;
+    //     let y2 = this.end.y;
+    //     let x3 = l.start.x;
+    //     let y3 = l.start.y;
+    //     let x4 = l.end.x;
+    //     let y4 = l.end.y;
+    //     var a1 = (y2 - y1) / (x2 - x1),
+    //         a2 = (y4 - y3) / (x4 - x3);
+    //     var x = (a1 * x1 - y1 - a2 * x3 + y3) / (a1 - a2),
+    //         y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
+    //     if (Math.abs(a1) === Math.abs(a2)) return new Point(NaN, NaN);
+    //     if (x > Math.max(x1, x2) || x > Math.max(x3, x4) ||
+    //         y > Math.max(y1, y2) || y > Math.max(y3, y4) ||
+    //         x < Math.min(x1, x2) || x < Math.min(x3, x4) ||
+    //         x < Math.min(x1, x2) || y < Math.min(y3, y4)) return new Point(NaN, NaN);
+    //     // else if (a1 === Infinity) return new Point(this.start.x, a2* this.start.x + l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x)
+    //     // else if (a2 === Infinity) return new Point(l.start.x, a1 * l.start.x + l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x);
+    //     return new Point(x, y);
+    // }
+    /**
+     * 垂直二等分線を求める
+     */
+    // getPerpendicularBisector() {
+    //     let x1 = this.start.x;
+    //     let y1 = this.start.y;
+    //     let x2 = this.end.x;
+    //     let y2 = this.end.y;
+    //     let linear = new Linear(`${(y2 - y1) / (x2 - x1)}x+${(-(y2 - y1) / (x2 - x1) * x1) + y1}`);
+    //     return linear.getPerpendicularLinear(this.getMidpoint());
+    //     // 戻り値が関数ってやばくね？
+    // }
     Line3D.prototype.draw = function () {
         // @ts-ignore
         line(this.start.x, this.start.y, this.start.z, this.end.x, this.end.y, this.end.z);
@@ -535,6 +710,35 @@ var Triangle3D = /** @class */ (function () {
         this.l2 = new Line3D(p2, p3);
         this.l3 = new Line3D(p3, p1);
     }
+    Triangle3D.prototype.getBarycenter = function () {
+        return Point3D.getBarycenter(this.p1, this.p2, this.p3);
+    };
+    /**
+     * 辺の長さの和を求める
+     *  */
+    Triangle3D.prototype.getAroundLength = function () {
+        var p1 = new Line3D(this.p1, this.p2);
+        var p2 = new Line3D(this.p2, this.p3);
+        var p3 = new Line3D(this.p3, this.p1);
+        return p1.getLength() + p2.getLength() + p3.getLength();
+    };
+    /**
+     * 三角形の面積を求める
+     *  */
+    Triangle3D.prototype.getArea = function () {
+        var a = this.l1.getLength();
+        var b = this.l2.getLength();
+        var c = this.l3.getLength();
+        var s = (a + b + c) / 2;
+        var S = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+        return S;
+    };
+    /**
+     * 基準点に対して対称な三角形を求める
+     */
+    Triangle3D.prototype.getSymmetricTriangle = function (center) {
+        return new Triangle3D(Point3D.getSymmetricPoint(this.p1, center), Point3D.getSymmetricPoint(this.p2, center), Point3D.getSymmetricPoint(this.p3, center));
+    };
     Triangle3D.prototype.draw = function () {
         // @ts-ignore
         beginShape();
