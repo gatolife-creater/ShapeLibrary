@@ -1,3 +1,6 @@
+let scope = 1;
+let center = new Point3D(0, 0, 0);
+
 let b = new Box(100, 0, 200, 100, 100, 100);
 let s = new Sphere(0, 0, 0, 100);
 let p = new Point3D(200, -200, -200);
@@ -17,7 +20,11 @@ let quad = new Quad3D(
     new Point3D(100, -200, -200),
 );
 
+let font;
 
+function preload() {
+    font = loadFont("https://themes.googleusercontent.com/static/fonts/kaushanscript/v1/qx1LSqts-NtiKcLw4N03IFhlQWQpSCpzb2Peu3I-Q34.woff");
+}
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
@@ -25,8 +32,9 @@ function setup() {
 
 function draw() {
     background(30);
-    orbitControl(2, 2, 2);
+    stroke("white");
     debugMode();
+    camera(500, -500, 500);
 
     lights();
     specularMaterial(250);
@@ -35,24 +43,34 @@ function draw() {
     push();
     stroke("black");
     strokeWeight(1);
-    b.draw();
-    s.draw();
+    b.magnify(center, scope).draw();
+    s.magnify(center, scope).draw();
     pop();
 
 
     push();
     stroke("white");
-    l.draw();
-    tri.draw();
-    quad.draw();
+    l.magnify(center, scope).draw();
+    tri.magnify(center, scope).draw();
+    quad.magnify(center, scope).draw();
     strokeWeight(5);
-    p.draw();
+    p.magnify(center, scope).draw();
     stroke("red");
     strokeWeight(10);
-    tri.getBarycenter().draw();
+    tri.magnify(center, scope).getBarycenter().draw();
     pop();
+
+    fill("white");
+    strokeWeight(1);
+    textSize(20);
+    textFont(font);
+    text("x " + scope.toFixed(1), width / 2 - 300, -height / 2 + 100);
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight, WEBGL);
+}
+
+function mouseWheel(event) {
+    scope += event.deltaY / 5000 * scope;
 }

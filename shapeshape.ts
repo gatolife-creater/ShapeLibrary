@@ -712,6 +712,11 @@ class Point3D {
     //     return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     // }
 
+    magnify(center: Point3D, magnification: number) {
+        let l1 = new Line3D(center, this);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        return new Point3D(p1.x, p1.y, p1.z);
+    }
     /**
      * 原点を求める
      *  */
@@ -862,6 +867,14 @@ class Line3D {
     //     // 戻り値が関数ってやばくね？
     // }
 
+    magnify(center: Point3D, magnification: number) {
+        let l1 = new Line3D(center, this.start);
+        let l2 = new Line3D(center, this.end);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        return new Line3D(p1, p2);
+    }
+
     draw() {
         // @ts-ignore
         line(this.start.x, this.start.y, this.start.z, this.end.x, this.end.y, this.end.z);
@@ -921,6 +934,16 @@ class Triangle3D {
         );
     }
 
+    magnify(center: Point3D, magnification: number) {
+        let l1 = new Line3D(center, this.p1);
+        let l2 = new Line3D(center, this.p2);
+        let l3 = new Line3D(center, this.p3);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        return new Triangle3D(p1, p2, p3);
+    }
+
     draw() {
         // @ts-ignore
         beginShape();
@@ -953,6 +976,21 @@ class Quad3D {
         this.l2 = new Line3D(this.p2, this.p3);
         this.l3 = new Line3D(this.p3, this.p4);
         this.l4 = new Line3D(this.p4, this.p1);
+    }
+
+    /**
+     * 四角形を基準点に合わせて拡大縮小する
+     */
+    magnify(center: Point3D, magnification: number) {
+        let l1 = new Line3D(center, this.p1);
+        let l2 = new Line3D(center, this.p2);
+        let l3 = new Line3D(center, this.p3);
+        let l4 = new Line3D(center, this.p4);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        let p4 = l4.getDividingPoint(-magnification, magnification - 1);
+        return new Quad3D(p1, p2, p3, p4);
     }
 
     draw() {
@@ -996,6 +1034,25 @@ class Box {
         return this.w * this.h * this.d;
     }
 
+    magnify(center: Point3D, magnification: number) {
+        let boxCenter = new Point3D(
+            this.x + this.w / 2,
+            this.y + this.h / 2,
+            this.z + this.d / 2
+        );
+        let l1 = new Line3D(center, boxCenter);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+
+        let w = this.w * magnification;
+        let h = this.h * magnification;
+        let d = this.d * magnification;
+        let x = p1.x - w / 2;
+        let y = p1.y - h / 2;
+        let z = p1.z - d / 2;
+
+        return new Box(x, y, z, w, h, d);
+    }
+
     draw() {
         // @ts-ignore
         push();
@@ -1027,6 +1084,12 @@ class Sphere {
 
     getVolume() {
         return (4 * Math.PI * this.r ** 3) / 3
+    }
+
+    magnify(center: Point3D, magnification: number) {
+        let l1 = new Line3D(center, this);
+        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        return new Sphere(p1.x, p1.y, p1.z, this.r * magnification);
     }
 
     draw() {

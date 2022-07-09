@@ -576,6 +576,11 @@ var Point3D = /** @class */ (function () {
     //     let BR = new Line(B, R);
     //     return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     // }
+    Point3D.prototype.magnify = function (center, magnification) {
+        var l1 = new Line3D(center, this);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        return new Point3D(p1.x, p1.y, p1.z);
+    };
     /**
      * 原点を求める
      *  */
@@ -695,6 +700,13 @@ var Line3D = /** @class */ (function () {
     //     return linear.getPerpendicularLinear(this.getMidpoint());
     //     // 戻り値が関数ってやばくね？
     // }
+    Line3D.prototype.magnify = function (center, magnification) {
+        var l1 = new Line3D(center, this.start);
+        var l2 = new Line3D(center, this.end);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        return new Line3D(p1, p2);
+    };
     Line3D.prototype.draw = function () {
         // @ts-ignore
         line(this.start.x, this.start.y, this.start.z, this.end.x, this.end.y, this.end.z);
@@ -739,6 +751,15 @@ var Triangle3D = /** @class */ (function () {
     Triangle3D.prototype.getSymmetricTriangle = function (center) {
         return new Triangle3D(Point3D.getSymmetricPoint(this.p1, center), Point3D.getSymmetricPoint(this.p2, center), Point3D.getSymmetricPoint(this.p3, center));
     };
+    Triangle3D.prototype.magnify = function (center, magnification) {
+        var l1 = new Line3D(center, this.p1);
+        var l2 = new Line3D(center, this.p2);
+        var l3 = new Line3D(center, this.p3);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        var p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        return new Triangle3D(p1, p2, p3);
+    };
     Triangle3D.prototype.draw = function () {
         // @ts-ignore
         beginShape();
@@ -764,6 +785,20 @@ var Quad3D = /** @class */ (function () {
         this.l3 = new Line3D(this.p3, this.p4);
         this.l4 = new Line3D(this.p4, this.p1);
     }
+    /**
+     * 四角形を基準点に合わせて拡大縮小する
+     */
+    Quad3D.prototype.magnify = function (center, magnification) {
+        var l1 = new Line3D(center, this.p1);
+        var l2 = new Line3D(center, this.p2);
+        var l3 = new Line3D(center, this.p3);
+        var l4 = new Line3D(center, this.p4);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        var p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        var p4 = l4.getDividingPoint(-magnification, magnification - 1);
+        return new Quad3D(p1, p2, p3, p4);
+    };
     Quad3D.prototype.draw = function () {
         // @ts-ignore
         beginShape();
@@ -795,6 +830,18 @@ var Box = /** @class */ (function () {
     Box.prototype.getVolume = function () {
         return this.w * this.h * this.d;
     };
+    Box.prototype.magnify = function (center, magnification) {
+        var boxCenter = new Point3D(this.x + this.w / 2, this.y + this.h / 2, this.z + this.d / 2);
+        var l1 = new Line3D(center, boxCenter);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        var w = this.w * magnification;
+        var h = this.h * magnification;
+        var d = this.d * magnification;
+        var x = p1.x - w / 2;
+        var y = p1.y - h / 2;
+        var z = p1.z - d / 2;
+        return new Box(x, y, z, w, h, d);
+    };
     Box.prototype.draw = function () {
         // @ts-ignore
         push();
@@ -819,6 +866,11 @@ var Sphere = /** @class */ (function () {
     };
     Sphere.prototype.getVolume = function () {
         return (4 * Math.PI * Math.pow(this.r, 3)) / 3;
+    };
+    Sphere.prototype.magnify = function (center, magnification) {
+        var l1 = new Line3D(center, this);
+        var p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        return new Sphere(p1.x, p1.y, p1.z, this.r * magnification);
     };
     Sphere.prototype.draw = function () {
         // @ts-ignore
