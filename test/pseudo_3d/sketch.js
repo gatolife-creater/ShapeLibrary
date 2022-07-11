@@ -36,7 +36,7 @@ class Player {
         stroke("white");
         strokeWeight(2);
         for (let l of this.lines) {
-            line(l.start.x, l.start.y, l.end.x, l.end.y);
+            l.draw();;
         }
         pop();
     }

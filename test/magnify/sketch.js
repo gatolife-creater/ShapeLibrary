@@ -53,14 +53,6 @@ function draw() {
 
     // center = new Point(mouseX - width / 2, mouseY - height / 2);
 
-    let newP = p.magnify(center, scope);
-    let newL = l.magnify(center, scope);
-    let newTri = tri.magnify(center, scope);
-    let newRect = quad.magnify(center, scope);
-    let newPolygon = polygon.magnify(center, scope);
-    let newLinear = linear.magnify(center, scope);
-    let newQuadratic = quadratic.magnify(center, scope);
-
     // x軸、y軸の表示
     stroke("gray");
     line(-width / 2, 0, width / 2, 0);
@@ -78,14 +70,14 @@ function draw() {
     noFill();
     stroke("white");
     strokeWeight(2);
-    newLinear.draw(min, max);
-    newQuadratic.draw(min, max);
-    newTri.draw();
-    newRect.draw();
-    newPolygon.draw();
-    newL.draw();
+    linear.magnify(center, scope).draw(min, max);
+    quadratic.magnify(center, scope).draw(min, max);
+    tri.magnify(center, scope).draw();
+    quad.magnify(center, scope).draw();
+    polygon.magnify(center, scope).draw();
+    l.magnify(center, scope).draw();
     strokeWeight(5);
-    newP.draw();
+    p.magnify(center, scope).draw();
 
     fill("white");
     strokeWeight(1);

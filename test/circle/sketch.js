@@ -13,11 +13,10 @@ function draw() {
     line(-width / 2, 0, width / 2, 0);
     line(0, -height / 2, 0, height / 2);
 
-    let newCir = cir.magnify(Point.O(), scope);
     noFill();
     stroke("white");
     strokeWeight(2);
-    newCir.draw();
+    cir.magnify(Point.O(), scope).draw();
 }
 
 function mouseWheel(event) {
