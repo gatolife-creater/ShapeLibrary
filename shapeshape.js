@@ -1100,8 +1100,10 @@ var Quadratic = /** @class */ (function () {
         var a = this.a;
         var b = this.b;
         var c = this.c;
-        var d = 4 * a * x + b;
-        var e = c - 4 * a * Math.pow(x, 2);
+        // let d = 4 * a * x + b;
+        // let e = c - 4 * a * x ** 2;
+        var d = 2 * a * x + b;
+        var e = (2 * b * d + 4 * a * c - Math.pow(b, 2) - Math.pow(d, 2)) / (4 * a);
         return new Linear("".concat(d, "x+").concat(e));
     };
     /**

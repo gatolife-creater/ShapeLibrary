@@ -1374,8 +1374,10 @@ class Quadratic {
         let a = this.a;
         let b = this.b;
         let c = this.c;
-        let d = 4 * a * x + b;
-        let e = c - 4 * a * x ** 2;
+        // let d = 4 * a * x + b;
+        // let e = c - 4 * a * x ** 2;
+        let d = 2 * a * x + b;
+        let e = (2 * b * d + 4 * a * c - b ** 2 - d ** 2) / (4 * a);
         return new Linear(`${d}x+${e}`);
     }
 
