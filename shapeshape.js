@@ -1,3 +1,10 @@
+/* eslint-disable max-len */
+/* eslint-disable valid-jsdoc */
+/* eslint-disable comma-dangle */
+/* eslint-disable quotes */
+/* eslint-disable eol-last */
+/* eslint-disable indent */
+/* eslint-disable require-jsdoc */
 var Manager = /** @class */ (function () {
     function Manager() {
     }
@@ -208,8 +215,10 @@ var Line = /** @class */ (function () {
         var y3 = l.start.y;
         var x4 = l.end.x;
         var y4 = l.end.y;
-        var a1 = (y2 - y1) / (x2 - x1), a2 = (y4 - y3) / (x4 - x3);
-        var x = (a1 * x1 - y1 - a2 * x3 + y3) / (a1 - a2), y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
+        var a1 = (y2 - y1) / (x2 - x1);
+        var a2 = (y4 - y3) / (x4 - x3);
+        var x = (a1 * x1 - y1 - a2 * x3 + y3) / (a1 - a2);
+        var y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
         if (Math.abs(a1) === Math.abs(a2))
             return new Point(NaN, NaN);
         if (x > Math.max(x1, x2) || x > Math.max(x3, x4) ||
@@ -463,17 +472,29 @@ var Circle = /** @class */ (function () {
         this.r = r;
         this.d = r * 2;
     }
+    /**
+     * 円周の長さを求める
+     */
     Circle.prototype.getAround = function () {
         return 2 * Math.PI * this.r;
     };
+    /**
+     * 円の面積をもとめる
+     */
     Circle.prototype.getArea = function () {
         return Math.PI * Math.pow(this.r, 2);
     };
+    /**
+     * 基準点に対して対称な円を求める
+     */
     Circle.prototype.getSymmetricCircle = function (center) {
         var p = this.center;
         var _a = Point.getSymmetricPoint(p, center), x = _a.x, y = _a.y;
         return new Circle(x, y, this.r);
     };
+    /**
+     * 円を基準点に合わせて拡大縮小する
+     */
     Circle.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this);
         var p = l1.getDividingPoint(-magnification, magnification - 1);
@@ -576,6 +597,9 @@ var Point3D = /** @class */ (function () {
     //     let BR = new Line(B, R);
     //     return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     // }
+    /**
+     * 点を基準点に合わせて拡大縮小する
+     */
     Point3D.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this);
         var p1 = l1.getDividingPoint(-magnification, magnification - 1);
@@ -700,6 +724,9 @@ var Line3D = /** @class */ (function () {
     //     return linear.getPerpendicularLinear(this.getMidpoint());
     //     // 戻り値が関数ってやばくね？
     // }
+    /**
+     * 線を基準点に合わせて拡大縮小する
+     */
     Line3D.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this.start);
         var l2 = new Line3D(center, this.end);
@@ -722,6 +749,9 @@ var Triangle3D = /** @class */ (function () {
         this.l2 = new Line3D(p2, p3);
         this.l3 = new Line3D(p3, p1);
     }
+    /**
+     * 三角形の重心を求める
+     */
     Triangle3D.prototype.getBarycenter = function () {
         return Point3D.getBarycenter(this.p1, this.p2, this.p3);
     };
@@ -751,6 +781,9 @@ var Triangle3D = /** @class */ (function () {
     Triangle3D.prototype.getSymmetricTriangle = function (center) {
         return new Triangle3D(Point3D.getSymmetricPoint(this.p1, center), Point3D.getSymmetricPoint(this.p2, center), Point3D.getSymmetricPoint(this.p3, center));
     };
+    /**
+     * 三角形を基準点に合わせて拡大縮小する
+     */
     Triangle3D.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this.p1);
         var l2 = new Line3D(center, this.p2);
@@ -824,12 +857,21 @@ var Box = /** @class */ (function () {
         this.h = h;
         this.d = d;
     }
+    /**
+     * 表面積を求める
+     */
     Box.prototype.getSurfaceArea = function () {
         return 2 * (this.w * this.h + this.h * this.d + this.d * this.w);
     };
+    /**
+     * 体積を求める
+     */
     Box.prototype.getVolume = function () {
         return this.w * this.h * this.d;
     };
+    /**
+     * 直方体を基準点に合わせて拡大縮小する
+     */
     Box.prototype.magnify = function (center, magnification) {
         var boxCenter = new Point3D(this.x + this.w / 2, this.y + this.h / 2, this.z + this.d / 2);
         var l1 = new Line3D(center, boxCenter);
@@ -861,12 +903,21 @@ var Sphere = /** @class */ (function () {
         this.z = z;
         this.r = r;
     }
+    /**
+     * 表面積を求める
+     */
     Sphere.prototype.getSurfaceArea = function () {
         return 4 * Math.PI * Math.pow(this.r, 2);
     };
+    /**
+     * 体積を求める
+     */
     Sphere.prototype.getVolume = function () {
         return (4 * Math.PI * Math.pow(this.r, 3)) / 3;
     };
+    /**
+     * 球を基準点に合わせて拡大縮小する
+     */
     Sphere.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this);
         var p1 = l1.getDividingPoint(-magnification, magnification - 1);
@@ -1104,6 +1155,9 @@ var Quadratic = /** @class */ (function () {
         var e = (2 * b * d + 4 * a * c - Math.pow(b, 2) - Math.pow(d, 2)) / (4 * a);
         return new Linear("".concat(d, "x+").concat(e));
     };
+    /**
+     * 二次関数の方線を求める
+     */
     Quadratic.prototype.getNormalLinear = function (x) {
         var l = this.differentiate();
         return new Linear("".concat(-1 / l.getY(x), "x+").concat(x / l.getY(x) + this.getY(x)));
@@ -1117,7 +1171,6 @@ var Quadratic = /** @class */ (function () {
     /**
      * 数学的にあっているかどうかは知らない
      * 二次関数を基準点に合わせて拡大する
-     * @returns
      */
     Quadratic.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this.getYIntercept());

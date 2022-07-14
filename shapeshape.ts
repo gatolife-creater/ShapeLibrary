@@ -1,7 +1,14 @@
+/* eslint-disable max-len */
+/* eslint-disable valid-jsdoc */
+/* eslint-disable comma-dangle */
+/* eslint-disable quotes */
+/* eslint-disable eol-last */
+/* eslint-disable indent */
+/* eslint-disable require-jsdoc */
 class Manager {
     static displayError(conditions: string[]) {
         let message = `ConditionalError: You must follow the following rules:`;
-        for (let condition of conditions) {
+        for (const condition of conditions) {
             message += `\n\t${condition}`;
         }
         throw message;
@@ -17,7 +24,7 @@ class Point {
         this.y = y;
     }
 
-    /** 
+    /**
      * 2点間の距離を求める
      * */
     static dist(p1: Point, p2: Point) {
@@ -35,12 +42,12 @@ class Point {
      * 特定の点に対して対称な点を求める
      * */
     static getSymmetricPoint(p: Point, center: Point) {
-        let x = center.x - p.x;
-        let y = center.y - p.y;
+        const x = center.x - p.x;
+        const y = center.y - p.y;
         return new Point(center.x + x, center.y + y);
     }
 
-    /** 
+    /**
      * 3点間の重心を求める
      * */
     static getBarycenter(p1: Point, p2: Point, p3: Point) {
@@ -51,12 +58,12 @@ class Point {
      * 外心を求める
      */
     static getCircumcenter(p1: Point, p2: Point, p3: Point) {
-        let l1 = new Line(p1, p2);
-        let l2 = new Line(p2, p3);
+        const l1 = new Line(p1, p2);
+        const l2 = new Line(p2, p3);
         // let l3 = new Line(p3, p1);
 
-        let perpendicularBisector1 = l1.getPerpendicularBisector();
-        let perpendicularBisector2 = l2.getPerpendicularBisector();
+        const perpendicularBisector1 = l1.getPerpendicularBisector();
+        const perpendicularBisector2 = l2.getPerpendicularBisector();
 
         return perpendicularBisector1.getIntersection(perpendicularBisector2);
     }
@@ -65,18 +72,18 @@ class Point {
      * 垂心を求める
      */
     static getOrthocenter(p1: Point, p2: Point, p3: Point) {
-        let x1 = p1.x;
-        let y1 = p1.y;
-        let x2 = p2.x;
-        let y2 = p2.y;
-        let x3 = p3.x;
-        let y3 = p3.y;
+        const x1 = p1.x;
+        const y1 = p1.y;
+        const x2 = p2.x;
+        const y2 = p2.y;
+        const x3 = p3.x;
+        const y3 = p3.y;
 
-        let l1 = new Linear(`${(y2 - y1) / (x2 - x1)}x+${-((y2 - y1) / (x2 - x1)) + y1}`);
-        let l2 = new Linear(`${(y3 - y2) / (x3 - x2)}x+${-((y3 - y2) / (x3 - x2)) + y2}`);
+        const l1 = new Linear(`${(y2 - y1) / (x2 - x1)}x+${-((y2 - y1) / (x2 - x1)) + y1}`);
+        const l2 = new Linear(`${(y3 - y2) / (x3 - x2)}x+${-((y3 - y2) / (x3 - x2)) + y2}`);
 
-        let perpendicularLinear1 = l1.getPerpendicularLinear(p3);
-        let perpendicularLinear2 = l2.getPerpendicularLinear(p1);
+        const perpendicularLinear1 = l1.getPerpendicularLinear(p3);
+        const perpendicularLinear2 = l2.getPerpendicularLinear(p1);
 
         return perpendicularLinear1.getIntersection(perpendicularLinear2);
     }
@@ -85,19 +92,19 @@ class Point {
      * 内心を求める
      */
     static getInnerCenter(p1: Point, p2: Point, p3: Point) {
-        let A = p1;
-        let B = p2;
-        let C = p3;
+        const A = p1;
+        const B = p2;
+        const C = p3;
 
-        let AB = new Line(A, B);
-        let BC = new Line(B, C);
-        let CA = new Line(C, A);
+        const AB = new Line(A, B);
+        const BC = new Line(B, C);
+        const CA = new Line(C, A);
 
-        let P = BC.getDividingPoint(AB.getLength(), CA.getLength());
-        let Q = CA.getDividingPoint(BC.getLength(), AB.getLength());
+        const P = BC.getDividingPoint(AB.getLength(), CA.getLength());
+        const Q = CA.getDividingPoint(BC.getLength(), AB.getLength());
 
-        let AP = new Line(A, P);
-        let BQ = new Line(B, Q);
+        const AP = new Line(A, P);
+        const BQ = new Line(B, Q);
 
         return AP.getIntersection(BQ);
     }
@@ -106,21 +113,21 @@ class Point {
      * 傍心を求める
      */
     static getExcenters(p1: Point, p2: Point, p3: Point) {
-        let A = p1;
-        let B = p2;
-        let C = p3;
+        const A = p1;
+        const B = p2;
+        const C = p3;
 
-        let BA = new Line(A, B);
-        let CB = new Line(B, C);
-        let AC = new Line(C, A);
+        const BA = new Line(A, B);
+        const CB = new Line(B, C);
+        const AC = new Line(C, A);
 
-        let P = CB.getDividingPoint(BA.getLength(), -AC.getLength());
-        let Q = BA.getDividingPoint(AC.getLength(), -CB.getLength());
-        let R = AC.getDividingPoint(CB.getLength(), -BA.getLength());
+        const P = CB.getDividingPoint(BA.getLength(), -AC.getLength());
+        const Q = BA.getDividingPoint(AC.getLength(), -CB.getLength());
+        const R = AC.getDividingPoint(CB.getLength(), -BA.getLength());
 
-        let AP = new Line(A, P);
-        let CQ = new Line(C, Q);
-        let BR = new Line(B, R);
+        const AP = new Line(A, P);
+        const CQ = new Line(C, Q);
+        const BR = new Line(B, R);
 
         return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     }
@@ -129,8 +136,8 @@ class Point {
      * 基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, this);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line(center, this);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
         return new Point(p1.x, p1.y);
     }
 
@@ -212,11 +219,11 @@ class Line {
      * 点と直線の距離を求める
      *  */
     getDistBetweenPoint(p: Point) {
-        let a =
+        const a =
             (this.end.y - this.start.y) /
             (this.end.x - this.start.x);
-        let b = -1;
-        let c = this.start.y - (a * this.start.x);
+        const b = -1;
+        const c = this.start.y - (a * this.start.x);
         if (a === Infinity) return Math.abs(this.start.x - p.x);
         return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(a ** 2 + b ** 2);
     }
@@ -225,10 +232,10 @@ class Line {
      * 延長線上を含め直線同士の交点を求める
      */
     getIntersection(l: Line) {
-        let a = (l.end.y - l.start.y) / (l.end.x - l.start.x);
-        let b = l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x;
-        let c = (this.end.y - this.start.y) / (this.end.x - this.start.x);
-        let d = this.start.y - (this.end.y - this.start.y) / (this.end.x - this.start.x) * this.start.x;
+        const a = (l.end.y - l.start.y) / (l.end.x - l.start.x);
+        const b = l.start.y - (l.end.y - l.start.y) / (l.end.x - l.start.x) * l.start.x;
+        const c = (this.end.y - this.start.y) / (this.end.x - this.start.x);
+        const d = this.start.y - (this.end.y - this.start.y) / (this.end.x - this.start.x) * this.start.x;
         if (a === c) return new Point(NaN, NaN);
         else if (a === Infinity) return new Point(l.start.x, c * l.start.x + d);
         else if (c === Infinity) return new Point(this.start.x, a * this.start.x + b);
@@ -239,20 +246,20 @@ class Line {
      * 直線同士の交点を求める
      */
     getIntersectionStrict(l: Line) {
-        let x1 = this.start.x;
-        let y1 = this.start.y;
-        let x2 = this.end.x;
-        let y2 = this.end.y;
-        let x3 = l.start.x;
-        let y3 = l.start.y;
-        let x4 = l.end.x;
-        let y4 = l.end.y;
+        const x1 = this.start.x;
+        const y1 = this.start.y;
+        const x2 = this.end.x;
+        const y2 = this.end.y;
+        const x3 = l.start.x;
+        const y3 = l.start.y;
+        const x4 = l.end.x;
+        const y4 = l.end.y;
 
-        var a1 = (y2 - y1) / (x2 - x1),
-            a2 = (y4 - y3) / (x4 - x3);
+        const a1 = (y2 - y1) / (x2 - x1);
+        const a2 = (y4 - y3) / (x4 - x3);
 
-        var x = (a1 * x1 - y1 - a2 * x3 + y3) / (a1 - a2),
-            y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
+        const x = (a1 * x1 - y1 - a2 * x3 + y3) / (a1 - a2);
+        const y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
 
         if (Math.abs(a1) === Math.abs(a2)) return new Point(NaN, NaN);
 
@@ -270,12 +277,12 @@ class Line {
      * 垂直二等分線を求める
      */
     getPerpendicularBisector() {
-        let x1 = this.start.x;
-        let y1 = this.start.y;
-        let x2 = this.end.x;
-        let y2 = this.end.y;
+        const x1 = this.start.x;
+        const y1 = this.start.y;
+        const x2 = this.end.x;
+        const y2 = this.end.y;
 
-        let linear = new Linear(`${(y2 - y1) / (x2 - x1)}x+${(-(y2 - y1) / (x2 - x1) * x1) + y1}`);
+        const linear = new Linear(`${(y2 - y1) / (x2 - x1)}x+${(-(y2 - y1) / (x2 - x1) * x1) + y1}`);
 
         return linear.getPerpendicularLinear(this.getMidpoint());
         // 戻り値が関数ってやばくね？
@@ -285,10 +292,10 @@ class Line {
      * 直線を基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, this.start);
-        let l2 = new Line(center, this.end);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line(center, this.start);
+        const l2 = new Line(center, this.end);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
         return new Line(p1, p2);
     }
 
@@ -349,13 +356,13 @@ class Triangle {
         return Point.getExcenters(this.p1, this.p2, this.p3);
     }
 
-    /** 
+    /**
      * 辺の長さの和を求める
      *  */
     getAroundLength() {
-        let p1 = new Line(this.p1, this.p2);
-        let p2 = new Line(this.p2, this.p3);
-        let p3 = new Line(this.p3, this.p1);
+        const p1 = new Line(this.p1, this.p2);
+        const p2 = new Line(this.p2, this.p3);
+        const p3 = new Line(this.p3, this.p1);
         return p1.getLength() + p2.getLength() + p3.getLength();
     }
 
@@ -387,12 +394,12 @@ class Triangle {
      * 三角形を基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, this.p1);
-        let l2 = new Line(center, this.p2);
-        let l3 = new Line(center, this.p3);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
-        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line(center, this.p1);
+        const l2 = new Line(center, this.p2);
+        const l3 = new Line(center, this.p3);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const p3 = l3.getDividingPoint(-magnification, magnification - 1);
         return new Triangle(p1, p2, p3);
     }
 
@@ -427,8 +434,8 @@ class Quad {
      * 四角形の面積を求める
      *  */
     getArea() {
-        let triangle1 = new Triangle(this.p1, this.p2, this.p3);
-        let triangle2 = new Triangle(this.p2, this.p3, this.p4);
+        const triangle1 = new Triangle(this.p1, this.p2, this.p3);
+        const triangle2 = new Triangle(this.p2, this.p3, this.p4);
         return triangle1.getArea() + triangle2.getArea();
     }
 
@@ -436,10 +443,10 @@ class Quad {
      * 辺の長さの和を求める
      *  */
     getAroundLength() {
-        let l1 = new Line(this.p1, this.p2);
-        let l2 = new Line(this.p2, this.p3);
-        let l3 = new Line(this.p3, this.p4);
-        let l4 = new Line(this.p4, this.p1);
+        const l1 = new Line(this.p1, this.p2);
+        const l2 = new Line(this.p2, this.p3);
+        const l3 = new Line(this.p3, this.p4);
+        const l4 = new Line(this.p4, this.p1);
         return l1.getLength() + l2.getLength() + l3.getLength() + l4.getLength();
     }
 
@@ -459,14 +466,14 @@ class Quad {
      * 四角形を基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, this.p1);
-        let l2 = new Line(center, this.p2);
-        let l3 = new Line(center, this.p3);
-        let l4 = new Line(center, this.p4);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
-        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
-        let p4 = l4.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line(center, this.p1);
+        const l2 = new Line(center, this.p2);
+        const l3 = new Line(center, this.p3);
+        const l4 = new Line(center, this.p4);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        const p4 = l4.getDividingPoint(-magnification, magnification - 1);
         return new Quad(p1, p2, p3, p4);
     }
 
@@ -487,7 +494,6 @@ class Quad {
 }
 
 class Polygon {
-
     points: Point[];
     lines: Line[];
 
@@ -498,11 +504,11 @@ class Polygon {
             if (i < this.points.length - 1) {
                 this.lines.push(
                     new Line(this.points[i], this.points[i + 1])
-                )
+                );
             } else {
                 this.lines.push(
                     new Line(this.points[i], this.points[0])
-                )
+                );
             }
         }
     }
@@ -512,7 +518,7 @@ class Polygon {
      */
     getAroundLength() {
         let result = 0;
-        for (let line of this.lines) {
+        for (const line of this.lines) {
             result += line.getLength();
         }
         return result;
@@ -522,8 +528,8 @@ class Polygon {
      * 基準点に対して対称な多角形を求める
      */
     getSymmetricPolygon(center: Point) {
-        let points: Point[] = [];
-        for (let point of this.points) {
+        const points: Point[] = [];
+        for (const point of this.points) {
             points.push(Point.getSymmetricPoint(point, center));
         }
         return new Polygon(points);
@@ -533,10 +539,10 @@ class Polygon {
      * 多角形を基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let magnifiedPoints: Point[] = [];
-        for (let point of this.points) {
-            let l = new Line(center, point);
-            let p = l.getDividingPoint(-magnification, magnification - 1);
+        const magnifiedPoints: Point[] = [];
+        for (const point of this.points) {
+            const l = new Line(center, point);
+            const p = l.getDividingPoint(-magnification, magnification - 1);
             magnifiedPoints.push(p);
         }
         return new Polygon(magnifiedPoints);
@@ -545,7 +551,7 @@ class Polygon {
     draw() {
         // @ts-ignore
         beginShape();
-        for (let point of this.points) {
+        for (const point of this.points) {
             // @ts-ignore
             vertex(point.x, point.y);
         }
@@ -555,7 +561,6 @@ class Polygon {
 }
 
 class Circle {
-
     center: Point;
     x: number;
     y: number;
@@ -587,8 +592,8 @@ class Circle {
      * 基準点に対して対称な円を求める
      */
     getSymmetricCircle(center: Point) {
-        let p = this.center;
-        let { x, y } = Point.getSymmetricPoint(p, center);
+        const p = this.center;
+        const { x, y } = Point.getSymmetricPoint(p, center);
         return new Circle(x, y, this.r);
     }
 
@@ -596,8 +601,8 @@ class Circle {
      * 円を基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, this);
-        let p = l1.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line(center, this);
+        const p = l1.getDividingPoint(-magnification, magnification - 1);
         return new Circle(p.x, p.y, this.r * magnification);
     }
 
@@ -608,7 +613,6 @@ class Circle {
 }
 
 class Point3D {
-
     x: number;
     y: number;
     z: number;
@@ -633,13 +637,13 @@ class Point3D {
      * 特定の点に対して対称な点を求める
      * */
     static getSymmetricPoint(p: Point3D, center: Point3D) {
-        let x = center.x - p.x;
-        let y = center.y - p.y;
-        let z = center.z - p.z;
+        const x = center.x - p.x;
+        const y = center.y - p.y;
+        const z = center.z - p.z;
         return new Point3D(center.x + x, center.y + y, center.z + z);
     }
 
-    /** 
+    /**
      * 3点間の重心を求める
      * */
     static getBarycenter(p1: Point3D, p2: Point3D, p3: Point3D) {
@@ -728,8 +732,8 @@ class Point3D {
      * 点を基準点に合わせて拡大縮小する
      */
     magnify(center: Point3D, magnification: number) {
-        let l1 = new Line3D(center, this);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line3D(center, this);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
         return new Point3D(p1.x, p1.y, p1.z);
     }
     /**
@@ -746,7 +750,6 @@ class Point3D {
 }
 
 class Line3D {
-
     start: Point3D;
     end: Point3D;
     constructor(start: Point3D, end: Point3D) {
@@ -886,10 +889,10 @@ class Line3D {
      * 線を基準点に合わせて拡大縮小する
      */
     magnify(center: Point3D, magnification: number) {
-        let l1 = new Line3D(center, this.start);
-        let l2 = new Line3D(center, this.end);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line3D(center, this.start);
+        const l2 = new Line3D(center, this.end);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
         return new Line3D(p1, p2);
     }
 
@@ -922,13 +925,13 @@ class Triangle3D {
         return Point3D.getBarycenter(this.p1, this.p2, this.p3);
     }
 
-    /** 
+    /**
      * 辺の長さの和を求める
      *  */
     getAroundLength() {
-        let p1 = new Line3D(this.p1, this.p2);
-        let p2 = new Line3D(this.p2, this.p3);
-        let p3 = new Line3D(this.p3, this.p1);
+        const p1 = new Line3D(this.p1, this.p2);
+        const p2 = new Line3D(this.p2, this.p3);
+        const p3 = new Line3D(this.p3, this.p1);
         return p1.getLength() + p2.getLength() + p3.getLength();
     }
 
@@ -936,11 +939,11 @@ class Triangle3D {
      * 三角形の面積を求める
      *  */
     getArea() {
-        let a = this.l1.getLength();
-        let b = this.l2.getLength();
-        let c = this.l3.getLength();
-        let s = (a + b + c) / 2;
-        let S = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+        const a = this.l1.getLength();
+        const b = this.l2.getLength();
+        const c = this.l3.getLength();
+        const s = (a + b + c) / 2;
+        const S = Math.sqrt(s * (s - a) * (s - b) * (s - c));
         return S;
     }
 
@@ -959,12 +962,12 @@ class Triangle3D {
      * 三角形を基準点に合わせて拡大縮小する
      */
     magnify(center: Point3D, magnification: number) {
-        let l1 = new Line3D(center, this.p1);
-        let l2 = new Line3D(center, this.p2);
-        let l3 = new Line3D(center, this.p3);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
-        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line3D(center, this.p1);
+        const l2 = new Line3D(center, this.p2);
+        const l3 = new Line3D(center, this.p3);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const p3 = l3.getDividingPoint(-magnification, magnification - 1);
         return new Triangle3D(p1, p2, p3);
     }
 
@@ -1006,14 +1009,14 @@ class Quad3D {
      * 四角形を基準点に合わせて拡大縮小する
      */
     magnify(center: Point3D, magnification: number) {
-        let l1 = new Line3D(center, this.p1);
-        let l2 = new Line3D(center, this.p2);
-        let l3 = new Line3D(center, this.p3);
-        let l4 = new Line3D(center, this.p4);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
-        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
-        let p4 = l4.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line3D(center, this.p1);
+        const l2 = new Line3D(center, this.p2);
+        const l3 = new Line3D(center, this.p3);
+        const l4 = new Line3D(center, this.p4);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        const p4 = l4.getDividingPoint(-magnification, magnification - 1);
         return new Quad3D(p1, p2, p3, p4);
     }
 
@@ -1034,7 +1037,6 @@ class Quad3D {
 }
 
 class Box {
-
     x: number;
     y: number;
     z: number;
@@ -1068,20 +1070,20 @@ class Box {
      * 直方体を基準点に合わせて拡大縮小する
      */
     magnify(center: Point3D, magnification: number) {
-        let boxCenter = new Point3D(
+        const boxCenter = new Point3D(
             this.x + this.w / 2,
             this.y + this.h / 2,
             this.z + this.d / 2
         );
-        let l1 = new Line3D(center, boxCenter);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line3D(center, boxCenter);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
 
-        let w = this.w * magnification;
-        let h = this.h * magnification;
-        let d = this.d * magnification;
-        let x = p1.x - w / 2;
-        let y = p1.y - h / 2;
-        let z = p1.z - d / 2;
+        const w = this.w * magnification;
+        const h = this.h * magnification;
+        const d = this.d * magnification;
+        const x = p1.x - w / 2;
+        const y = p1.y - h / 2;
+        const z = p1.z - d / 2;
 
         return new Box(x, y, z, w, h, d);
     }
@@ -1099,7 +1101,6 @@ class Box {
 }
 
 class Sphere {
-
     x: number;
     y: number;
     z: number;
@@ -1122,15 +1123,15 @@ class Sphere {
      * 体積を求める
      */
     getVolume() {
-        return (4 * Math.PI * this.r ** 3) / 3
+        return (4 * Math.PI * this.r ** 3) / 3;
     }
 
     /**
      * 球を基準点に合わせて拡大縮小する
      */
     magnify(center: Point3D, magnification: number) {
-        let l1 = new Line3D(center, this);
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line3D(center, this);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
         return new Sphere(p1.x, p1.y, p1.z, this.r * magnification);
     }
 
@@ -1147,7 +1148,6 @@ class Sphere {
 }
 
 class Linear {
-
     slope: number;
     yIntercept: number;
 
@@ -1175,12 +1175,12 @@ class Linear {
     // }
 
     setForms(formula: string) {
-        let array = formula.replace(/\s/g, "").split(/\+|x/).filter(v => v);
+        const array = formula.replace(/\s/g, "").split(/\+|x/).filter(v => v);
         this.slope = Number(array[0]);
         this.yIntercept = Number(array[1]);
 
-        let stringSlope = String(this.slope);
-        let stringYIntercept = this.yIntercept >= 0 ? "+" + String(this.yIntercept) : String(this.yIntercept);
+        const stringSlope = String(this.slope);
+        const stringYIntercept = this.yIntercept >= 0 ? "+" + String(this.yIntercept) : String(this.yIntercept);
         this.vertexForm = `${stringSlope}x${stringYIntercept}`;
     }
 
@@ -1195,10 +1195,10 @@ class Linear {
      * 一次関数同士の交点を求める
      */
     getIntersection(linear: Linear) {
-        let a = this.slope;
-        let b = this.yIntercept;
-        let c = linear.slope;
-        let d = linear.yIntercept;
+        const a = this.slope;
+        const b = this.yIntercept;
+        const c = linear.slope;
+        const d = linear.yIntercept;
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     }
 
@@ -1206,9 +1206,9 @@ class Linear {
      * 基準となる一次関数に垂直な一次関数をもとめる
      */
     getPerpendicularLinear(p: Point) {
-        let a = this.slope;
-        let x1 = p.x;
-        let y1 = p.y;
+        const a = this.slope;
+        const x1 = p.x;
+        const y1 = p.y;
         return new Linear(`${-1 / a}x+${x1 / a + y1}`);
     }
 
@@ -1216,10 +1216,10 @@ class Linear {
      * 一次関数を基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, new Point(0, this.yIntercept));
-        let l2 = new Line(center, new Point(5, this.getY(5)));
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const l1 = new Line(center, new Point(0, this.yIntercept));
+        const l2 = new Line(center, new Point(5, this.getY(5)));
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
         return Linear.estimateLinearByTwoPoints(p1, p2);
     }
 
@@ -1227,8 +1227,8 @@ class Linear {
      * 2点を通る一次関数を求める
      */
     static estimateLinearByTwoPoints(p1: Point, p2: Point) {
-        let a = (p2.y - p1.y) / (p2.x - p1.x);
-        let b = (p1.y - a * p1.x);
+        const a = (p2.y - p1.y) / (p2.x - p1.x);
+        const b = (p1.y - a * p1.x);
         return new Linear(`${a}x+${b}`);
     }
 
@@ -1236,7 +1236,7 @@ class Linear {
         // @ts-ignore
         beginShape();
         for (let x = min; x < max; x++) {
-            let y = this.getY(x);
+            const y = this.getY(x);
             // @ts-ignore
             vertex(x, y);
         }
@@ -1258,10 +1258,9 @@ class Quadratic {
 
     /**
      * x^2, xの係数, 定数項が0, 1であっても入力すること
-     * @param formula 
+     * @param formula
      */
     constructor(formula: string) {
-
         this.setForms(formula);
 
         this.a;
@@ -1297,40 +1296,38 @@ class Quadratic {
      */
     setForms(formula: string) {
         if (Quadratic.judgeForm(formula) === "vertex") {
-            let array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(v => v);
+            const array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(v => v);
             this.a = Number(array[0]);
             this.b = Number(array[1]);
             this.c = Number(array[2]);
 
-            let stringA = String(this.a);
-            let stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
-            let stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
+            const stringA = String(this.a);
+            const stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
+            const stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
             this.vertexForm = `${stringA}x^2${stringB}x${stringC}`;
 
             this.p = -this.b / (2 * this.a);
             this.q = -(this.b ** 2 - 4 * this.a * this.c) / (4 * this.a);
 
-            let stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
-            let stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
+            const stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
+            const stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
             this.standardForm = `${stringA}(x${stringP})^2${stringQ}`;
-
         } else if (Quadratic.judgeForm(formula) === "standard") {
-
-            let array = formula.replace(/\s/g, "").split(/\(|\)|\+|x|\^2/).filter(v => v);
+            const array = formula.replace(/\s/g, "").split(/\(|\)|\+|x|\^2/).filter(v => v);
             this.a = Number(array[0]);
             this.p = Number(array[1]) * (-1);
             this.q = Number(array[2]);
 
-            let stringA = String(this.a);
-            let stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
-            let stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
+            const stringA = String(this.a);
+            const stringP = this.p * (-1) >= 0 ? "+" + String(this.p * (-1)) : String(this.p * (-1));
+            const stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
             this.standardForm = `${stringA}(x${stringP})^2${stringQ}`;
 
             this.b = -2 * this.a * this.p;
             this.c = this.a * this.p ** 2 + this.q;
 
-            let stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
-            let stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
+            const stringB = this.b >= 0 ? "+" + String(this.b) : String(this.b);
+            const stringC = this.c >= 0 ? "+" + String(this.c) : String(this.c);
             this.vertexForm = `${stringA}x^2${stringB}x${stringC}`;
         }
     }
@@ -1360,9 +1357,9 @@ class Quadratic {
      * 基準点に対して対称な二次関数を求める
      */
     getSymmetricQuadratic(center: Point) {
-        let a = -this.a;
-        let p = -Point.getSymmetricPoint(this.getVertex(), center).x;
-        let q = Point.getSymmetricPoint(this.getVertex(), center).y;
+        const a = -this.a;
+        const p = -Point.getSymmetricPoint(this.getVertex(), center).x;
+        const q = Point.getSymmetricPoint(this.getVertex(), center).y;
         return new Quadratic(`${a}(x +${p})^2 + ${q}`);
     }
 
@@ -1370,16 +1367,16 @@ class Quadratic {
      * 二次関数と一次関数の交点を求める
      */
     getIntersectionsOfQL(linear: Linear) {
-        let a = this.a;
-        let b = this.b;
-        let c = this.c;
-        let d = linear.slope;
-        let e = linear.yIntercept;
+        const a = this.a;
+        const b = this.b;
+        const c = this.c;
+        const d = linear.slope;
+        const e = linear.yIntercept;
 
-        let x1 = (d - b + Math.sqrt((b - d) ** 2 - 4 * a * (c - e))) / (2 * a);
-        let y1 = d * x1 + e;
-        let x2 = (d - b - Math.sqrt((b - d) ** 2 - 4 * a * (c - e))) / (2 * a);
-        let y2 = d * x2 + e;
+        const x1 = (d - b + Math.sqrt((b - d) ** 2 - 4 * a * (c - e))) / (2 * a);
+        const y1 = d * x1 + e;
+        const x2 = (d - b - Math.sqrt((b - d) ** 2 - 4 * a * (c - e))) / (2 * a);
+        const y2 = d * x2 + e;
 
         return [new Point(x1, y1), new Point(x2, y2)];
     }
@@ -1388,22 +1385,22 @@ class Quadratic {
      * 二次関数同士の交点を求める
      */
     getIntersectionsOfQQ(quadratic: Quadratic) {
-        let a = this.a;
-        let b = this.b;
-        let c = this.c;
-        let d = quadratic.a;
-        let e = quadratic.b;
-        let f = quadratic.c;
+        const a = this.a;
+        const b = this.b;
+        const c = this.c;
+        const d = quadratic.a;
+        const e = quadratic.b;
+        const f = quadratic.c;
 
         if (a === d) {
-            let x = (f - c) / (b - e);
-            let y = a * x ** 2 + b * x + c;
+            const x = (f - c) / (b - e);
+            const y = a * x ** 2 + b * x + c;
             return [new Point(x, y), new Point(NaN, NaN)];
         } else {
-            let x1 = (e - b + Math.sqrt((b - e) ** 2 - 4 * (a - d) * (c - f))) / (2 * (a - d));
-            let y1 = a * x1 ** 2 + b * x1 + c;
-            let x2 = (e - b - Math.sqrt((b - e) ** 2 - 4 * (a - d) * (c - f))) / (2 * (a - d));
-            let y2 = a * x2 ** 2 + b * x2 + c;
+            const x1 = (e - b + Math.sqrt((b - e) ** 2 - 4 * (a - d) * (c - f))) / (2 * (a - d));
+            const y1 = a * x1 ** 2 + b * x1 + c;
+            const x2 = (e - b - Math.sqrt((b - e) ** 2 - 4 * (a - d) * (c - f))) / (2 * (a - d));
+            const y2 = a * x2 ** 2 + b * x2 + c;
 
             return [new Point(x1, y1), new Point(x2, y2)];
         }
@@ -1413,11 +1410,11 @@ class Quadratic {
      * 二次関数の接線を求める
      */
     getTangentLinear(x: number) {
-        let a = this.a;
-        let b = this.b;
-        let c = this.c;
-        let d = 2 * a * x + b;
-        let e = (2 * b * d + 4 * a * c - b ** 2 - d ** 2) / (4 * a);
+        const a = this.a;
+        const b = this.b;
+        const c = this.c;
+        const d = 2 * a * x + b;
+        const e = (2 * b * d + 4 * a * c - b ** 2 - d ** 2) / (4 * a);
         return new Linear(`${d}x+${e}`);
     }
 
@@ -1425,8 +1422,8 @@ class Quadratic {
      * 二次関数の方線を求める
      */
     getNormalLinear(x: number) {
-        let l = this.differentiate();
-        return new Linear(`${-1/l.getY(x)}x+${x/l.getY(x)+this.getY(x)}`);
+        const l = this.differentiate();
+        return new Linear(`${-1 / l.getY(x)}x+${x / l.getY(x) + this.getY(x)}`);
     }
 
     /**
@@ -1439,16 +1436,15 @@ class Quadratic {
     /**
      * 数学的にあっているかどうかは知らない
      * 二次関数を基準点に合わせて拡大する
-     * @returns 
      */
     magnify(center: Point, magnification: number) {
-        let l1 = new Line(center, this.getYIntercept());
-        let l2 = new Line(center, new Point(-5, this.getY(-5)));
-        let l3 = new Line(center, new Point(5, this.getY(5)))
+        const l1 = new Line(center, this.getYIntercept());
+        const l2 = new Line(center, new Point(-5, this.getY(-5)));
+        const l3 = new Line(center, new Point(5, this.getY(5)));
 
-        let p1 = l1.getDividingPoint(-magnification, magnification - 1);
-        let p2 = l2.getDividingPoint(-magnification, magnification - 1);
-        let p3 = l3.getDividingPoint(-magnification, magnification - 1);
+        const p1 = l1.getDividingPoint(-magnification, magnification - 1);
+        const p2 = l2.getDividingPoint(-magnification, magnification - 1);
+        const p3 = l3.getDividingPoint(-magnification, magnification - 1);
         return Quadratic.estimateQuadraticByThreePoints(p1, p2, p3);
     }
 
@@ -1456,8 +1452,8 @@ class Quadratic {
      * 二次関数を平行移動させる
      */
     moveQuadratic(x: number, y: number) {
-        let newP = -(this.p + x);
-        let newQ = this.q + y;
+        const newP = -(this.p + x);
+        const newQ = this.q + y;
         return new Quadratic(`${this.a}(x+${newP})^2+${newQ}`);
     }
 
@@ -1465,13 +1461,13 @@ class Quadratic {
      * aの値と、通る2点から二次関数を求める
      */
     static estimateQuadraticByAandTwoPoints(a: number, p1: Point, p2: Point) {
-        let x1 = p1.x;
-        let y1 = p1.y;
-        let x2 = p2.x;
-        let y2 = p2.y;
+        const x1 = p1.x;
+        const y1 = p1.y;
+        const x2 = p2.x;
+        const y2 = p2.y;
 
-        let b = ((y2 - y1) - a * (x2 ** 2 - x1 ** 2)) / (x2 - x1);
-        let c = y1 - a * x1 ** 2 - b * x1 ** 2;
+        const b = ((y2 - y1) - a * (x2 ** 2 - x1 ** 2)) / (x2 - x1);
+        const c = y1 - a * x1 ** 2 - b * x1 ** 2;
 
         return new Quadratic(`${a}x^2+${b}x+${c}`);
     }
@@ -1480,14 +1476,14 @@ class Quadratic {
      * 3点を通る二次関数を求める
      */
     static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
-        let x1 = p1.x;
-        let y1 = p1.y;
-        let x2 = p2.x;
-        let y2 = p2.y;
-        let x3 = p3.x;
-        let y3 = p3.y;
+        const x1 = p1.x;
+        const y1 = p1.y;
+        const x2 = p2.x;
+        const y2 = p2.y;
+        const x3 = p3.x;
+        const y3 = p3.y;
 
-        let b =
+        const b =
             (
                 ((y3 - y1) * x2 ** 2 - (y3 - y1) * x1 ** 2) -
                 ((y2 - y1) * x3 ** 2 - (y2 - y1) * x1 ** 2)
@@ -1497,14 +1493,14 @@ class Quadratic {
                 )
             );
 
-        let a = ((y2 - y1) - b * (x2 - x1)) / (x2 ** 2 - x1 ** 2);
+        const a = ((y2 - y1) - b * (x2 - x1)) / (x2 ** 2 - x1 ** 2);
 
-        let c = y1 - a * x1 ** 2 - b * x1;
+        const c = y1 - a * x1 ** 2 - b * x1;
 
         return new Quadratic(`${a}x^2+${b}x+${c}`);
     }
 
-    differentiate(){
+    differentiate() {
         return new Linear(`${2 * this.a}x+${this.b}`);
     }
 
@@ -1512,7 +1508,7 @@ class Quadratic {
         // @ts-ignore
         beginShape();
         for (let x = min; x < max; x++) {
-            let y = this.getY(x);
+            const y = this.getY(x);
             // @ts-ignore
             vertex(x, y);
         }

@@ -1,0 +1,29 @@
+{
+  "name": "shapeshape",
+  "version": "1.0.0",
+  "description": "![example](imgs/Screen%20Shot%202022-07-02%20at%2017.38.09%20copy.png) ## Purpose This library makes it easier to calculate shapes and mathematical functions.",
+  "main": "shapeshape.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gatolife-creater/ShapeLibrary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gatolife-creater/ShapeLibrary/issues"
+  },
+  "homepage": "https://github.com/gatolife-creater/ShapeLibrary#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "eslint": "^8.19.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}
