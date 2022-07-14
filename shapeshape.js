@@ -1100,11 +1100,13 @@ var Quadratic = /** @class */ (function () {
         var a = this.a;
         var b = this.b;
         var c = this.c;
-        // let d = 4 * a * x + b;
-        // let e = c - 4 * a * x ** 2;
         var d = 2 * a * x + b;
         var e = (2 * b * d + 4 * a * c - Math.pow(b, 2) - Math.pow(d, 2)) / (4 * a);
         return new Linear("".concat(d, "x+").concat(e));
+    };
+    Quadratic.prototype.getNormalLinear = function (x) {
+        var l = this.differentiate();
+        return new Linear("".concat(-1 / l.getY(x), "x+").concat(x / l.getY(x) + this.getY(x)));
     };
     /**
      * 二次方程式の解を求める
@@ -1163,6 +1165,9 @@ var Quadratic = /** @class */ (function () {
         var a = ((y2 - y1) - b * (x2 - x1)) / (Math.pow(x2, 2) - Math.pow(x1, 2));
         var c = y1 - a * Math.pow(x1, 2) - b * x1;
         return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
+    };
+    Quadratic.prototype.differentiate = function () {
+        return new Linear("".concat(2 * this.a, "x+").concat(this.b));
     };
     Quadratic.prototype.draw = function (min, max) {
         // @ts-ignore

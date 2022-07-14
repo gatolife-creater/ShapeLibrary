@@ -569,20 +569,32 @@ class Circle {
         this.d = r * 2;
     }
 
+    /**
+     * 円周の長さを求める
+     */
     getAround() {
         return 2 * Math.PI * this.r;
     }
 
+    /**
+     * 円の面積をもとめる
+     */
     getArea() {
         return Math.PI * this.r ** 2;
     }
 
+    /**
+     * 基準点に対して対称な円を求める
+     */
     getSymmetricCircle(center: Point) {
         let p = this.center;
         let { x, y } = Point.getSymmetricPoint(p, center);
         return new Circle(x, y, this.r);
     }
 
+    /**
+     * 円を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point, magnification: number) {
         let l1 = new Line(center, this);
         let p = l1.getDividingPoint(-magnification, magnification - 1);
@@ -712,6 +724,9 @@ class Point3D {
     //     return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     // }
 
+    /**
+     * 点を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point3D, magnification: number) {
         let l1 = new Line3D(center, this);
         let p1 = l1.getDividingPoint(-magnification, magnification - 1);
@@ -867,6 +882,9 @@ class Line3D {
     //     // 戻り値が関数ってやばくね？
     // }
 
+    /**
+     * 線を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point3D, magnification: number) {
         let l1 = new Line3D(center, this.start);
         let l2 = new Line3D(center, this.end);
@@ -897,6 +915,9 @@ class Triangle3D {
         this.l3 = new Line3D(p3, p1);
     }
 
+    /**
+     * 三角形の重心を求める
+     */
     getBarycenter() {
         return Point3D.getBarycenter(this.p1, this.p2, this.p3);
     }
@@ -934,6 +955,9 @@ class Triangle3D {
         );
     }
 
+    /**
+     * 三角形を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point3D, magnification: number) {
         let l1 = new Line3D(center, this.p1);
         let l2 = new Line3D(center, this.p2);
@@ -1026,14 +1050,23 @@ class Box {
         this.d = d;
     }
 
+    /**
+     * 表面積を求める
+     */
     getSurfaceArea() {
         return 2 * (this.w * this.h + this.h * this.d + this.d * this.w);
     }
 
+    /**
+     * 体積を求める
+     */
     getVolume() {
         return this.w * this.h * this.d;
     }
 
+    /**
+     * 直方体を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point3D, magnification: number) {
         let boxCenter = new Point3D(
             this.x + this.w / 2,
@@ -1078,14 +1111,23 @@ class Sphere {
         this.r = r;
     }
 
+    /**
+     * 表面積を求める
+     */
     getSurfaceArea() {
         return 4 * Math.PI * this.r ** 2;
     }
 
+    /**
+     * 体積を求める
+     */
     getVolume() {
         return (4 * Math.PI * this.r ** 3) / 3
     }
 
+    /**
+     * 球を基準点に合わせて拡大縮小する
+     */
     magnify(center: Point3D, magnification: number) {
         let l1 = new Line3D(center, this);
         let p1 = l1.getDividingPoint(-magnification, magnification - 1);
@@ -1374,11 +1416,17 @@ class Quadratic {
         let a = this.a;
         let b = this.b;
         let c = this.c;
-        // let d = 4 * a * x + b;
-        // let e = c - 4 * a * x ** 2;
         let d = 2 * a * x + b;
         let e = (2 * b * d + 4 * a * c - b ** 2 - d ** 2) / (4 * a);
         return new Linear(`${d}x+${e}`);
+    }
+
+    /**
+     * 二次関数の方線を求める
+     */
+    getNormalLinear(x: number) {
+        let l = this.differentiate();
+        return new Linear(`${-1/l.getY(x)}x+${x/l.getY(x)+this.getY(x)}`);
     }
 
     /**
@@ -1454,6 +1502,10 @@ class Quadratic {
         let c = y1 - a * x1 ** 2 - b * x1;
 
         return new Quadratic(`${a}x^2+${b}x+${c}`);
+    }
+
+    differentiate(){
+        return new Linear(`${2 * this.a}x+${this.b}`);
     }
 
     draw(min: number, max: number) {
