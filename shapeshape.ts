@@ -133,6 +133,34 @@ class Point {
     }
 
     /**
+     * 3点を通る二次関数を求める
+     */
+     static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
+        const x1 = p1.x;
+        const y1 = p1.y;
+        const x2 = p2.x;
+        const y2 = p2.y;
+        const x3 = p3.x;
+        const y3 = p3.y;
+
+        const b =
+            (
+                ((y3 - y1) * x2 ** 2 - (y3 - y1) * x1 ** 2) -
+                ((y2 - y1) * x3 ** 2 - (y2 - y1) * x1 ** 2)
+            ) /
+            ((x2 - x1) * (x1 ** 2 - x3 ** 2) -
+                ((x3 - x1) * (x1 ** 2 - x2 ** 2)
+                )
+            );
+
+        const a = ((y2 - y1) - b * (x2 - x1)) / (x2 ** 2 - x1 ** 2);
+
+        const c = y1 - a * x1 ** 2 - b * x1;
+
+        return new Quadratic(`${a}x^2+${b}x+${c}`);
+    }
+
+    /**
      * 基準点に合わせて拡大縮小する
      */
     magnify(center: Point, magnification: number) {
@@ -336,6 +364,15 @@ class Triangle {
     }
 
     /**
+     * 三角形の外接円を求める
+     */
+    getCircumscribedCircle() {
+        const circumcenter = this.getCircumcenter();
+        const r = Point.dist(circumcenter, this.p1);
+        return new Circle(circumcenter.x, circumcenter.y, r);
+    }
+
+    /**
      * 三角形の垂心を求める
      */
     getOrthocenter() {
@@ -347,6 +384,15 @@ class Triangle {
      */
     getInnerCenter() {
         return Point.getInnerCenter(this.p1, this.p2, this.p3);
+    }
+
+    /**
+     * 三角形の内接円を求める
+     */
+    getInscribedCircle() {
+        const innerCenter = this.getInnerCenter();
+        const r = this.l1.getDistBetweenPoint(innerCenter);
+        return new Circle(innerCenter.x, innerCenter.y, r);
     }
 
     /**
@@ -1476,28 +1522,7 @@ class Quadratic {
      * 3点を通る二次関数を求める
      */
     static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
-        const x1 = p1.x;
-        const y1 = p1.y;
-        const x2 = p2.x;
-        const y2 = p2.y;
-        const x3 = p3.x;
-        const y3 = p3.y;
-
-        const b =
-            (
-                ((y3 - y1) * x2 ** 2 - (y3 - y1) * x1 ** 2) -
-                ((y2 - y1) * x3 ** 2 - (y2 - y1) * x1 ** 2)
-            ) /
-            ((x2 - x1) * (x1 ** 2 - x3 ** 2) -
-                ((x3 - x1) * (x1 ** 2 - x2 ** 2)
-                )
-            );
-
-        const a = ((y2 - y1) - b * (x2 - x1)) / (x2 ** 2 - x1 ** 2);
-
-        const c = y1 - a * x1 ** 2 - b * x1;
-
-        return new Quadratic(`${a}x^2+${b}x+${c}`);
+        return Point.estimateQuadraticByThreePoints(p1, p2, p3);
     }
 
     differentiate() {

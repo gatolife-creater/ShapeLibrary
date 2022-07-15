@@ -111,6 +111,24 @@ var Point = /** @class */ (function () {
         return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     };
     /**
+     * 3点を通る二次関数を求める
+     */
+    Point.estimateQuadraticByThreePoints = function (p1, p2, p3) {
+        var x1 = p1.x;
+        var y1 = p1.y;
+        var x2 = p2.x;
+        var y2 = p2.y;
+        var x3 = p3.x;
+        var y3 = p3.y;
+        var b = (((y3 - y1) * Math.pow(x2, 2) - (y3 - y1) * Math.pow(x1, 2)) -
+            ((y2 - y1) * Math.pow(x3, 2) - (y2 - y1) * Math.pow(x1, 2))) /
+            ((x2 - x1) * (Math.pow(x1, 2) - Math.pow(x3, 2)) -
+                ((x3 - x1) * (Math.pow(x1, 2) - Math.pow(x2, 2))));
+        var a = ((y2 - y1) - b * (x2 - x1)) / (Math.pow(x2, 2) - Math.pow(x1, 2));
+        var c = y1 - a * Math.pow(x1, 2) - b * x1;
+        return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
+    };
+    /**
      * 基準点に合わせて拡大縮小する
      */
     Point.prototype.magnify = function (center, magnification) {
@@ -280,6 +298,14 @@ var Triangle = /** @class */ (function () {
         return Point.getCircumcenter(this.p1, this.p2, this.p3);
     };
     /**
+     * 三角形の外接円を求める
+     */
+    Triangle.prototype.getCircumscribedCircle = function () {
+        var circumcenter = this.getCircumcenter();
+        var r = Point.dist(circumcenter, this.p1);
+        return new Circle(circumcenter.x, circumcenter.y, r);
+    };
+    /**
      * 三角形の垂心を求める
      */
     Triangle.prototype.getOrthocenter = function () {
@@ -290,6 +316,14 @@ var Triangle = /** @class */ (function () {
      */
     Triangle.prototype.getInnerCenter = function () {
         return Point.getInnerCenter(this.p1, this.p2, this.p3);
+    };
+    /**
+     * 三角形の内接円を求める
+     */
+    Triangle.prototype.getInscribedCircle = function () {
+        var innerCenter = this.getInnerCenter();
+        var r = this.l1.getDistBetweenPoint(innerCenter);
+        return new Circle(innerCenter.x, innerCenter.y, r);
     };
     /**
      * 三角形の傍心を求める
@@ -1205,19 +1239,7 @@ var Quadratic = /** @class */ (function () {
      * 3点を通る二次関数を求める
      */
     Quadratic.estimateQuadraticByThreePoints = function (p1, p2, p3) {
-        var x1 = p1.x;
-        var y1 = p1.y;
-        var x2 = p2.x;
-        var y2 = p2.y;
-        var x3 = p3.x;
-        var y3 = p3.y;
-        var b = (((y3 - y1) * Math.pow(x2, 2) - (y3 - y1) * Math.pow(x1, 2)) -
-            ((y2 - y1) * Math.pow(x3, 2) - (y2 - y1) * Math.pow(x1, 2))) /
-            ((x2 - x1) * (Math.pow(x1, 2) - Math.pow(x3, 2)) -
-                ((x3 - x1) * (Math.pow(x1, 2) - Math.pow(x2, 2))));
-        var a = ((y2 - y1) - b * (x2 - x1)) / (Math.pow(x2, 2) - Math.pow(x1, 2));
-        var c = y1 - a * Math.pow(x1, 2) - b * x1;
-        return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
+        return Point.estimateQuadraticByThreePoints(p1, p2, p3);
     };
     Quadratic.prototype.differentiate = function () {
         return new Linear("".concat(2 * this.a, "x+").concat(this.b));
