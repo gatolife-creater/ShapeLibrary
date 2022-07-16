@@ -19,27 +19,35 @@ class Point {
     x: number;
     y: number;
 
+    /**
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
     }
 
     /**
-     * 2点間の距離を求める
+     * Find the distance between 2 points.
+     * 2点間の距離を求める。
      * */
     static dist(p1: Point, p2: Point) {
         return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
     }
 
     /**
-     * 中点を求める
+     * In search of the middle point.
+     * 中点を求める。
      *  */
     static getMidpoint(p1: Point, p2: Point) {
         return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
     }
 
     /**
-     * 特定の点に対して対称な点を求める
+     * Finding a symmetrical point for specific points.
+     * 特定の点に対して対称な点を求める。
      * */
     static getSymmetricPoint(p: Point, center: Point) {
         const x = center.x - p.x;
@@ -48,19 +56,20 @@ class Point {
     }
 
     /**
-     * 3点間の重心を求める
+     * Finding the center of gravity between 3 points.
+     * 3点間の重心を求める。
      * */
     static getBarycenter(p1: Point, p2: Point, p3: Point) {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     }
 
     /**
-     * 外心を求める
+     * Finding the circumcenter.
+     * 外心を求める。
      */
     static getCircumcenter(p1: Point, p2: Point, p3: Point) {
         const l1 = new Line(p1, p2);
         const l2 = new Line(p2, p3);
-        // let l3 = new Line(p3, p1);
 
         const perpendicularBisector1 = l1.getPerpendicularBisector();
         const perpendicularBisector2 = l2.getPerpendicularBisector();
@@ -69,7 +78,8 @@ class Point {
     }
 
     /**
-     * 垂心を求める
+     * Finding the orthocenter.
+     * 垂心を求める。
      */
     static getOrthocenter(p1: Point, p2: Point, p3: Point) {
         const x1 = p1.x;
@@ -89,7 +99,8 @@ class Point {
     }
 
     /**
-     * 内心を求める
+     * Finding the inner center.
+     * 内心を求める。
      */
     static getInnerCenter(p1: Point, p2: Point, p3: Point) {
         const A = p1;
@@ -110,7 +121,8 @@ class Point {
     }
 
     /**
-     * 傍心を求める
+     * Finding the excenters.
+     * 傍心を求める。
      */
     static getExcenters(p1: Point, p2: Point, p3: Point) {
         const A = p1;
@@ -133,7 +145,8 @@ class Point {
     }
 
     /**
-     * 3点を通る二次関数を求める
+     * Finding a secondary function through 3 points.
+     * 3点を通る二次関数を求める。
      */
      static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
         const x1 = p1.x;
@@ -161,7 +174,8 @@ class Point {
     }
 
     /**
-     * 基準点に合わせて拡大縮小する
+     * Enlarge and shrink according to the reference point.
+     * 基準点に合わせて拡大縮小する。
      */
     magnify(center: Point, magnification: number) {
         const l1 = new Line(center, this);
@@ -170,7 +184,8 @@ class Point {
     }
 
     /**
-     * 原点を求める
+     * Find the origin.
+     * 原点を求める。
      *  */
     static O() {
         return new Point(0, 0);
@@ -186,20 +201,27 @@ class Line {
     start: Point;
     end: Point;
 
+    /**
+     * 
+     * @param start Coordinate of start point
+     * @param end Coordinate of end point
+     */
     constructor(start: Point, end: Point) {
         this.start = start;
         this.end = end;
     }
 
     /**
-     * 線分を二分する点を求める
+     * Find the point that divides the line.
+     * 線分を二分する点を求める。
      *  */
     getMidpoint() {
         return Point.getMidpoint(this.start, this.end);
     }
 
     /**
-     * 内分点を求める
+     * Find the inner division.
+     * 内分点を求める。
      *  */
     getInteriorPoint(m: number, n: number) {
         if (m <= 0 || n <= 0) {
@@ -213,7 +235,8 @@ class Line {
     }
 
     /**
-     * 外分点を求める
+     * Finding the outer sorting point.
+     * 外分点を求める。
      *  */
     getExteriorPoint(m: number, n: number) {
         if (m <= 0 || n <= 0) {
@@ -227,7 +250,8 @@ class Line {
     }
 
     /**
-     * 内分点、外分点を求める
+     * Incidental divisions and outer sarings.
+     * 内分点、外分点を求める。
      */
     getDividingPoint(m: number, n: number) {
         return new Point(
@@ -237,14 +261,16 @@ class Line {
     }
 
     /**
-     * 線の長さを求める
+     * Find the length of the line.
+     * 線の長さを求める。
      *  */
     getLength() {
         return Point.dist(this.start, this.end);
     }
 
     /**
-     * 点と直線の距離を求める
+     * Find the distance between a point and a straight line.
+     * 点と直線の距離を求める。
      *  */
     getDistBetweenPoint(p: Point) {
         const a =
@@ -257,7 +283,8 @@ class Line {
     }
 
     /**
-     * 延長線上を含め直線同士の交点を求める
+     * Finding the intersection between straight lines, including extensions.
+     * 延長線上を含め直線同士の交点を求める。
      */
     getIntersection(l: Line) {
         const a = (l.end.y - l.start.y) / (l.end.x - l.start.x);
@@ -271,7 +298,8 @@ class Line {
     }
 
     /**
-     * 直線同士の交点を求める
+     * Finding the intersection between straight lines.
+     * 直線同士の交点を求める。
      */
     getIntersectionStrict(l: Line) {
         const x1 = this.start.x;
@@ -302,7 +330,8 @@ class Line {
     }
 
     /**
-     * 垂直二等分線を求める
+     * Finding a vertical binary division.
+     * 垂直二等分線を求める。
      */
     getPerpendicularBisector() {
         const x1 = this.start.x;
@@ -317,7 +346,8 @@ class Line {
     }
 
     /**
-     * 直線を基準点に合わせて拡大縮小する
+     * Enlarge a straight line according to the reference point.
+     * 直線を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point, magnification: number) {
         const l1 = new Line(center, this.start);
@@ -340,6 +370,12 @@ class Triangle {
     l1: Line;
     l2: Line;
     l3: Line;
+    /**
+     * 
+     * @param p1 First point of the triangle.
+     * @param p2 Second point of the triangle.
+     * @param p3 Third point of the triangle.
+     */
     constructor(p1: Point, p2: Point, p3: Point) {
         this.p1 = p1;
         this.p2 = p2;
@@ -350,21 +386,24 @@ class Triangle {
     }
 
     /**
-     * 三角形の重心を求める
+     * Finding a triangular center of gravity.
+     * 三角形の重心を求める。
      *  */
     getBarycenter() {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
     }
 
     /**
-     * 三角形の外心を求める
+     * Finding the circumcenter.
+     * 三角形の外心を求める。
      */
     getCircumcenter() {
         return Point.getCircumcenter(this.p1, this.p2, this.p3);
     }
 
     /**
-     * 三角形の外接円を求める
+     * Finding the circumscribed circle.
+     * 三角形の外接円を求める。
      */
     getCircumscribedCircle() {
         const circumcenter = this.getCircumcenter();
@@ -373,21 +412,24 @@ class Triangle {
     }
 
     /**
-     * 三角形の垂心を求める
+     * Finding the orthocenter.
+     * 三角形の垂心を求める。
      */
     getOrthocenter() {
         return Point.getOrthocenter(this.p1, this.p2, this.p3);
     }
 
     /**
-     * 三角形の内心を求める
+     * Finding the inner center.
+     * 三角形の内心を求める。
      */
     getInnerCenter() {
         return Point.getInnerCenter(this.p1, this.p2, this.p3);
     }
 
     /**
-     * 三角形の内接円を求める
+     * Finding the inscribe circle.
+     * 三角形の内接円を求める。
      */
     getInscribedCircle() {
         const innerCenter = this.getInnerCenter();
@@ -396,14 +438,16 @@ class Triangle {
     }
 
     /**
-     * 三角形の傍心を求める
+     * Finding the excenters.
+     * 三角形の傍心を求める。
      */
     getExcenters() {
         return Point.getExcenters(this.p1, this.p2, this.p3);
     }
 
     /**
-     * 辺の長さの和を求める
+     * Find the sum of the length of the side.
+     * 辺の長さの和を求める。
      *  */
     getAroundLength() {
         const p1 = new Line(this.p1, this.p2);
@@ -413,7 +457,8 @@ class Triangle {
     }
 
     /**
-     * 三角形の面積を求める
+     * Find a triangle area.
+     * 三角形の面積を求める。
      *  */
     getArea() {
         return (
@@ -426,7 +471,8 @@ class Triangle {
     }
 
     /**
-     * 基準点に対して対称な三角形を求める
+     * In search of a symmetrical triangle for the reference point.
+     * 基準点に対して対称な三角形を求める。
      */
     getSymmetricTriangle(center: Point) {
         return new Triangle(
@@ -437,7 +483,8 @@ class Triangle {
     }
 
     /**
-     * 三角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the triangle according to the reference point.
+     * 三角形を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point, magnification: number) {
         const l1 = new Line(center, this.p1);
@@ -465,6 +512,13 @@ class Quad {
     l3: Line;
     l4: Line;
 
+    /**
+     * 
+     * @param p1 First point of the quad.
+     * @param p2 Second point of the quad.
+     * @param p3 Third point of the quad.
+     * @param p4 Forth point of the quad.
+     */
     constructor(p1: Point, p2: Point, p3: Point, p4: Point) {
         this.p1 = p1;
         this.p2 = p2;
@@ -477,7 +531,8 @@ class Quad {
     }
 
     /**
-     * 四角形の面積を求める
+     * Find a square area.
+     * 四角形の面積を求める。
      *  */
     getArea() {
         const triangle1 = new Triangle(this.p1, this.p2, this.p3);
@@ -486,7 +541,8 @@ class Quad {
     }
 
     /**
-     * 辺の長さの和を求める
+     * Find the sum of the length of the side.
+     * 辺の長さの和を求める。
      *  */
     getAroundLength() {
         const l1 = new Line(this.p1, this.p2);
@@ -497,7 +553,8 @@ class Quad {
     }
 
     /**
-     * 基準点に対して対称な四角形を求める
+     * Find a symmetrical square for reference points.
+     * 基準点に対して対称な四角形を求める。
      */
     getSymmetricQuad(center: Point) {
         return new Quad(
@@ -509,7 +566,8 @@ class Quad {
     }
 
     /**
-     * 四角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the square according to the reference point.
+     * 四角形を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point, magnification: number) {
         const l1 = new Line(center, this.p1);
@@ -543,6 +601,10 @@ class Polygon {
     points: Point[];
     lines: Line[];
 
+    /**
+     * 
+     * @param points Points tha make up the polygon.
+     */
     constructor(points: Point[]) {
         this.points = points;
         this.lines = [];
@@ -560,7 +622,8 @@ class Polygon {
     }
 
     /**
-     * 多角形の辺の長さの和を求める
+     * Find the sum of the length of the polygon.
+     * 多角形の辺の長さの和を求める。
      */
     getAroundLength() {
         let result = 0;
@@ -571,7 +634,8 @@ class Polygon {
     }
 
     /**
-     * 基準点に対して対称な多角形を求める
+     * Find a symmetrical polygon for reference points.
+     * 基準点に対して対称な多角形を求める。
      */
     getSymmetricPolygon(center: Point) {
         const points: Point[] = [];
@@ -582,7 +646,8 @@ class Polygon {
     }
 
     /**
-     * 多角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the polygon according to the reference point.
+     * 多角形を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point, magnification: number) {
         const magnifiedPoints: Point[] = [];
@@ -612,6 +677,12 @@ class Circle {
     y: number;
     r: number;
     d: number;
+    /**
+     * 
+     * @param x X coordinate of the circle.
+     * @param y Y coordinate of the circle.
+     * @param r Radius of the circle.
+     */
     constructor(x: number, y: number, r: number) {
         this.x = x;
         this.y = y;
@@ -621,33 +692,37 @@ class Circle {
     }
 
     /**
-     * 円周の長さを求める
+     * Find the length of the circumference.
+     * 円周の長さを求める。
      */
     getAround() {
         return 2 * Math.PI * this.r;
     }
 
     /**
-     * 円の面積をもとめる
+     * Find the area of the circle.
+     * 円の面積をもとめる。
      */
     getArea() {
         return Math.PI * this.r ** 2;
     }
 
     /**
-     * 基準点に対して対称な円を求める
+     * Find a symmetrical circle for the reference point.
+     * 基準点に対して対称な円を求める。
      */
     getSymmetricCircle(center: Point) {
         const p = this.center;
-        const { x, y } = Point.getSymmetricPoint(p, center);
+        const {x, y} = Point.getSymmetricPoint(p, center);
         return new Circle(x, y, this.r);
     }
 
     /**
-     * 円を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the circle according to the reference point.
+     * 円を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point, magnification: number) {
-        const l1 = new Line(center, this);
+        const l1 = new Line(center, this.center);
         const p = l1.getDividingPoint(-magnification, magnification - 1);
         return new Circle(p.x, p.y, this.r * magnification);
     }
@@ -662,6 +737,13 @@ class Point3D {
     x: number;
     y: number;
     z: number;
+    
+    /**
+     * 
+     * @param x X coordinate.
+     * @param y Y coordinate.
+     * @param z Z coordinate.
+     */
     constructor(x: number, y: number, z: number) {
         this.x = x;
         this.y = y;
@@ -673,14 +755,16 @@ class Point3D {
     }
 
     /**
-     * 中点を求める
+     * In search of the middle point.
+     * 中点を求める。
      *  */
     static getMidpoint(p1: Point3D, p2: Point3D) {
         return new Point3D((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
     }
 
     /**
-     * 特定の点に対して対称な点を求める
+     * Finding a symmetrical point for specific points.
+     * 特定の点に対して対称な点を求める。
      * */
     static getSymmetricPoint(p: Point3D, center: Point3D) {
         const x = center.x - p.x;
@@ -690,7 +774,8 @@ class Point3D {
     }
 
     /**
-     * 3点間の重心を求める
+     * Finding the center of gravity between 3 points.
+     * 3点間の重心を求める。
      * */
     static getBarycenter(p1: Point3D, p2: Point3D, p3: Point3D) {
         return new Point3D((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3, (p1.z + p2.z + p3.z) / 3);
@@ -775,7 +860,8 @@ class Point3D {
     // }
 
     /**
-     * 点を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the point according to the reference point.
+     * 点を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point3D, magnification: number) {
         const l1 = new Line3D(center, this);
@@ -783,7 +869,8 @@ class Point3D {
         return new Point3D(p1.x, p1.y, p1.z);
     }
     /**
-     * 原点を求める
+     * Find the origin
+     * 原点を求める。
      *  */
     static O() {
         return new Point3D(0, 0, 0);
@@ -798,27 +885,36 @@ class Point3D {
 class Line3D {
     start: Point3D;
     end: Point3D;
+
+    /**
+     * 
+     * @param start Coordinate of start point.
+     * @param end Coordinate of end point.
+     */
     constructor(start: Point3D, end: Point3D) {
         this.start = start;
         this.end = end;
     }
 
     /**
-     * 線の長さを求める
+     * Find the length of the line.
+     * 線の長さを求める。
      *  */
     getLength() {
         return Point3D.dist(this.start, this.end);
     }
 
     /**
-     * 線分を二分する点を求める
+     * Finding the point that divides lines
+     * 線を二等分する点を求める。
      *  */
     getMidpoint() {
         return Point3D.getMidpoint(this.start, this.end);
     }
 
     /**
-     * 内分点を求める
+     * Find the inner division.
+     * 内分点を求める。
      *  */
     getInteriorPoint(m: number, n: number) {
         if (m <= 0 || n <= 0) {
@@ -833,7 +929,8 @@ class Line3D {
     }
 
     /**
-     * 外分点を求める
+     * Finding the outer sorting point.
+     * 外分点を求める。
      *  */
     getExteriorPoint(m: number, n: number) {
         if (m <= 0 || n <= 0) {
@@ -848,7 +945,8 @@ class Line3D {
     }
 
     /**
-     * 内分点、外分点を求める
+     * Incidental divisions and outer sarings.
+     * 内分点、外分点を求める。
      */
     getDividingPoint(m: number, n: number) {
         return new Point3D(
@@ -932,7 +1030,8 @@ class Line3D {
     // }
 
     /**
-     * 線を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the line according to the reference point.
+     * 線を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point3D, magnification: number) {
         const l1 = new Line3D(center, this.start);
@@ -955,6 +1054,13 @@ class Triangle3D {
     l1: Line3D;
     l2: Line3D;
     l3: Line3D;
+
+    /**
+     * 
+     * @param p1 First point of the Triangle.
+     * @param p2 Second point of the Triangle.
+     * @param p3 Third point of the Triangle.
+     */
     constructor(p1: Point3D, p2: Point3D, p3: Point3D) {
         this.p1 = p1;
         this.p2 = p2;
@@ -965,14 +1071,16 @@ class Triangle3D {
     }
 
     /**
-     * 三角形の重心を求める
+     * Finding a triangular center of gravity.
+     * 三角形の重心を求める。
      */
     getBarycenter() {
         return Point3D.getBarycenter(this.p1, this.p2, this.p3);
     }
 
     /**
-     * 辺の長さの和を求める
+     * Find the sum of the length of the side.
+     * 辺の長さの和を求める。
      *  */
     getAroundLength() {
         const p1 = new Line3D(this.p1, this.p2);
@@ -982,7 +1090,8 @@ class Triangle3D {
     }
 
     /**
-     * 三角形の面積を求める
+     * Find a triangle area.
+     * 三角形の面積を求める。
      *  */
     getArea() {
         const a = this.l1.getLength();
@@ -994,7 +1103,8 @@ class Triangle3D {
     }
 
     /**
-     * 基準点に対して対称な三角形を求める
+     * In search of a symmetrical triangle for the reference point.
+     * 基準点に対して対称な三角形を求める。
      */
     getSymmetricTriangle(center: Point3D) {
         return new Triangle3D(
@@ -1005,7 +1115,8 @@ class Triangle3D {
     }
 
     /**
-     * 三角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the triangle according to the reference point.
+     * 三角形を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point3D, magnification: number) {
         const l1 = new Line3D(center, this.p1);
@@ -1040,6 +1151,14 @@ class Quad3D {
     l2: Line3D;
     l3: Line3D;
     l4: Line3D;
+
+    /**
+     * 
+     * @param p1 First point of the Quad.
+     * @param p2 Second point of the Quad.
+     * @param p3 Third point of the Quad.
+     * @param p4 Forth point of the Quad.
+     */
     constructor(p1: Point3D, p2: Point3D, p3: Point3D, p4: Point3D) {
         this.p1 = p1;
         this.p2 = p2;
@@ -1052,7 +1171,8 @@ class Quad3D {
     }
 
     /**
-     * 四角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the square according to the reference point.
+     * 四角形を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point3D, magnification: number) {
         const l1 = new Line3D(center, this.p1);
@@ -1099,21 +1219,24 @@ class Box {
     }
 
     /**
-     * 表面積を求める
+     * Find the surface area.
+     * 表面積を求める。
      */
     getSurfaceArea() {
         return 2 * (this.w * this.h + this.h * this.d + this.d * this.w);
     }
 
     /**
-     * 体積を求める
+     * Seek the volume.
+     * 体積を求める。
      */
     getVolume() {
         return this.w * this.h * this.d;
     }
 
     /**
-     * 直方体を基準点に合わせて拡大縮小する
+     * Enlarge and shrink the rectangular body according to the reference point.
+     * 直方体を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point3D, magnification: number) {
         const boxCenter = new Point3D(
@@ -1147,11 +1270,21 @@ class Box {
 }
 
 class Sphere {
+    center: Point3D;
     x: number;
     y: number;
     z: number;
     r: number;
+
+    /**
+     * 
+     * @param x X coordinate of the center of the sphere.
+     * @param y Y coordinate of the center of the sphere.
+     * @param z Z coordinate of the center of the sphere.
+     * @param r Radius of the sphere.
+     */
     constructor(x: number, y: number, z: number, r: number) {
+        this.center = new Point3D(x, y, z);
         this.x = x;
         this.y = y;
         this.z = z;
@@ -1159,24 +1292,27 @@ class Sphere {
     }
 
     /**
-     * 表面積を求める
+     * Find the surface area.
+     * 表面積を求める。
      */
     getSurfaceArea() {
         return 4 * Math.PI * this.r ** 2;
     }
 
     /**
-     * 体積を求める
+     * Seek the volume.
+     * 体積を求める。
      */
     getVolume() {
         return (4 * Math.PI * this.r ** 3) / 3;
     }
 
     /**
-     * 球を基準点に合わせて拡大縮小する
+     * Enlarge and shrink the ball according to the reference point.
+     * 球を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point3D, magnification: number) {
-        const l1 = new Line3D(center, this);
+        const l1 = new Line3D(center, this.center);
         const p1 = l1.getDividingPoint(-magnification, magnification - 1);
         return new Sphere(p1.x, p1.y, p1.z, this.r * magnification);
     }
@@ -1203,25 +1339,21 @@ class Linear {
     vertexForm: string;
     standardForm: string;
 
+    /**
+     * 
+     * @param formula Formula.
+     */
     constructor(formula: string) {
         this.setForms(formula);
 
         this.slope;
         this.yIntercept;
 
-        this.a;
-        this.b;
-
         this.vertexForm;
-        this.standardForm;
     }
 
-    // static judgeForm(formula: string) {
-
-    // }
-
     setForms(formula: string) {
-        const array = formula.replace(/\s/g, "").split(/\+|x/).filter(v => v);
+        const array = formula.replace(/\s/g, "").split(/\+|x/).filter((v) => v);
         this.slope = Number(array[0]);
         this.yIntercept = Number(array[1]);
 
@@ -1231,14 +1363,16 @@ class Linear {
     }
 
     /**
-     * xを代入して、yの値を求める
+     * Substitute X and find the value of Y.
+     * xを代入して、yの値を求める。
      */
     getY(x: number) {
         return this.slope * x + this.yIntercept;
     }
 
     /**
-     * 一次関数同士の交点を求める
+     * Finding the intersection between primary functions.
+     * 一次関数同士の交点を求める。
      */
     getIntersection(linear: Linear) {
         const a = this.slope;
@@ -1249,7 +1383,8 @@ class Linear {
     }
 
     /**
-     * 基準となる一次関数に垂直な一次関数をもとめる
+     * Finding primary functions that are perpendicular to the standard primary functions.
+     * 基準となる一次関数に垂直な一次関数をもとめる。
      */
     getPerpendicularLinear(p: Point) {
         const a = this.slope;
@@ -1259,7 +1394,8 @@ class Linear {
     }
 
     /**
-     * 一次関数を基準点に合わせて拡大縮小する
+     * Primary functions are expanded according to the reference point.
+     * 一次関数を基準点に合わせて拡大縮小する。
      */
     magnify(center: Point, magnification: number) {
         const l1 = new Line(center, new Point(0, this.yIntercept));
@@ -1270,7 +1406,8 @@ class Linear {
     }
 
     /**
-     * 2点を通る一次関数を求める
+     * Find the primary function that passes through 2 points.
+     * 2点を通る一次関数を求める。
      */
     static estimateLinearByTwoPoints(p1: Point, p2: Point) {
         const a = (p2.y - p1.y) / (p2.x - p1.x);
@@ -1303,7 +1440,9 @@ class Quadratic {
     q: number;
 
     /**
-     * x^2, xの係数, 定数項が0, 1であっても入力すること
+     * Formula.
+     * Enter even if the coefficient of x^2, x is 0, 1.
+     * x^2, xの係数, 定数項が0, 1であっても入力すること。
      * @param formula
      */
     constructor(formula: string) {
@@ -1321,7 +1460,8 @@ class Quadratic {
     }
 
     /**
-     * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する
+     * Determines whether the entered function is a general form, a standard form, or something else.
+     * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する。
      *  */
     static judgeForm(formula: string) {
         if (formula.match(/x\^2/g) &&
@@ -1338,11 +1478,12 @@ class Quadratic {
     }
 
     /**
-     * a, b, c, p, qに値を代入し、一般形と標準形を完成させる
+     * Assign a value to a, b, c, p, q to complete general and standard forms.
+     * a, b, c, p, qに値を代入し、一般形と標準形を完成させる。
      */
     setForms(formula: string) {
         if (Quadratic.judgeForm(formula) === "vertex") {
-            const array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter(v => v);
+            const array = formula.replace(/\s/g, "").split(/\+|x\^2|x/).filter((v) => v);
             this.a = Number(array[0]);
             this.b = Number(array[1]);
             this.c = Number(array[2]);
@@ -1359,7 +1500,7 @@ class Quadratic {
             const stringQ = this.q >= 0 ? "+" + String(this.q) : String(this.q);
             this.standardForm = `${stringA}(x${stringP})^2${stringQ}`;
         } else if (Quadratic.judgeForm(formula) === "standard") {
-            const array = formula.replace(/\s/g, "").split(/\(|\)|\+|x|\^2/).filter(v => v);
+            const array = formula.replace(/\s/g, "").split(/\(|\)|\+|x|\^2/).filter((v) => v);
             this.a = Number(array[0]);
             this.p = Number(array[1]) * (-1);
             this.q = Number(array[2]);
@@ -1379,28 +1520,32 @@ class Quadratic {
     }
 
     /**
-     * 二次関数の頂点を求める
+     * Finding the top of the secondary function.
+     * 二次関数の頂点を求める。
      *  */
     getVertex() {
         return new Point(this.p, this.q);
     }
 
     /**
-     * xを代入して、yの値を求める
+     * Substitute X and find the value of Y.
+     * xを代入して、yの値を求める。
      */
     getY(x: number) {
         return this.a * x ** 2 + this.b * x + this.c;
     }
 
     /**
-     * y切片の座標を求める
+     * Find the coordinates of y cut pieces.
+     * y切片の座標を求める。
      */
     getYIntercept() {
         return new Point(0, this.getY(0));
     }
 
     /**
-     * 基準点に対して対称な二次関数を求める
+     * Finding a symmetrical secondary function for the reference point.
+     * 基準点に対して対称な二次関数を求める。
      */
     getSymmetricQuadratic(center: Point) {
         const a = -this.a;
@@ -1410,7 +1555,8 @@ class Quadratic {
     }
 
     /**
-     * 二次関数と一次関数の交点を求める
+     * Find the intersection of secondary and primary functions.
+     * 二次関数と一次関数の交点を求める。
      */
     getIntersectionsOfQL(linear: Linear) {
         const a = this.a;
@@ -1428,7 +1574,8 @@ class Quadratic {
     }
 
     /**
-     * 二次関数同士の交点を求める
+     * In search of intersections between secondary functions.
+     * 二次関数同士の交点を求める。
      */
     getIntersectionsOfQQ(quadratic: Quadratic) {
         const a = this.a;
@@ -1453,7 +1600,8 @@ class Quadratic {
     }
 
     /**
-     * 二次関数の接線を求める
+     * Finding a secondary function.
+     * 二次関数の接線を求める。
      */
     getTangentLinear(x: number) {
         const a = this.a;
@@ -1465,7 +1613,8 @@ class Quadratic {
     }
 
     /**
-     * 二次関数の方線を求める
+     * Finding a secondary function line.
+     * 二次関数の方線を求める。
      */
     getNormalLinear(x: number) {
         const l = this.differentiate();
@@ -1473,15 +1622,16 @@ class Quadratic {
     }
 
     /**
-     * 二次方程式の解を求める
+     * Finding a secondary equation solution.
+     * 二次方程式の解を求める。
      */
     getSolution() {
         return this.getIntersectionsOfQL(new Linear("0x+0"));
     }
 
     /**
-     * 数学的にあっているかどうかは知らない
-     * 二次関数を基準点に合わせて拡大する
+     * Enlarge the secondary function according to the reference point.
+     * 二次関数を基準点に合わせて拡大する。
      */
     magnify(center: Point, magnification: number) {
         const l1 = new Line(center, this.getYIntercept());
@@ -1495,7 +1645,8 @@ class Quadratic {
     }
 
     /**
-     * 二次関数を平行移動させる
+     * Move the secondary function parallel.
+     * 二次関数を平行移動させる。
      */
     moveQuadratic(x: number, y: number) {
         const newP = -(this.p + x);
@@ -1504,7 +1655,8 @@ class Quadratic {
     }
 
     /**
-     * aの値と、通る2点から二次関数を求める
+     * Find the secondary function from the value of A and the two points that pass.
+     * aの値と、通る2点から二次関数を求める。
      */
     static estimateQuadraticByAandTwoPoints(a: number, p1: Point, p2: Point) {
         const x1 = p1.x;
@@ -1519,7 +1671,8 @@ class Quadratic {
     }
 
     /**
-     * 3点を通る二次関数を求める
+     * Finding a secondary function through 3 points.
+     * 3点を通る二次関数を求める。
      */
     static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
         return Point.estimateQuadraticByThreePoints(p1, p2, p3);

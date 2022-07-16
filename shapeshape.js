@@ -24,19 +24,22 @@ var Point = /** @class */ (function () {
         this.y = y;
     }
     /**
-     * 2点間の距離を求める
+     * Find the distance between 2 points.
+     * 2点間の距離を求める。
      * */
     Point.dist = function (p1, p2) {
         return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2));
     };
     /**
-     * 中点を求める
+     * In search of the middle point.
+     * 中点を求める。
      *  */
     Point.getMidpoint = function (p1, p2) {
         return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
     };
     /**
-     * 特定の点に対して対称な点を求める
+     * Finding a symmetrical point for specific points.
+     * 特定の点に対して対称な点を求める。
      * */
     Point.getSymmetricPoint = function (p, center) {
         var x = center.x - p.x;
@@ -44,24 +47,26 @@ var Point = /** @class */ (function () {
         return new Point(center.x + x, center.y + y);
     };
     /**
-     * 3点間の重心を求める
+     * Finding the center of gravity between 3 points.
+     * 3点間の重心を求める。
      * */
     Point.getBarycenter = function (p1, p2, p3) {
         return new Point((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3);
     };
     /**
-     * 外心を求める
+     * Finding the circumcenter.
+     * 外心を求める。
      */
     Point.getCircumcenter = function (p1, p2, p3) {
         var l1 = new Line(p1, p2);
         var l2 = new Line(p2, p3);
-        // let l3 = new Line(p3, p1);
         var perpendicularBisector1 = l1.getPerpendicularBisector();
         var perpendicularBisector2 = l2.getPerpendicularBisector();
         return perpendicularBisector1.getIntersection(perpendicularBisector2);
     };
     /**
-     * 垂心を求める
+     * Finding the orthocenter.
+     * 垂心を求める。
      */
     Point.getOrthocenter = function (p1, p2, p3) {
         var x1 = p1.x;
@@ -77,7 +82,8 @@ var Point = /** @class */ (function () {
         return perpendicularLinear1.getIntersection(perpendicularLinear2);
     };
     /**
-     * 内心を求める
+     * Finding the inner center.
+     * 内心を求める。
      */
     Point.getInnerCenter = function (p1, p2, p3) {
         var A = p1;
@@ -93,7 +99,8 @@ var Point = /** @class */ (function () {
         return AP.getIntersection(BQ);
     };
     /**
-     * 傍心を求める
+     * Finding the excenters.
+     * 傍心を求める。
      */
     Point.getExcenters = function (p1, p2, p3) {
         var A = p1;
@@ -111,7 +118,8 @@ var Point = /** @class */ (function () {
         return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     };
     /**
-     * 3点を通る二次関数を求める
+     * Finding a secondary function through 3 points.
+     * 3点を通る二次関数を求める。
      */
     Point.estimateQuadraticByThreePoints = function (p1, p2, p3) {
         var x1 = p1.x;
@@ -129,7 +137,8 @@ var Point = /** @class */ (function () {
         return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
     };
     /**
-     * 基準点に合わせて拡大縮小する
+     * Enlarge and shrink according to the reference point.
+     * 基準点に合わせて拡大縮小する。
      */
     Point.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this);
@@ -137,7 +146,8 @@ var Point = /** @class */ (function () {
         return new Point(p1.x, p1.y);
     };
     /**
-     * 原点を求める
+     * Find the origin.
+     * 原点を求める。
      *  */
     Point.O = function () {
         return new Point(0, 0);
@@ -154,13 +164,15 @@ var Line = /** @class */ (function () {
         this.end = end;
     }
     /**
-     * 線分を二分する点を求める
+     * Find the point that divides the line.
+     * 線分を二分する点を求める。
      *  */
     Line.prototype.getMidpoint = function () {
         return Point.getMidpoint(this.start, this.end);
     };
     /**
-     * 内分点を求める
+     * Find the inner division.
+     * 内分点を求める。
      *  */
     Line.prototype.getInteriorPoint = function (m, n) {
         if (m <= 0 || n <= 0) {
@@ -171,7 +183,8 @@ var Line = /** @class */ (function () {
         }
     };
     /**
-     * 外分点を求める
+     * Finding the outer sorting point.
+     * 外分点を求める。
      *  */
     Line.prototype.getExteriorPoint = function (m, n) {
         if (m <= 0 || n <= 0) {
@@ -182,19 +195,22 @@ var Line = /** @class */ (function () {
         }
     };
     /**
-     * 内分点、外分点を求める
+     * Incidental divisions and outer sarings.
+     * 内分点、外分点を求める。
      */
     Line.prototype.getDividingPoint = function (m, n) {
         return new Point((this.start.x * n + this.end.x * m) / (m + n), (this.start.y * n + this.end.y * m) / (m + n));
     };
     /**
-     * 線の長さを求める
+     * Find the length of the line.
+     * 線の長さを求める。
      *  */
     Line.prototype.getLength = function () {
         return Point.dist(this.start, this.end);
     };
     /**
-     * 点と直線の距離を求める
+     * Find the distance between a point and a straight line.
+     * 点と直線の距離を求める。
      *  */
     Line.prototype.getDistBetweenPoint = function (p) {
         var a = (this.end.y - this.start.y) /
@@ -206,7 +222,8 @@ var Line = /** @class */ (function () {
         return Math.abs(a * p.x + b * p.y + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     };
     /**
-     * 延長線上を含め直線同士の交点を求める
+     * Finding the intersection between straight lines, including extensions.
+     * 延長線上を含め直線同士の交点を求める。
      */
     Line.prototype.getIntersection = function (l) {
         var a = (l.end.y - l.start.y) / (l.end.x - l.start.x);
@@ -222,7 +239,8 @@ var Line = /** @class */ (function () {
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     };
     /**
-     * 直線同士の交点を求める
+     * Finding the intersection between straight lines.
+     * 直線同士の交点を求める。
      */
     Line.prototype.getIntersectionStrict = function (l) {
         var x1 = this.start.x;
@@ -249,7 +267,8 @@ var Line = /** @class */ (function () {
         return new Point(x, y);
     };
     /**
-     * 垂直二等分線を求める
+     * Finding a vertical binary division.
+     * 垂直二等分線を求める。
      */
     Line.prototype.getPerpendicularBisector = function () {
         var x1 = this.start.x;
@@ -261,7 +280,8 @@ var Line = /** @class */ (function () {
         // 戻り値が関数ってやばくね？
     };
     /**
-     * 直線を基準点に合わせて拡大縮小する
+     * Enlarge a straight line according to the reference point.
+     * 直線を基準点に合わせて拡大縮小する。
      */
     Line.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this.start);
@@ -286,19 +306,22 @@ var Triangle = /** @class */ (function () {
         this.l3 = new Line(this.p3, this.p1);
     }
     /**
-     * 三角形の重心を求める
+     * Finding a triangular center of gravity.
+     * 三角形の重心を求める。
      *  */
     Triangle.prototype.getBarycenter = function () {
         return Point.getBarycenter(this.p1, this.p2, this.p3);
     };
     /**
-     * 三角形の外心を求める
+     * Finding the circumcenter.
+     * 三角形の外心を求める。
      */
     Triangle.prototype.getCircumcenter = function () {
         return Point.getCircumcenter(this.p1, this.p2, this.p3);
     };
     /**
-     * 三角形の外接円を求める
+     * Finding the circumscribed circle.
+     * 三角形の外接円を求める。
      */
     Triangle.prototype.getCircumscribedCircle = function () {
         var circumcenter = this.getCircumcenter();
@@ -306,19 +329,22 @@ var Triangle = /** @class */ (function () {
         return new Circle(circumcenter.x, circumcenter.y, r);
     };
     /**
-     * 三角形の垂心を求める
+     * Finding the orthocenter.
+     * 三角形の垂心を求める。
      */
     Triangle.prototype.getOrthocenter = function () {
         return Point.getOrthocenter(this.p1, this.p2, this.p3);
     };
     /**
-     * 三角形の内心を求める
+     * Finding the inner center.
+     * 三角形の内心を求める。
      */
     Triangle.prototype.getInnerCenter = function () {
         return Point.getInnerCenter(this.p1, this.p2, this.p3);
     };
     /**
-     * 三角形の内接円を求める
+     * Finding the inscribe circle.
+     * 三角形の内接円を求める。
      */
     Triangle.prototype.getInscribedCircle = function () {
         var innerCenter = this.getInnerCenter();
@@ -326,13 +352,15 @@ var Triangle = /** @class */ (function () {
         return new Circle(innerCenter.x, innerCenter.y, r);
     };
     /**
-     * 三角形の傍心を求める
+     * Finding the excenters.
+     * 三角形の傍心を求める。
      */
     Triangle.prototype.getExcenters = function () {
         return Point.getExcenters(this.p1, this.p2, this.p3);
     };
     /**
-     * 辺の長さの和を求める
+     * Find the sum of the length of the side.
+     * 辺の長さの和を求める。
      *  */
     Triangle.prototype.getAroundLength = function () {
         var p1 = new Line(this.p1, this.p2);
@@ -341,7 +369,8 @@ var Triangle = /** @class */ (function () {
         return p1.getLength() + p2.getLength() + p3.getLength();
     };
     /**
-     * 三角形の面積を求める
+     * Find a triangle area.
+     * 三角形の面積を求める。
      *  */
     Triangle.prototype.getArea = function () {
         return ((1 / 2) *
@@ -349,13 +378,15 @@ var Triangle = /** @class */ (function () {
                 (this.p2.x - this.p3.x) * (this.p1.y - this.p3.y)));
     };
     /**
-     * 基準点に対して対称な三角形を求める
+     * In search of a symmetrical triangle for the reference point.
+     * 基準点に対して対称な三角形を求める。
      */
     Triangle.prototype.getSymmetricTriangle = function (center) {
         return new Triangle(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center));
     };
     /**
-     * 三角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the triangle according to the reference point.
+     * 三角形を基準点に合わせて拡大縮小する。
      */
     Triangle.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this.p1);
@@ -384,7 +415,8 @@ var Quad = /** @class */ (function () {
         this.l4 = new Line(this.p4, this.p1);
     }
     /**
-     * 四角形の面積を求める
+     * Find a square area.
+     * 四角形の面積を求める。
      *  */
     Quad.prototype.getArea = function () {
         var triangle1 = new Triangle(this.p1, this.p2, this.p3);
@@ -392,7 +424,8 @@ var Quad = /** @class */ (function () {
         return triangle1.getArea() + triangle2.getArea();
     };
     /**
-     * 辺の長さの和を求める
+     * Find the sum of the length of the side.
+     * 辺の長さの和を求める。
      *  */
     Quad.prototype.getAroundLength = function () {
         var l1 = new Line(this.p1, this.p2);
@@ -402,13 +435,15 @@ var Quad = /** @class */ (function () {
         return l1.getLength() + l2.getLength() + l3.getLength() + l4.getLength();
     };
     /**
-     * 基準点に対して対称な四角形を求める
+     * Find a symmetrical square for reference points.
+     * 基準点に対して対称な四角形を求める。
      */
     Quad.prototype.getSymmetricQuad = function (center) {
         return new Quad(Point.getSymmetricPoint(this.p1, center), Point.getSymmetricPoint(this.p2, center), Point.getSymmetricPoint(this.p3, center), Point.getSymmetricPoint(this.p4, center));
     };
     /**
-     * 四角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the square according to the reference point.
+     * 四角形を基準点に合わせて拡大縮小する。
      */
     Quad.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this.p1);
@@ -451,7 +486,8 @@ var Polygon = /** @class */ (function () {
         }
     }
     /**
-     * 多角形の辺の長さの和を求める
+     * Find the sum of the length of the polygon.
+     * 多角形の辺の長さの和を求める。
      */
     Polygon.prototype.getAroundLength = function () {
         var result = 0;
@@ -462,7 +498,8 @@ var Polygon = /** @class */ (function () {
         return result;
     };
     /**
-     * 基準点に対して対称な多角形を求める
+     * Find a symmetrical polygon for reference points.
+     * 基準点に対して対称な多角形を求める。
      */
     Polygon.prototype.getSymmetricPolygon = function (center) {
         var points = [];
@@ -473,7 +510,8 @@ var Polygon = /** @class */ (function () {
         return new Polygon(points);
     };
     /**
-     * 多角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the polygon according to the reference point.
+     * 多角形を基準点に合わせて拡大縮小する。
      */
     Polygon.prototype.magnify = function (center, magnification) {
         var magnifiedPoints = [];
@@ -507,19 +545,22 @@ var Circle = /** @class */ (function () {
         this.d = r * 2;
     }
     /**
-     * 円周の長さを求める
+     * Find the length of the circumference.
+     * 円周の長さを求める。
      */
     Circle.prototype.getAround = function () {
         return 2 * Math.PI * this.r;
     };
     /**
-     * 円の面積をもとめる
+     * Find the area of the circle.
+     * 円の面積をもとめる。
      */
     Circle.prototype.getArea = function () {
         return Math.PI * Math.pow(this.r, 2);
     };
     /**
-     * 基準点に対して対称な円を求める
+     * Find a symmetrical circle for the reference point.
+     * 基準点に対して対称な円を求める。
      */
     Circle.prototype.getSymmetricCircle = function (center) {
         var p = this.center;
@@ -527,10 +568,11 @@ var Circle = /** @class */ (function () {
         return new Circle(x, y, this.r);
     };
     /**
-     * 円を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the circle according to the reference point.
+     * 円を基準点に合わせて拡大縮小する。
      */
     Circle.prototype.magnify = function (center, magnification) {
-        var l1 = new Line(center, this);
+        var l1 = new Line(center, this.center);
         var p = l1.getDividingPoint(-magnification, magnification - 1);
         return new Circle(p.x, p.y, this.r * magnification);
     };
@@ -550,13 +592,15 @@ var Point3D = /** @class */ (function () {
         return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2) + Math.pow((p2.z - p1.z), 2));
     };
     /**
-     * 中点を求める
+     * In search of the middle point.
+     * 中点を求める。
      *  */
     Point3D.getMidpoint = function (p1, p2) {
         return new Point3D((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
     };
     /**
-     * 特定の点に対して対称な点を求める
+     * Finding a symmetrical point for specific points.
+     * 特定の点に対して対称な点を求める。
      * */
     Point3D.getSymmetricPoint = function (p, center) {
         var x = center.x - p.x;
@@ -565,7 +609,8 @@ var Point3D = /** @class */ (function () {
         return new Point3D(center.x + x, center.y + y, center.z + z);
     };
     /**
-     * 3点間の重心を求める
+     * Finding the center of gravity between 3 points.
+     * 3点間の重心を求める。
      * */
     Point3D.getBarycenter = function (p1, p2, p3) {
         return new Point3D((p1.x + p2.x + p3.x) / 3, (p1.y + p2.y + p3.y) / 3, (p1.z + p2.z + p3.z) / 3);
@@ -632,7 +677,8 @@ var Point3D = /** @class */ (function () {
     //     return [AP.getIntersection(CQ), CQ.getIntersection(BR), BR.getIntersection(AP)];
     // }
     /**
-     * 点を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the point according to the reference point.
+     * 点を基準点に合わせて拡大縮小する。
      */
     Point3D.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this);
@@ -640,7 +686,8 @@ var Point3D = /** @class */ (function () {
         return new Point3D(p1.x, p1.y, p1.z);
     };
     /**
-     * 原点を求める
+     * Find the origin
+     * 原点を求める。
      *  */
     Point3D.O = function () {
         return new Point3D(0, 0, 0);
@@ -657,19 +704,22 @@ var Line3D = /** @class */ (function () {
         this.end = end;
     }
     /**
-     * 線の長さを求める
+     * Find the length of the line.
+     * 線の長さを求める。
      *  */
     Line3D.prototype.getLength = function () {
         return Point3D.dist(this.start, this.end);
     };
     /**
-     * 線分を二分する点を求める
+     * Finding the point that divides lines
+     * 線を二等分する点を求める。
      *  */
     Line3D.prototype.getMidpoint = function () {
         return Point3D.getMidpoint(this.start, this.end);
     };
     /**
-     * 内分点を求める
+     * Find the inner division.
+     * 内分点を求める。
      *  */
     Line3D.prototype.getInteriorPoint = function (m, n) {
         if (m <= 0 || n <= 0) {
@@ -680,7 +730,8 @@ var Line3D = /** @class */ (function () {
         }
     };
     /**
-     * 外分点を求める
+     * Finding the outer sorting point.
+     * 外分点を求める。
      *  */
     Line3D.prototype.getExteriorPoint = function (m, n) {
         if (m <= 0 || n <= 0) {
@@ -691,7 +742,8 @@ var Line3D = /** @class */ (function () {
         }
     };
     /**
-     * 内分点、外分点を求める
+     * Incidental divisions and outer sarings.
+     * 内分点、外分点を求める。
      */
     Line3D.prototype.getDividingPoint = function (m, n) {
         return new Point3D((this.start.x * n + this.end.x * m) / (m + n), (this.start.y * n + this.end.y * m) / (m + n), (this.start.z * n + this.end.z * m) / (m + n));
@@ -759,7 +811,8 @@ var Line3D = /** @class */ (function () {
     //     // 戻り値が関数ってやばくね？
     // }
     /**
-     * 線を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the line according to the reference point.
+     * 線を基準点に合わせて拡大縮小する。
      */
     Line3D.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this.start);
@@ -784,13 +837,15 @@ var Triangle3D = /** @class */ (function () {
         this.l3 = new Line3D(p3, p1);
     }
     /**
-     * 三角形の重心を求める
+     * Finding a triangular center of gravity.
+     * 三角形の重心を求める。
      */
     Triangle3D.prototype.getBarycenter = function () {
         return Point3D.getBarycenter(this.p1, this.p2, this.p3);
     };
     /**
-     * 辺の長さの和を求める
+     * Find the sum of the length of the side.
+     * 辺の長さの和を求める。
      *  */
     Triangle3D.prototype.getAroundLength = function () {
         var p1 = new Line3D(this.p1, this.p2);
@@ -799,7 +854,8 @@ var Triangle3D = /** @class */ (function () {
         return p1.getLength() + p2.getLength() + p3.getLength();
     };
     /**
-     * 三角形の面積を求める
+     * Find a triangle area.
+     * 三角形の面積を求める。
      *  */
     Triangle3D.prototype.getArea = function () {
         var a = this.l1.getLength();
@@ -810,13 +866,15 @@ var Triangle3D = /** @class */ (function () {
         return S;
     };
     /**
-     * 基準点に対して対称な三角形を求める
+     * In search of a symmetrical triangle for the reference point.
+     * 基準点に対して対称な三角形を求める。
      */
     Triangle3D.prototype.getSymmetricTriangle = function (center) {
         return new Triangle3D(Point3D.getSymmetricPoint(this.p1, center), Point3D.getSymmetricPoint(this.p2, center), Point3D.getSymmetricPoint(this.p3, center));
     };
     /**
-     * 三角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the triangle according to the reference point.
+     * 三角形を基準点に合わせて拡大縮小する。
      */
     Triangle3D.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this.p1);
@@ -853,7 +911,8 @@ var Quad3D = /** @class */ (function () {
         this.l4 = new Line3D(this.p4, this.p1);
     }
     /**
-     * 四角形を基準点に合わせて拡大縮小する
+     * Enlarge and reduce the square according to the reference point.
+     * 四角形を基準点に合わせて拡大縮小する。
      */
     Quad3D.prototype.magnify = function (center, magnification) {
         var l1 = new Line3D(center, this.p1);
@@ -892,19 +951,22 @@ var Box = /** @class */ (function () {
         this.d = d;
     }
     /**
-     * 表面積を求める
+     * Find the surface area.
+     * 表面積を求める。
      */
     Box.prototype.getSurfaceArea = function () {
         return 2 * (this.w * this.h + this.h * this.d + this.d * this.w);
     };
     /**
-     * 体積を求める
+     * Seek the volume.
+     * 体積を求める。
      */
     Box.prototype.getVolume = function () {
         return this.w * this.h * this.d;
     };
     /**
-     * 直方体を基準点に合わせて拡大縮小する
+     * Enlarge and shrink the rectangular body according to the reference point.
+     * 直方体を基準点に合わせて拡大縮小する。
      */
     Box.prototype.magnify = function (center, magnification) {
         var boxCenter = new Point3D(this.x + this.w / 2, this.y + this.h / 2, this.z + this.d / 2);
@@ -932,28 +994,32 @@ var Box = /** @class */ (function () {
 }());
 var Sphere = /** @class */ (function () {
     function Sphere(x, y, z, r) {
+        this.center = new Point3D(x, y, z);
         this.x = x;
         this.y = y;
         this.z = z;
         this.r = r;
     }
     /**
-     * 表面積を求める
+     * Find the surface area.
+     * 表面積を求める。
      */
     Sphere.prototype.getSurfaceArea = function () {
         return 4 * Math.PI * Math.pow(this.r, 2);
     };
     /**
-     * 体積を求める
+     * Seek the volume.
+     * 体積を求める。
      */
     Sphere.prototype.getVolume = function () {
         return (4 * Math.PI * Math.pow(this.r, 3)) / 3;
     };
     /**
-     * 球を基準点に合わせて拡大縮小する
+     * Enlarge and shrink the ball according to the reference point.
+     * 球を基準点に合わせて拡大縮小する。
      */
     Sphere.prototype.magnify = function (center, magnification) {
-        var l1 = new Line3D(center, this);
+        var l1 = new Line3D(center, this.center);
         var p1 = l1.getDividingPoint(-magnification, magnification - 1);
         return new Sphere(p1.x, p1.y, p1.z, this.r * magnification);
     };
@@ -974,13 +1040,8 @@ var Linear = /** @class */ (function () {
         this.setForms(formula);
         this.slope;
         this.yIntercept;
-        this.a;
-        this.b;
         this.vertexForm;
-        this.standardForm;
     }
-    // static judgeForm(formula: string) {
-    // }
     Linear.prototype.setForms = function (formula) {
         var array = formula.replace(/\s/g, "").split(/\+|x/).filter(function (v) { return v; });
         this.slope = Number(array[0]);
@@ -990,13 +1051,15 @@ var Linear = /** @class */ (function () {
         this.vertexForm = "".concat(stringSlope, "x").concat(stringYIntercept);
     };
     /**
-     * xを代入して、yの値を求める
+     * Substitute X and find the value of Y.
+     * xを代入して、yの値を求める。
      */
     Linear.prototype.getY = function (x) {
         return this.slope * x + this.yIntercept;
     };
     /**
-     * 一次関数同士の交点を求める
+     * Finding the intersection between primary functions.
+     * 一次関数同士の交点を求める。
      */
     Linear.prototype.getIntersection = function (linear) {
         var a = this.slope;
@@ -1006,7 +1069,8 @@ var Linear = /** @class */ (function () {
         return new Point((d - b) / (a - c), a * (d - b) / (a - c) + b);
     };
     /**
-     * 基準となる一次関数に垂直な一次関数をもとめる
+     * Finding primary functions that are perpendicular to the standard primary functions.
+     * 基準となる一次関数に垂直な一次関数をもとめる。
      */
     Linear.prototype.getPerpendicularLinear = function (p) {
         var a = this.slope;
@@ -1015,7 +1079,8 @@ var Linear = /** @class */ (function () {
         return new Linear("".concat(-1 / a, "x+").concat(x1 / a + y1));
     };
     /**
-     * 一次関数を基準点に合わせて拡大縮小する
+     * Primary functions are expanded according to the reference point.
+     * 一次関数を基準点に合わせて拡大縮小する。
      */
     Linear.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, new Point(0, this.yIntercept));
@@ -1025,7 +1090,8 @@ var Linear = /** @class */ (function () {
         return Linear.estimateLinearByTwoPoints(p1, p2);
     };
     /**
-     * 2点を通る一次関数を求める
+     * Find the primary function that passes through 2 points.
+     * 2点を通る一次関数を求める。
      */
     Linear.estimateLinearByTwoPoints = function (p1, p2) {
         var a = (p2.y - p1.y) / (p2.x - p1.x);
@@ -1047,7 +1113,8 @@ var Linear = /** @class */ (function () {
 }());
 var Quadratic = /** @class */ (function () {
     /**
-     * x^2, xの係数, 定数項が0, 1であっても入力すること
+     * Enter even if the coefficient of x^2, x is 0, 1.
+     * x^2, xの係数, 定数項が0, 1であっても入力すること。
      * @param formula
      */
     function Quadratic(formula) {
@@ -1061,7 +1128,8 @@ var Quadratic = /** @class */ (function () {
         this.standardForm;
     }
     /**
-     * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する
+     * Determines whether the entered function is a general form, a standard form, or something else.
+     * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する。
      *  */
     Quadratic.judgeForm = function (formula) {
         if (formula.match(/x\^2/g) &&
@@ -1079,7 +1147,8 @@ var Quadratic = /** @class */ (function () {
         }
     };
     /**
-     * a, b, c, p, qに値を代入し、一般形と標準形を完成させる
+     * Assign a value to a, b, c, p, q to complete general and standard forms.
+     * a, b, c, p, qに値を代入し、一般形と標準形を完成させる。
      */
     Quadratic.prototype.setForms = function (formula) {
         if (Quadratic.judgeForm(formula) === "vertex") {
@@ -1114,25 +1183,29 @@ var Quadratic = /** @class */ (function () {
         }
     };
     /**
-     * 二次関数の頂点を求める
+     * Finding the top of the secondary function.
+     * 二次関数の頂点を求める。
      *  */
     Quadratic.prototype.getVertex = function () {
         return new Point(this.p, this.q);
     };
     /**
-     * xを代入して、yの値を求める
+     * Substitute X and find the value of Y.
+     * xを代入して、yの値を求める。
      */
     Quadratic.prototype.getY = function (x) {
         return this.a * Math.pow(x, 2) + this.b * x + this.c;
     };
     /**
-     * y切片の座標を求める
+     * Find the coordinates of y cut pieces.
+     * y切片の座標を求める。
      */
     Quadratic.prototype.getYIntercept = function () {
         return new Point(0, this.getY(0));
     };
     /**
-     * 基準点に対して対称な二次関数を求める
+     * Finding a symmetrical secondary function for the reference point.
+     * 基準点に対して対称な二次関数を求める。
      */
     Quadratic.prototype.getSymmetricQuadratic = function (center) {
         var a = -this.a;
@@ -1141,7 +1214,8 @@ var Quadratic = /** @class */ (function () {
         return new Quadratic("".concat(a, "(x +").concat(p, ")^2 + ").concat(q));
     };
     /**
-     * 二次関数と一次関数の交点を求める
+     * Find the intersection of secondary and primary functions.
+     * 二次関数と一次関数の交点を求める。
      */
     Quadratic.prototype.getIntersectionsOfQL = function (linear) {
         var a = this.a;
@@ -1156,7 +1230,8 @@ var Quadratic = /** @class */ (function () {
         return [new Point(x1, y1), new Point(x2, y2)];
     };
     /**
-     * 二次関数同士の交点を求める
+     * In search of intersections between secondary functions.
+     * 二次関数同士の交点を求める。
      */
     Quadratic.prototype.getIntersectionsOfQQ = function (quadratic) {
         var a = this.a;
@@ -1179,7 +1254,8 @@ var Quadratic = /** @class */ (function () {
         }
     };
     /**
-     * 二次関数の接線を求める
+     * Finding a secondary function.
+     * 二次関数の接線を求める。
      */
     Quadratic.prototype.getTangentLinear = function (x) {
         var a = this.a;
@@ -1190,21 +1266,23 @@ var Quadratic = /** @class */ (function () {
         return new Linear("".concat(d, "x+").concat(e));
     };
     /**
-     * 二次関数の方線を求める
+     * Finding a secondary function line.
+     * 二次関数の方線を求める。
      */
     Quadratic.prototype.getNormalLinear = function (x) {
         var l = this.differentiate();
         return new Linear("".concat(-1 / l.getY(x), "x+").concat(x / l.getY(x) + this.getY(x)));
     };
     /**
-     * 二次方程式の解を求める
+     * Finding a secondary equation solution.
+     * 二次方程式の解を求める。
      */
     Quadratic.prototype.getSolution = function () {
         return this.getIntersectionsOfQL(new Linear("0x+0"));
     };
     /**
-     * 数学的にあっているかどうかは知らない
-     * 二次関数を基準点に合わせて拡大する
+     * Enlarge the secondary function according to the reference point.
+     * 二次関数を基準点に合わせて拡大する。
      */
     Quadratic.prototype.magnify = function (center, magnification) {
         var l1 = new Line(center, this.getYIntercept());
@@ -1216,7 +1294,8 @@ var Quadratic = /** @class */ (function () {
         return Quadratic.estimateQuadraticByThreePoints(p1, p2, p3);
     };
     /**
-     * 二次関数を平行移動させる
+     * Move the secondary function parallel.
+     * 二次関数を平行移動させる。
      */
     Quadratic.prototype.moveQuadratic = function (x, y) {
         var newP = -(this.p + x);
@@ -1224,7 +1303,8 @@ var Quadratic = /** @class */ (function () {
         return new Quadratic("".concat(this.a, "(x+").concat(newP, ")^2+").concat(newQ));
     };
     /**
-     * aの値と、通る2点から二次関数を求める
+     * Find the secondary function from the value of A and the two points that pass.
+     * aの値と、通る2点から二次関数を求める。
      */
     Quadratic.estimateQuadraticByAandTwoPoints = function (a, p1, p2) {
         var x1 = p1.x;
@@ -1236,7 +1316,8 @@ var Quadratic = /** @class */ (function () {
         return new Quadratic("".concat(a, "x^2+").concat(b, "x+").concat(c));
     };
     /**
-     * 3点を通る二次関数を求める
+     * Finding a secondary function through 3 points.
+     * 3点を通る二次関数を求める。
      */
     Quadratic.estimateQuadraticByThreePoints = function (p1, p2, p3) {
         return Point.estimateQuadraticByThreePoints(p1, p2, p3);
