@@ -148,7 +148,7 @@ class Point {
      * Finding a secondary function through 3 points.
      * 3点を通る二次関数を求める。
      */
-     static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
+    static estimateQuadraticByThreePoints(p1: Point, p2: Point, p3: Point) {
         const x1 = p1.x;
         const y1 = p1.y;
         const x2 = p2.x;
@@ -202,7 +202,7 @@ class Line {
     end: Point;
 
     /**
-     * 
+     *
      * @param start Coordinate of start point
      * @param end Coordinate of end point
      */
@@ -371,7 +371,7 @@ class Triangle {
     l2: Line;
     l3: Line;
     /**
-     * 
+     *
      * @param p1 First point of the triangle.
      * @param p2 Second point of the triangle.
      * @param p3 Third point of the triangle.
@@ -513,7 +513,7 @@ class Quad {
     l4: Line;
 
     /**
-     * 
+     *
      * @param p1 First point of the quad.
      * @param p2 Second point of the quad.
      * @param p3 Third point of the quad.
@@ -602,7 +602,7 @@ class Polygon {
     lines: Line[];
 
     /**
-     * 
+     *
      * @param points Points tha make up the polygon.
      */
     constructor(points: Point[]) {
@@ -678,7 +678,7 @@ class Circle {
     r: number;
     d: number;
     /**
-     * 
+     *
      * @param x X coordinate of the circle.
      * @param y Y coordinate of the circle.
      * @param r Radius of the circle.
@@ -737,9 +737,9 @@ class Point3D {
     x: number;
     y: number;
     z: number;
-    
+
     /**
-     * 
+     *
      * @param x X coordinate.
      * @param y Y coordinate.
      * @param z Z coordinate.
@@ -887,7 +887,7 @@ class Line3D {
     end: Point3D;
 
     /**
-     * 
+     *
      * @param start Coordinate of start point.
      * @param end Coordinate of end point.
      */
@@ -1056,7 +1056,7 @@ class Triangle3D {
     l3: Line3D;
 
     /**
-     * 
+     *
      * @param p1 First point of the Triangle.
      * @param p2 Second point of the Triangle.
      * @param p3 Third point of the Triangle.
@@ -1153,7 +1153,7 @@ class Quad3D {
     l4: Line3D;
 
     /**
-     * 
+     *
      * @param p1 First point of the Quad.
      * @param p2 Second point of the Quad.
      * @param p3 Third point of the Quad.
@@ -1277,7 +1277,7 @@ class Sphere {
     r: number;
 
     /**
-     * 
+     *
      * @param x X coordinate of the center of the sphere.
      * @param y Y coordinate of the center of the sphere.
      * @param z Z coordinate of the center of the sphere.
@@ -1340,7 +1340,7 @@ class Linear {
     standardForm: string;
 
     /**
-     * 
+     *
      * @param formula Formula.
      */
     constructor(formula: string) {
@@ -1391,6 +1391,17 @@ class Linear {
         const x1 = p.x;
         const y1 = p.y;
         return new Linear(`${-1 / a}x+${x1 / a + y1}`);
+    }
+
+    /**
+     * Finding a symmetrical point for a straight line.
+     * 直線に対して対称な点を求める。
+     */
+    getSymmetricPointToL(p: Point) {
+        const perpendicularLinear = this.getPerpendicularLinear(p);
+        const center = this.getIntersection(perpendicularLinear);
+        const symmetricPoint = Point.getSymmetricPoint(p, center);
+        return symmetricPoint;
     }
 
     /**

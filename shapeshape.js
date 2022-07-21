@@ -19,6 +19,11 @@ var Manager = /** @class */ (function () {
     return Manager;
 }());
 var Point = /** @class */ (function () {
+    /**
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
     function Point(x, y) {
         this.x = x;
         this.y = y;
@@ -159,6 +164,11 @@ var Point = /** @class */ (function () {
     return Point;
 }());
 var Line = /** @class */ (function () {
+    /**
+     *
+     * @param start Coordinate of start point
+     * @param end Coordinate of end point
+     */
     function Line(start, end) {
         this.start = start;
         this.end = end;
@@ -297,6 +307,12 @@ var Line = /** @class */ (function () {
     return Line;
 }());
 var Triangle = /** @class */ (function () {
+    /**
+     *
+     * @param p1 First point of the triangle.
+     * @param p2 Second point of the triangle.
+     * @param p3 Third point of the triangle.
+     */
     function Triangle(p1, p2, p3) {
         this.p1 = p1;
         this.p2 = p2;
@@ -404,6 +420,13 @@ var Triangle = /** @class */ (function () {
     return Triangle;
 }());
 var Quad = /** @class */ (function () {
+    /**
+     *
+     * @param p1 First point of the quad.
+     * @param p2 Second point of the quad.
+     * @param p3 Third point of the quad.
+     * @param p4 Forth point of the quad.
+     */
     function Quad(p1, p2, p3, p4) {
         this.p1 = p1;
         this.p2 = p2;
@@ -473,6 +496,10 @@ var Quad = /** @class */ (function () {
     return Quad;
 }());
 var Polygon = /** @class */ (function () {
+    /**
+     *
+     * @param points Points tha make up the polygon.
+     */
     function Polygon(points) {
         this.points = points;
         this.lines = [];
@@ -537,6 +564,12 @@ var Polygon = /** @class */ (function () {
     return Polygon;
 }());
 var Circle = /** @class */ (function () {
+    /**
+     *
+     * @param x X coordinate of the circle.
+     * @param y Y coordinate of the circle.
+     * @param r Radius of the circle.
+     */
     function Circle(x, y, r) {
         this.x = x;
         this.y = y;
@@ -583,6 +616,12 @@ var Circle = /** @class */ (function () {
     return Circle;
 }());
 var Point3D = /** @class */ (function () {
+    /**
+     *
+     * @param x X coordinate.
+     * @param y Y coordinate.
+     * @param z Z coordinate.
+     */
     function Point3D(x, y, z) {
         this.x = x;
         this.y = y;
@@ -699,6 +738,11 @@ var Point3D = /** @class */ (function () {
     return Point3D;
 }());
 var Line3D = /** @class */ (function () {
+    /**
+     *
+     * @param start Coordinate of start point.
+     * @param end Coordinate of end point.
+     */
     function Line3D(start, end) {
         this.start = start;
         this.end = end;
@@ -828,6 +872,12 @@ var Line3D = /** @class */ (function () {
     return Line3D;
 }());
 var Triangle3D = /** @class */ (function () {
+    /**
+     *
+     * @param p1 First point of the Triangle.
+     * @param p2 Second point of the Triangle.
+     * @param p3 Third point of the Triangle.
+     */
     function Triangle3D(p1, p2, p3) {
         this.p1 = p1;
         this.p2 = p2;
@@ -900,6 +950,13 @@ var Triangle3D = /** @class */ (function () {
     return Triangle3D;
 }());
 var Quad3D = /** @class */ (function () {
+    /**
+     *
+     * @param p1 First point of the Quad.
+     * @param p2 Second point of the Quad.
+     * @param p3 Third point of the Quad.
+     * @param p4 Forth point of the Quad.
+     */
     function Quad3D(p1, p2, p3, p4) {
         this.p1 = p1;
         this.p2 = p2;
@@ -993,6 +1050,13 @@ var Box = /** @class */ (function () {
     return Box;
 }());
 var Sphere = /** @class */ (function () {
+    /**
+     *
+     * @param x X coordinate of the center of the sphere.
+     * @param y Y coordinate of the center of the sphere.
+     * @param z Z coordinate of the center of the sphere.
+     * @param r Radius of the sphere.
+     */
     function Sphere(x, y, z, r) {
         this.center = new Point3D(x, y, z);
         this.x = x;
@@ -1036,6 +1100,10 @@ var Sphere = /** @class */ (function () {
     return Sphere;
 }());
 var Linear = /** @class */ (function () {
+    /**
+     *
+     * @param formula Formula.
+     */
     function Linear(formula) {
         this.setForms(formula);
         this.slope;
@@ -1079,6 +1147,16 @@ var Linear = /** @class */ (function () {
         return new Linear("".concat(-1 / a, "x+").concat(x1 / a + y1));
     };
     /**
+     * Finding a symmetrical point for a straight line.
+     * 直線に対して対称な点を求める。
+     */
+    Linear.prototype.getSymmetricPointToL = function (p) {
+        var perpendicularLinear = this.getPerpendicularLinear(p);
+        var center = this.getIntersection(perpendicularLinear);
+        var symmetricPoint = Point.getSymmetricPoint(p, center);
+        return symmetricPoint;
+    };
+    /**
      * Primary functions are expanded according to the reference point.
      * 一次関数を基準点に合わせて拡大縮小する。
      */
@@ -1113,6 +1191,7 @@ var Linear = /** @class */ (function () {
 }());
 var Quadratic = /** @class */ (function () {
     /**
+     * Formula.
      * Enter even if the coefficient of x^2, x is 0, 1.
      * x^2, xの係数, 定数項が0, 1であっても入力すること。
      * @param formula
