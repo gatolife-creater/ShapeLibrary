@@ -55,7 +55,6 @@ function draw() {
 
     //二次関数宣言
     Quadratic2 = new Quadratic(`${a}(x+${p1})^2+200`);
-    symmetricQuadratic = Quadratic2.getSymmetricQuadratic(Point.O());
 
     //二次関数の定義域
     if (Quadratic2.getVertex().x < min || max < Quadratic2.getVertex().x) p1s *= -1;
@@ -65,7 +64,7 @@ function draw() {
 
     beginShape();
     stroke("gray");
-    symmetricQuadratic.draw(min, max);
+    Quadratic2.getSymmetricQuadraticToY_Axis().getSymmetricQuadraticToX_Axis().draw(min, max);
 
 
     // x軸、y軸の表示

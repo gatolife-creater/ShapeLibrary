@@ -713,7 +713,7 @@ class Circle {
      */
     getSymmetricCircle(center: Point) {
         const p = this.center;
-        const {x, y} = Point.getSymmetricPoint(p, center);
+        const { x, y } = Point.getSymmetricPoint(p, center);
         return new Circle(x, y, this.r);
     }
 
@@ -1563,6 +1563,14 @@ class Quadratic {
         const p = -Point.getSymmetricPoint(this.getVertex(), center).x;
         const q = Point.getSymmetricPoint(this.getVertex(), center).y;
         return new Quadratic(`${a}(x +${p})^2 + ${q}`);
+    }
+
+    getSymmetricQuadraticToX_Axis() {
+        return new Quadratic(`${-this.a}x^2+${-this.b}x+${-this.c}`);
+    }
+
+    getSymmetricQuadraticToY_Axis() {
+        return new Quadratic(`${this.a}x^2+${-this.b}x+${this.c}`);
     }
 
     /**

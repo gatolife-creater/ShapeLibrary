@@ -1292,6 +1292,12 @@ var Quadratic = /** @class */ (function () {
         var q = Point.getSymmetricPoint(this.getVertex(), center).y;
         return new Quadratic("".concat(a, "(x +").concat(p, ")^2 + ").concat(q));
     };
+    Quadratic.prototype.getSymmetricQuadraticToX_Axis = function () {
+        return new Quadratic("".concat(-this.a, "x^2+").concat(-this.b, "x+").concat(-this.c));
+    };
+    Quadratic.prototype.getSymmetricQuadraticToY_Axis = function () {
+        return new Quadratic("".concat(this.a, "x^2+").concat(-this.b, "x+").concat(this.c));
+    };
     /**
      * Find the intersection of secondary and primary functions.
      * 二次関数と一次関数の交点を求める。
