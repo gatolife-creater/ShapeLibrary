@@ -717,6 +717,28 @@ class Circle {
         return new Circle(x, y, this.r);
     }
 
+    getIntersectionsOfCL(linear: Linear): Point[] {
+        // (x-a)^2 + (y-b)^2 = r^2
+        // y=cx+d
+        const a = this.center.x;
+        const b = this.center.y;
+        const c = linear.slope;
+        const d = linear.yIntercept;
+        const r = this.r;
+
+        const _a = c ** 2 + 1;
+        const _b = 2 * (c * d - b * c - a);
+        const _c = a ** 2 + (d - b) ** 2 - r ** 2;
+
+        const quadratic = new Quadratic(`${_a}x^2+${_b}x+${_c}`);
+        const solutions = quadratic.getIntersectionsOfQL(new Linear("0x+0"));
+
+        const y1 = linear.getY(solutions[0].x);
+        const y2 = linear.getY(solutions[1].x);
+
+        return [new Point(solutions[0].x, y1), new Point(solutions[1].x, y2)];
+    }
+
     /**
      * Enlarge and reduce the circle according to the reference point.
      * 円を基準点に合わせて拡大縮小する。

@@ -291,6 +291,7 @@ declare class Circle {
      * 基準点に対して対称な円を求める。
      */
     getSymmetricCircle(center: Point): Circle;
+    getIntersectionsOfCL(linear: Linear): Point[];
     /**
      * Enlarge and reduce the circle according to the reference point.
      * 円を基準点に合わせて拡大縮小する。
@@ -587,7 +588,7 @@ declare class Quadratic {
      * Determines whether the entered function is a general form, a standard form, or something else.
      * 入力された関数が一般形であるか、標準形であるか、またはそれ以外であるか判別する。
      *  */
-    static judgeForm(formula: string): void | "standard" | "vertex";
+    static judgeForm(formula: string): void | "vertex" | "standard";
     /**
      * Assign a value to a, b, c, p, q to complete general and standard forms.
      * a, b, c, p, qに値を代入し、一般形と標準形を完成させる。
