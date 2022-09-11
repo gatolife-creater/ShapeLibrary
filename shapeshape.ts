@@ -739,6 +739,24 @@ class Circle {
         return [new Point(solutions[0].x, y1), new Point(solutions[1].x, y2)];
     }
 
+    getTangentLinear(p: Point) {
+        const A = p.x ** 2 / p.y ** 2 + 1;
+        const B = - (2 * p.x * this.r ** 2) / (p.y ** 2);
+        const C = this.r ** 2 * (this.r ** 2 - p.y ** 2) / p.y ** 2;
+        const quadratic = new Quadratic(`${A}x^2+${B}x+${C}`);
+        const points = quadratic.getSolution();
+        const xt1 = points[0].x;
+        const yt1 = (this.r ** 2 - p.x * xt1) / p.y;
+        const xt2 = points[1].x;
+        const yt2 = (this.r ** 2 - p.x * xt2) / p.y;
+        const linears = [
+            Linear.estimateLinearByTwoPoints(p, new Point(xt1, yt1)),
+            Linear.estimateLinearByTwoPoints(p, new Point(xt2, yt2)),
+        ];
+        return linears;
+    }
+
+
     /**
      * Enlarge and reduce the circle according to the reference point.
      * 円を基準点に合わせて拡大縮小する。

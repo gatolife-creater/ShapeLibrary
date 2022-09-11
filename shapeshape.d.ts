@@ -292,6 +292,7 @@ declare class Circle {
      */
     getSymmetricCircle(center: Point): Circle;
     getIntersectionsOfCL(linear: Linear): Point[];
+    getTangentLinear(p: Point): Linear[];
     /**
      * Enlarge and reduce the circle according to the reference point.
      * 円を基準点に合わせて拡大縮小する。
